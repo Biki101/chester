@@ -147,6 +147,19 @@ export class AppComponent {
 
   selectedBox = null;
 
+  possibleMoves: any = [
+    { name: 'E5', occupiedBy: null, occupiedByType: null },
+    { name: 'F5', occupiedBy: null, occupiedByType: null },
+    { name: 'G5', occupiedBy: null, occupiedByType: null },
+    { name: 'H5', occupiedBy: null, occupiedByType: null },
+    { name: 'A4', occupiedBy: null, occupiedByType: null },
+    { name: 'B4', occupiedBy: null, occupiedByType: null },
+    { name: 'C4', occupiedBy: null, occupiedByType: null },
+    { name: 'D4', occupiedBy: null, occupiedByType: null },
+    { name: 'E4', occupiedBy: null, occupiedByType: null },
+    { name: 'F4', occupiedBy: null, occupiedByType: null },
+  ];
+
   ngOnInit() {
     if (this.playingAsWhite) {
       this.initializeBoardAsWhite();
@@ -217,7 +230,6 @@ export class AppComponent {
       return (colIndex + rowIndex) % 2 === 0;
     });
 
-    console.log(blackBoards);
     if (blackBoards.includes(`${column}${row}`)) {
       return true;
     } else {
@@ -241,14 +253,59 @@ export class AppComponent {
     this.boardStatus.map((boardBox: any) => {
       if (boardBox?.name == `${column + row}`) {
         if (boardBox?.occupiedBy) {
-          this.selectedBox = {
-            name: column + row,
-            occupiedBy: boardBox?.occupiedBy,
-            occupiedByType: boardBox?.occupiedByType,
-          };
+          if (this.selectedBox?.name == `${column + row}`) {
+            this.selectedBox = null;
+          } else {
+            if (
+              (boardBox?.occupiedByType == 'white' &&
+                this.playingAsWhite == true) ||
+              (boardBox?.occupiedByType == 'black' &&
+                this.playingAsWhite == false)
+            ) {
+              this.selectedBox = {
+                name: column + row,
+                occupiedBy: boardBox?.occupiedBy,
+                occupiedByType: boardBox?.occupiedByType,
+              };
+              this.getPossibleMoves();
+            }
+          }
+        } else {
+          debugger;
+          // move piece if a possible box is selected after selecting apiee to move
+          if (this.selectedBox?.name) {
+            this.possibleMoves.map((move: any) => {
+              if (move?.name == `${column + row}`) {
+                this.boardStatus.map((boardBox: any, index: number) => {
+                  if (boardBox?.name == `${column + row}`) {
+                    this.boardStatus[index] = {
+                      ...this.boardStatus[index],
+                      occupiedBy: this.selectedBox?.occupiedBy,
+                      occupiedByType: this.selectedBox?.occupiedByType,
+                    };
+                  }
+                });
+                this.selectedBox = null;
+                this.possibleMoves = [];
+              }
+            });
+          }
         }
       }
     });
+  }
+
+  getPossibleMoves() {}
+
+  isPossibleMove(column: any, row: any) {
+    let possible = false;
+    this.possibleMoves.map((move: any) => {
+      if (move?.name == `${column + row}`) {
+        possible = true;
+      }
+    });
+
+    return possible;
   }
 
   checkIfSelected(column: any, row: any) {

@@ -11,6 +11,10 @@
           }"
           (click)="selectBox(column, row)"
         >
+          <div
+            class="possible-move-indicator"
+            *ngIf="selectedBox != null && isPossibleMove(column, row)"
+          ></div>
           <div>{{ column }}{{ row }}</div>
           <div style="display: flex; justify-content: center">
             <img
