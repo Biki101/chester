@@ -145,6 +145,8 @@ export class AppComponent {
     { name: 'H1', occupiedBy: null, occupiedByType: null },
   ];
 
+  selectedBox = null;
+
   ngOnInit() {
     if (this.playingAsWhite) {
       this.initializeBoardAsWhite();
@@ -233,5 +235,27 @@ export class AppComponent {
       }
     });
     return occupiedBy;
+  }
+
+  selectBox(column: any, row: any) {
+    this.boardStatus.map((boardBox: any) => {
+      if (boardBox?.name == `${column + row}`) {
+        if (boardBox?.occupiedBy) {
+          this.selectedBox = {
+            name: column + row,
+            occupiedBy: boardBox?.occupiedBy,
+            occupiedByType: boardBox?.occupiedByType,
+          };
+        }
+      }
+    });
+  }
+
+  checkIfSelected(column: any, row: any) {
+    if (this.selectedBox?.name == `${column + row}`) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

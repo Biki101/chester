@@ -6,8 +6,10 @@
           class="chess-box"
           [ngClass]="{
             'white-box': checkIfWhiteBox(column, row) == true,
-            'black-box': checkIfWhiteBox(column, row) == false
+            'black-box': checkIfWhiteBox(column, row) == false,
+            'selected-box': checkIfSelected(column, row) == true
           }"
+          (click)="selectBox(column, row)"
         >
           <div>{{ column }}{{ row }}</div>
           <div style="display: flex; justify-content: center">
