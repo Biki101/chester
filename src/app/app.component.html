@@ -2,7 +2,15 @@
   <div class="chess-container">
     <ng-container *ngFor="let row of rowsWhite">
       <ng-container *ngFor="let column of columnsWhite">
-        <div class="chess-box">{{ column }}{{ row }}</div>
+        <div
+          class="chess-box"
+          [ngClass]="{
+            'white-box': checkIfWhiteBox(column, row) == true,
+            'black-box': checkIfWhiteBox(column, row) == false
+          }"
+        >
+          {{ column }}{{ row }}
+        </div>
       </ng-container>
     </ng-container>
   </div>
