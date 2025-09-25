@@ -10,7 +10,7 @@
           }"
         >
           <div>{{ column }}{{ row }}</div>
-          <div>
+          <div style="display: flex; justify-content: center">
             <img
               *ngIf="getStatus(column, row) != null"
               [src]="'../assets/' + getStatus(column, row) + '.svg'"
