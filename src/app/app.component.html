@@ -1,8 +1,8 @@
 <div class="background">
   <div class="chess-container">
-    <ng-container *ngFor="let row of rows">
-      <ng-container *ngFor="let column of columns">
-        <div class="chess-box">{{ row }} {{ column }}</div>
+    <ng-container *ngFor="let row of rowsWhite">
+      <ng-container *ngFor="let column of columnsWhite">
+        <div class="chess-box">{{ column }}{{ row }}</div>
       </ng-container>
     </ng-container>
   </div>
