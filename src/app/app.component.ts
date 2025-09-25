@@ -154,49 +154,49 @@ export class AppComponent {
   initializeBoardAsWhite() {
     this.boardStatus.map((boardBox: any, index: number) => {
       if (boardBox?.name == 'A8' || boardBox?.name == 'H8') {
-        this.boardStatus[index].occupiedBy = 'black-rook';
+        this.boardStatus[index].occupiedBy = 'rook';
         this.boardStatus[index].occupiedByType = 'black';
       } else if (boardBox?.name == 'A1' || boardBox?.name == 'H1') {
-        this.boardStatus[index].occupiedBy = 'white-rook';
+        this.boardStatus[index].occupiedBy = 'rook';
         this.boardStatus[index].occupiedByType = 'white';
       }
       if (boardBox?.name == 'B8' || boardBox?.name == 'G8') {
-        this.boardStatus[index].occupiedBy = 'black-knight';
+        this.boardStatus[index].occupiedBy = 'knight';
         this.boardStatus[index].occupiedByType = 'black';
       } else if (boardBox?.name == 'B1' || boardBox?.name == 'G1') {
-        this.boardStatus[index].occupiedBy = 'white-knight';
+        this.boardStatus[index].occupiedBy = 'knight';
         this.boardStatus[index].occupiedByType = 'white';
       }
       if (boardBox?.name == 'C8' || boardBox?.name == 'F8') {
-        this.boardStatus[index].occupiedBy = 'black-bishop';
+        this.boardStatus[index].occupiedBy = 'bishop';
         this.boardStatus[index].occupiedByType = 'black';
       } else if (boardBox?.name == 'C1' || boardBox?.name == 'F1') {
-        this.boardStatus[index].occupiedBy = 'white-bishop';
+        this.boardStatus[index].occupiedBy = 'bishop';
         this.boardStatus[index].occupiedByType = 'white';
       }
       if (boardBox?.name == 'D8') {
-        this.boardStatus[index].occupiedBy = 'black-queen';
+        this.boardStatus[index].occupiedBy = 'queen';
         this.boardStatus[index].occupiedByType = 'black';
       } else if (boardBox?.name == 'D1') {
-        this.boardStatus[index].occupiedBy = 'white-queen';
+        this.boardStatus[index].occupiedBy = 'queen';
         this.boardStatus[index].occupiedByType = 'white';
       }
       if (boardBox?.name == 'E8') {
-        this.boardStatus[index].occupiedBy = 'black-king';
+        this.boardStatus[index].occupiedBy = 'king';
         this.boardStatus[index].occupiedByType = 'black';
       } else if (boardBox?.name == 'E1') {
-        this.boardStatus[index].occupiedBy = 'white-king';
+        this.boardStatus[index].occupiedBy = 'king';
         this.boardStatus[index].occupiedByType = 'white';
       }
       this.columnsWhite.map((item: any) => {
         if (boardBox?.name == `${item}7`) {
-          this.boardStatus[index].occupiedBy = 'black-pawn';
+          this.boardStatus[index].occupiedBy = 'pawn';
           this.boardStatus[index].occupiedByType = 'black';
         }
       });
       this.columnsWhite.map((item: any) => {
         if (boardBox?.name == `${item}2`) {
-          this.boardStatus[index].occupiedBy = 'white-pawn';
+          this.boardStatus[index].occupiedBy = 'pawn';
           this.boardStatus[index].occupiedByType = 'white';
         }
       });
@@ -227,7 +227,9 @@ export class AppComponent {
     let occupiedBy = null;
     this.boardStatus.map((boardBox: any) => {
       if (boardBox?.name == `${column}${status}`) {
-        occupiedBy = boardBox?.occupiedBy;
+        if (boardBox?.occupiedByType != null && boardBox?.occupiedBy != null) {
+          occupiedBy = boardBox?.occupiedByType + '-' + boardBox?.occupiedBy;
+        }
       }
     });
     return occupiedBy;
