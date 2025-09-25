@@ -9,7 +9,15 @@
             'black-box': checkIfWhiteBox(column, row) == false
           }"
         >
-          {{ column }}{{ row }}
+          <div>{{ column }}{{ row }}</div>
+          <div>
+            <img
+              *ngIf="getStatus(column, row) != null"
+              [src]="'../assets/' + getStatus(column, row) + '.svg'"
+              class="pieces-on-board"
+              alt=""
+            />
+          </div>
         </div>
       </ng-container>
     </ng-container>
