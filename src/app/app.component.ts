@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { UtilsService } from './services/utils.service';
+interface BoardStatus {
+  [square: string]: {
+    occupiedBy: string | null;
+    occupiedByType: string | null;
+  };
+}
 
 @Component({
   selector: 'app-root',
@@ -14,7 +20,7 @@ export class AppComponent {
   rowsBlack = ['1', '2', '3', '4', '5', '6', '7', '8'];
   boardAsWhite = [];
 
-  boardStatus = null;
+  boardStatus: BoardStatus = null;
 
   selectedBox = null;
 
@@ -32,55 +38,84 @@ export class AppComponent {
   }
 
   initializeBoardAsWhite() {
-    this.boardStatus.map((boardBox: any, index: number) => {
-      if (boardBox?.name == 'A8' || boardBox?.name == 'H8') {
-        this.boardStatus[index].occupiedBy = 'rook';
-        this.boardStatus[index].occupiedByType = 'black';
-      } else if (boardBox?.name == 'A1' || boardBox?.name == 'H1') {
-        this.boardStatus[index].occupiedBy = 'rook';
-        this.boardStatus[index].occupiedByType = 'white';
-      }
-      // if (boardBox?.name == 'B8' || boardBox?.name == 'G8') {
-      //   this.boardStatus[index].occupiedBy = 'knight';
-      //   this.boardStatus[index].occupiedByType = 'black';
-      // } else if (boardBox?.name == 'B1' || boardBox?.name == 'G1') {
-      //   this.boardStatus[index].occupiedBy = 'knight';
-      //   this.boardStatus[index].occupiedByType = 'white';
-      // }
-      // if (boardBox?.name == 'C8' || boardBox?.name == 'F8') {
-      //   this.boardStatus[index].occupiedBy = 'bishop';
-      //   this.boardStatus[index].occupiedByType = 'black';
-      // } else if (boardBox?.name == 'C1' || boardBox?.name == 'F1') {
-      //   this.boardStatus[index].occupiedBy = 'bishop';
-      //   this.boardStatus[index].occupiedByType = 'white';
-      // }
-      // if (boardBox?.name == 'D8') {
-      //   this.boardStatus[index].occupiedBy = 'queen';
-      //   this.boardStatus[index].occupiedByType = 'black';
-      // } else if (boardBox?.name == 'D1') {
-      //   this.boardStatus[index].occupiedBy = 'queen';
-      //   this.boardStatus[index].occupiedByType = 'white';
-      // }
-      // if (boardBox?.name == 'E8') {
-      //   this.boardStatus[index].occupiedBy = 'king';
-      //   this.boardStatus[index].occupiedByType = 'black';
-      // } else if (boardBox?.name == 'E1') {
-      //   this.boardStatus[index].occupiedBy = 'king';
-      //   this.boardStatus[index].occupiedByType = 'white';
-      // }
-      // this.columnsWhite.map((item: any) => {
-      //   if (boardBox?.name == `${item}7`) {
-      //     this.boardStatus[index].occupiedBy = 'pawn';
-      //     this.boardStatus[index].occupiedByType = 'black';
-      //   }
-      // });
-      // this.columnsWhite.map((item: any) => {
-      //   if (boardBox?.name == `${item}2`) {
-      //     this.boardStatus[index].occupiedBy = 'pawn';
-      //     this.boardStatus[index].occupiedByType = 'white';
-      //   }
-      // });
-    });
+    this.boardStatus = {
+      // Rank 8 (Black major pieces)
+      A8: { occupiedBy: 'rook', occupiedByType: 'black' },
+      B8: { occupiedBy: 'knight', occupiedByType: 'black' },
+      C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+      D8: { occupiedBy: 'queen', occupiedByType: 'black' },
+      E8: { occupiedBy: 'king', occupiedByType: 'black' },
+      F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+      G8: { occupiedBy: 'knight', occupiedByType: 'black' },
+      H8: { occupiedBy: 'rook', occupiedByType: 'black' },
+
+      // Rank 7 (Black pawns)
+      A7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      B7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      C7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      D7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      E7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      F7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      G7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      H7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+
+      // Ranks 6 → 3 (empty squares)
+      A6: { occupiedBy: null, occupiedByType: null },
+      B6: { occupiedBy: null, occupiedByType: null },
+      C6: { occupiedBy: null, occupiedByType: null },
+      D6: { occupiedBy: null, occupiedByType: null },
+      E6: { occupiedBy: null, occupiedByType: null },
+      F6: { occupiedBy: null, occupiedByType: null },
+      G6: { occupiedBy: null, occupiedByType: null },
+      H6: { occupiedBy: null, occupiedByType: null },
+
+      A5: { occupiedBy: null, occupiedByType: null },
+      B5: { occupiedBy: null, occupiedByType: null },
+      C5: { occupiedBy: null, occupiedByType: null },
+      D5: { occupiedBy: null, occupiedByType: null },
+      E5: { occupiedBy: null, occupiedByType: null },
+      F5: { occupiedBy: null, occupiedByType: null },
+      G5: { occupiedBy: null, occupiedByType: null },
+      H5: { occupiedBy: null, occupiedByType: null },
+
+      A4: { occupiedBy: null, occupiedByType: null },
+      B4: { occupiedBy: null, occupiedByType: null },
+      C4: { occupiedBy: null, occupiedByType: null },
+      D4: { occupiedBy: null, occupiedByType: null },
+      E4: { occupiedBy: null, occupiedByType: null },
+      F4: { occupiedBy: null, occupiedByType: null },
+      G4: { occupiedBy: null, occupiedByType: null },
+      H4: { occupiedBy: null, occupiedByType: null },
+
+      A3: { occupiedBy: null, occupiedByType: null },
+      B3: { occupiedBy: null, occupiedByType: null },
+      C3: { occupiedBy: null, occupiedByType: null },
+      D3: { occupiedBy: null, occupiedByType: null },
+      E3: { occupiedBy: null, occupiedByType: null },
+      F3: { occupiedBy: null, occupiedByType: null },
+      G3: { occupiedBy: null, occupiedByType: null },
+      H3: { occupiedBy: null, occupiedByType: null },
+
+      // Rank 2 (White pawns)
+      A2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      B2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      C2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      D2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      E2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      F2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      G2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      H2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+
+      // Rank 1 (White major pieces)
+      A1: { occupiedBy: 'rook', occupiedByType: 'white' },
+      B1: { occupiedBy: 'knight', occupiedByType: 'white' },
+      C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+      D1: { occupiedBy: 'queen', occupiedByType: 'white' },
+      E1: { occupiedBy: 'king', occupiedByType: 'white' },
+      F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+      G1: { occupiedBy: 'knight', occupiedByType: 'white' },
+      H1: { occupiedBy: 'rook', occupiedByType: 'white' },
+    };
   }
 
   checkIfWhiteBox(column, row) {
@@ -102,70 +137,113 @@ export class AppComponent {
     }
   }
 
-  getStatus(column: any, status: any) {
-    let occupiedBy = null;
-    this.boardStatus.map((boardBox: any) => {
-      if (boardBox?.name == `${column}${status}`) {
-        if (boardBox?.occupiedByType != null && boardBox?.occupiedBy != null) {
-          occupiedBy = boardBox?.occupiedByType + '-' + boardBox?.occupiedBy;
-        }
-      }
-    });
-    return occupiedBy;
+  getStatus(column: any, row: any) {
+    return this.boardStatus[`${column}${row}`].occupiedByType != null &&
+      this.boardStatus[`${column}${row}`].occupiedBy != null
+      ? this.boardStatus[`${column}${row}`].occupiedByType +
+          '-' +
+          this.boardStatus[`${column}${row}`].occupiedBy
+      : null;
   }
 
-  selectBox(column: any, row: any) {
-    this.boardStatus.map((boardBox: any) => {
-      if (boardBox?.name == `${column + row}`) {
-        if (boardBox?.occupiedBy) {
-          if (this.selectedBox?.name == `${column + row}`) {
-            this.selectedBox = null;
-          } else {
-            if (
-              (boardBox?.occupiedByType == 'white' &&
-                this.playingAsWhite == true) ||
-              (boardBox?.occupiedByType == 'black' &&
-                this.playingAsWhite == false)
-            ) {
-              this.selectedBox = {
-                name: column + row,
-                occupiedBy: boardBox?.occupiedBy,
-                occupiedByType: boardBox?.occupiedByType,
-              };
-              this.getPossibleMoves();
-            }
-          }
-        } else {
-          // move piece if a possible box is selected after selecting apiee to move
-          if (this.selectedBox?.name) {
-            this.possibleMoves.map((move: any) => {
-              if (move == `${column + row}`) {
-                this.boardStatus.map((boardBox: any, index: number) => {
-                  // remove from source
-                  if (boardBox?.name == this.selectedBox?.name) {
-                    this.boardStatus[index] = {
-                      ...this.boardStatus[index],
-                      occupiedBy: null,
-                      occupiedByType: null,
-                    };
-                  }
-                  // add to from source
-                  if (boardBox?.name == `${column + row}`) {
-                    this.boardStatus[index] = {
-                      ...this.boardStatus[index],
-                      occupiedBy: this.selectedBox?.occupiedBy,
-                      occupiedByType: this.selectedBox?.occupiedByType,
-                    };
-                  }
-                });
-                this.selectedBox = null;
-                this.possibleMoves = [];
-              }
-            });
-          }
+  // selectBox(column: any, row: any) {
+  //   this.boardStatus.map((boardBox: any) => {
+  //     if (boardBox?.name == `${column + row}`) {
+  //       if (boardBox?.occupiedBy) {
+  //         if (this.selectedBox?.name == `${column + row}`) {
+  //           this.selectedBox = null;
+  //         } else {
+  //           if (
+  //             (boardBox?.occupiedByType == 'white' &&
+  //               this.playingAsWhite == true) ||
+  //             (boardBox?.occupiedByType == 'black' &&
+  //               this.playingAsWhite == false)
+  //           ) {
+  //             this.selectedBox = {
+  //               name: column + row,
+  //               occupiedBy: boardBox?.occupiedBy,
+  //               occupiedByType: boardBox?.occupiedByType,
+  //             };
+  //             this.getPossibleMoves();
+  //           }
+  //         }
+  //       } else {
+  //         // move piece if a possible box is selected after selecting apiee to move
+  //         if (this.selectedBox?.name) {
+  //           this.possibleMoves.map((move: any) => {
+  //             if (move == `${column + row}`) {
+  //               this.boardStatus.map((boardBox: any, index: number) => {
+  //                 // remove from source
+  //                 if (boardBox?.name == this.selectedBox?.name) {
+  //                   this.boardStatus[index] = {
+  //                     ...this.boardStatus[index],
+  //                     occupiedBy: null,
+  //                     occupiedByType: null,
+  //                   };
+  //                 }
+  //                 // add to from source
+  //                 if (boardBox?.name == `${column + row}`) {
+  //                   this.boardStatus[index] = {
+  //                     ...this.boardStatus[index],
+  //                     occupiedBy: this.selectedBox?.occupiedBy,
+  //                     occupiedByType: this.selectedBox?.occupiedByType,
+  //                   };
+  //                 }
+  //               });
+  //               this.selectedBox = null;
+  //               this.possibleMoves = [];
+  //             }
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+
+  selectBox(column: string, row: string | number) {
+    const square = `${column}${row}`;
+    const boardBox = this.boardStatus[square];
+
+    if (boardBox?.occupiedBy) {
+      // If clicking the same selected piece → deselect
+      if (this.selectedBox?.name === square) {
+        this.selectedBox = null;
+      } else {
+        // Select only if it’s the player’s turn and piece matches color
+        if (
+          (boardBox?.occupiedByType === 'white' && this.playingAsWhite) ||
+          (boardBox?.occupiedByType === 'black' && !this.playingAsWhite)
+        ) {
+          this.selectedBox = {
+            name: square,
+            occupiedBy: boardBox.occupiedBy,
+            occupiedByType: boardBox.occupiedByType,
+          };
+          this.getPossibleMoves();
         }
       }
-    });
+    } else {
+      // If empty square and a piece is selected
+      if (this.selectedBox?.name) {
+        if (this.possibleMoves.includes(square)) {
+          // Clear source
+          this.boardStatus[this.selectedBox.name] = {
+            occupiedBy: null,
+            occupiedByType: null,
+          };
+
+          // Move piece to target
+          this.boardStatus[square] = {
+            occupiedBy: this.selectedBox.occupiedBy,
+            occupiedByType: this.selectedBox.occupiedByType,
+          };
+
+          // Reset state
+          this.selectedBox = null;
+          this.possibleMoves = [];
+        }
+      }
+    }
   }
 
   getPossibleMoves() {
@@ -177,6 +255,11 @@ export class AppComponent {
       ];
 
     console.log(tempObject);
+
+    // pushing left moves
+    // tempObject?.left.map((items:any)=> {
+    //   if()
+    // })
 
     tempMoves.push(
       ...tempObject?.left,
