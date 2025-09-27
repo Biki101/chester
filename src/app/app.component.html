@@ -5,9 +5,11 @@
         <div
           class="chess-box"
           [ngClass]="{
-            'white-box': checkIfWhiteBox(column, row) == true,
-            'black-box': checkIfWhiteBox(column, row) == false,
-            'selected-box': checkIfSelected(column, row) == true
+            'white-box': checkIfWhiteBox(column, row),
+            'black-box': !checkIfWhiteBox(column, row),
+            'selected-box': checkIfSelected(column, row),
+            'moved-from': checkIfMovedFrom(column, row),
+            'moved-to': checkIfMovedTo(column, row)
           }"
           (click)="selectBox(column, row)"
         >

@@ -26,6 +26,9 @@ export class AppComponent {
 
   possibleMoves: string[] = ['D4', 'E4'];
 
+  movedFrom: string = '';
+  movedTo: string = '';
+
   constructor(private utilService: UtilsService) {
     this.boardStatus = utilService.boardStatus;
     this.boardAsWhite = utilService.boardAsWhite;
@@ -152,60 +155,6 @@ export class AppComponent {
       : null;
   }
 
-  // selectBox(column: any, row: any) {
-  //   this.boardStatus.map((boardBox: any) => {
-  //     if (boardBox?.name == `${column + row}`) {
-  //       if (boardBox?.occupiedBy) {
-  //         if (this.selectedBox?.name == `${column + row}`) {
-  //           this.selectedBox = null;
-  //         } else {
-  //           if (
-  //             (boardBox?.occupiedByType == 'white' &&
-  //               this.playingAsWhite == true) ||
-  //             (boardBox?.occupiedByType == 'black' &&
-  //               this.playingAsWhite == false)
-  //           ) {
-  //             this.selectedBox = {
-  //               name: column + row,
-  //               occupiedBy: boardBox?.occupiedBy,
-  //               occupiedByType: boardBox?.occupiedByType,
-  //             };
-  //             this.getPossibleMoves();
-  //           }
-  //         }
-  //       } else {
-  //         // move piece if a possible box is selected after selecting apiee to move
-  //         if (this.selectedBox?.name) {
-  //           this.possibleMoves.map((move: any) => {
-  //             if (move == `${column + row}`) {
-  //               this.boardStatus.map((boardBox: any, index: number) => {
-  //                 // remove from source
-  //                 if (boardBox?.name == this.selectedBox?.name) {
-  //                   this.boardStatus[index] = {
-  //                     ...this.boardStatus[index],
-  //                     occupiedBy: null,
-  //                     occupiedByType: null,
-  //                   };
-  //                 }
-  //                 // add to from source
-  //                 if (boardBox?.name == `${column + row}`) {
-  //                   this.boardStatus[index] = {
-  //                     ...this.boardStatus[index],
-  //                     occupiedBy: this.selectedBox?.occupiedBy,
-  //                     occupiedByType: this.selectedBox?.occupiedByType,
-  //                   };
-  //                 }
-  //               });
-  //               this.selectedBox = null;
-  //               this.possibleMoves = [];
-  //             }
-  //           });
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
-
   selectBox(column: string, row: string | number) {
     const square = `${column}${row}`;
     const boardBox = this.boardStatus[square];
@@ -238,11 +187,15 @@ export class AppComponent {
             occupiedByType: null,
           };
 
+          this.movedFrom = this.selectedBox.name;
+
           // Move piece to target
           this.boardStatus[square] = {
             occupiedBy: this.selectedBox.occupiedBy,
             occupiedByType: this.selectedBox.occupiedByType,
           };
+
+          this.movedTo = square;
 
           // change turn
           this.playingAsWhite = !this.playingAsWhite;
@@ -309,6 +262,22 @@ export class AppComponent {
 
   checkIfSelected(column: any, row: any) {
     if (this.selectedBox?.name == `${column + row}`) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  checkIfMovedFrom(column: any, row: any) {
+    if (this.movedFrom == `${column + row}`) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  checkIfMovedTo(column: any, row: any) {
+    if (this.movedTo == `${column + row}`) {
       return true;
     } else {
       return false;

@@ -31,6 +31,14 @@
   background-color: var(--selected-box-color) !important;
 }
 
+.moved-from {
+  background-color: var(--moved-from-color) !important;
+}
+
+.moved-to {
+  background-color: var(--moved-to-color) !important;
+}
+
 .black-box {
   background-color: var(--black-box-color);
 }
