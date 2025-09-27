@@ -18,18 +18,7 @@ export class AppComponent {
 
   selectedBox = null;
 
-  possibleMoves: any = [
-    { name: 'E5', occupiedBy: null, occupiedByType: null },
-    { name: 'F5', occupiedBy: null, occupiedByType: null },
-    { name: 'G5', occupiedBy: null, occupiedByType: null },
-    { name: 'H5', occupiedBy: null, occupiedByType: null },
-    { name: 'A4', occupiedBy: null, occupiedByType: null },
-    { name: 'B4', occupiedBy: null, occupiedByType: null },
-    { name: 'C4', occupiedBy: null, occupiedByType: null },
-    { name: 'D4', occupiedBy: null, occupiedByType: null },
-    { name: 'E4', occupiedBy: null, occupiedByType: null },
-    { name: 'F4', occupiedBy: null, occupiedByType: null },
-  ];
+  possibleMoves: string[] = ['D4', 'E4'];
 
   constructor(private utilService: UtilsService) {
     this.boardStatus = utilService.boardStatus;
@@ -51,46 +40,46 @@ export class AppComponent {
         this.boardStatus[index].occupiedBy = 'rook';
         this.boardStatus[index].occupiedByType = 'white';
       }
-      if (boardBox?.name == 'B8' || boardBox?.name == 'G8') {
-        this.boardStatus[index].occupiedBy = 'knight';
-        this.boardStatus[index].occupiedByType = 'black';
-      } else if (boardBox?.name == 'B1' || boardBox?.name == 'G1') {
-        this.boardStatus[index].occupiedBy = 'knight';
-        this.boardStatus[index].occupiedByType = 'white';
-      }
-      if (boardBox?.name == 'C8' || boardBox?.name == 'F8') {
-        this.boardStatus[index].occupiedBy = 'bishop';
-        this.boardStatus[index].occupiedByType = 'black';
-      } else if (boardBox?.name == 'C1' || boardBox?.name == 'F1') {
-        this.boardStatus[index].occupiedBy = 'bishop';
-        this.boardStatus[index].occupiedByType = 'white';
-      }
-      if (boardBox?.name == 'D8') {
-        this.boardStatus[index].occupiedBy = 'queen';
-        this.boardStatus[index].occupiedByType = 'black';
-      } else if (boardBox?.name == 'D1') {
-        this.boardStatus[index].occupiedBy = 'queen';
-        this.boardStatus[index].occupiedByType = 'white';
-      }
-      if (boardBox?.name == 'E8') {
-        this.boardStatus[index].occupiedBy = 'king';
-        this.boardStatus[index].occupiedByType = 'black';
-      } else if (boardBox?.name == 'E1') {
-        this.boardStatus[index].occupiedBy = 'king';
-        this.boardStatus[index].occupiedByType = 'white';
-      }
-      this.columnsWhite.map((item: any) => {
-        if (boardBox?.name == `${item}7`) {
-          this.boardStatus[index].occupiedBy = 'pawn';
-          this.boardStatus[index].occupiedByType = 'black';
-        }
-      });
-      this.columnsWhite.map((item: any) => {
-        if (boardBox?.name == `${item}2`) {
-          this.boardStatus[index].occupiedBy = 'pawn';
-          this.boardStatus[index].occupiedByType = 'white';
-        }
-      });
+      // if (boardBox?.name == 'B8' || boardBox?.name == 'G8') {
+      //   this.boardStatus[index].occupiedBy = 'knight';
+      //   this.boardStatus[index].occupiedByType = 'black';
+      // } else if (boardBox?.name == 'B1' || boardBox?.name == 'G1') {
+      //   this.boardStatus[index].occupiedBy = 'knight';
+      //   this.boardStatus[index].occupiedByType = 'white';
+      // }
+      // if (boardBox?.name == 'C8' || boardBox?.name == 'F8') {
+      //   this.boardStatus[index].occupiedBy = 'bishop';
+      //   this.boardStatus[index].occupiedByType = 'black';
+      // } else if (boardBox?.name == 'C1' || boardBox?.name == 'F1') {
+      //   this.boardStatus[index].occupiedBy = 'bishop';
+      //   this.boardStatus[index].occupiedByType = 'white';
+      // }
+      // if (boardBox?.name == 'D8') {
+      //   this.boardStatus[index].occupiedBy = 'queen';
+      //   this.boardStatus[index].occupiedByType = 'black';
+      // } else if (boardBox?.name == 'D1') {
+      //   this.boardStatus[index].occupiedBy = 'queen';
+      //   this.boardStatus[index].occupiedByType = 'white';
+      // }
+      // if (boardBox?.name == 'E8') {
+      //   this.boardStatus[index].occupiedBy = 'king';
+      //   this.boardStatus[index].occupiedByType = 'black';
+      // } else if (boardBox?.name == 'E1') {
+      //   this.boardStatus[index].occupiedBy = 'king';
+      //   this.boardStatus[index].occupiedByType = 'white';
+      // }
+      // this.columnsWhite.map((item: any) => {
+      //   if (boardBox?.name == `${item}7`) {
+      //     this.boardStatus[index].occupiedBy = 'pawn';
+      //     this.boardStatus[index].occupiedByType = 'black';
+      //   }
+      // });
+      // this.columnsWhite.map((item: any) => {
+      //   if (boardBox?.name == `${item}2`) {
+      //     this.boardStatus[index].occupiedBy = 'pawn';
+      //     this.boardStatus[index].occupiedByType = 'white';
+      //   }
+      // });
     });
   }
 
@@ -150,7 +139,7 @@ export class AppComponent {
           // move piece if a possible box is selected after selecting apiee to move
           if (this.selectedBox?.name) {
             this.possibleMoves.map((move: any) => {
-              if (move?.name == `${column + row}`) {
+              if (move == `${column + row}`) {
                 this.boardStatus.map((boardBox: any, index: number) => {
                   // remove from source
                   if (boardBox?.name == this.selectedBox?.name) {
@@ -180,29 +169,31 @@ export class AppComponent {
   }
 
   getPossibleMoves() {
-    this.possibleMoves = [
-      { name: 'E5', occupiedBy: null, occupiedByType: null },
-      { name: 'F5', occupiedBy: null, occupiedByType: null },
-      { name: 'G5', occupiedBy: null, occupiedByType: null },
-      { name: 'H5', occupiedBy: null, occupiedByType: null },
-      { name: 'A4', occupiedBy: null, occupiedByType: null },
-      { name: 'B4', occupiedBy: null, occupiedByType: null },
-      { name: 'C4', occupiedBy: null, occupiedByType: null },
-      { name: 'D4', occupiedBy: null, occupiedByType: null },
-      { name: 'E4', occupiedBy: null, occupiedByType: null },
-      { name: 'F4', occupiedBy: null, occupiedByType: null },
-    ];
+    let tempMoves: any = [];
+
+    let tempObject =
+      this.utilService.allPossiblePositions[this.selectedBox?.occupiedBy]?.[
+        this.selectedBox?.name
+      ];
+
+    console.log(tempObject);
+
+    tempMoves.push(
+      ...tempObject?.left,
+      ...tempObject?.right,
+      ...tempObject?.top,
+      ...tempObject?.bottom,
+      ...tempObject?.leftTop,
+      ...tempObject?.topRight,
+      ...tempObject?.rightBottom,
+      ...tempObject?.bottomLeft
+    );
+
+    this.possibleMoves = tempMoves;
   }
 
   isPossibleMove(column: any, row: any) {
-    let possible = false;
-    this.possibleMoves.map((move: any) => {
-      if (move?.name == `${column + row}`) {
-        possible = true;
-      }
-    });
-
-    return possible;
+    return this.possibleMoves.includes(column + row);
   }
 
   checkIfSelected(column: any, row: any) {
