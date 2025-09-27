@@ -23,6 +23,10 @@
   position: relative;
 }
 
+.chess-box:hover {
+  background-color: var(--hover-box-color) !important;
+}
+
 .selected-box {
   background-color: var(--selected-box-color) !important;
 }
