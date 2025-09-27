@@ -2915,6 +2915,650 @@ export class UtilsService {
         moves: ['F2', 'G3'],
       },
     },
+    whitePawn: {
+      A1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      A2: {
+        forward: ['A3', 'A4'],
+        captureLeft: [],
+        captureRight: ['B3'],
+      },
+      A3: {
+        forward: ['A4'],
+        captureLeft: [],
+        captureRight: ['B4'],
+      },
+      A4: {
+        forward: ['A5'],
+        captureLeft: [],
+        captureRight: ['B5'],
+      },
+      A5: {
+        forward: ['A6'],
+        captureLeft: [],
+        captureRight: ['B6'],
+      },
+      A6: {
+        forward: ['A7'],
+        captureLeft: [],
+        captureRight: ['B7'],
+      },
+      A7: {
+        forward: ['A8'],
+        captureLeft: [],
+        captureRight: ['B8'],
+      },
+      A8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      B1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      B2: {
+        forward: ['B3', 'B4'],
+        captureLeft: ['A3'],
+        captureRight: ['C3'],
+      },
+      B3: {
+        forward: ['B4'],
+        captureLeft: ['A4'],
+        captureRight: ['C4'],
+      },
+      B4: {
+        forward: ['B5'],
+        captureLeft: ['A5'],
+        captureRight: ['C5'],
+      },
+      B5: {
+        forward: ['B6'],
+        captureLeft: ['A6'],
+        captureRight: ['C6'],
+      },
+      B6: {
+        forward: ['B7'],
+        captureLeft: ['A7'],
+        captureRight: ['C7'],
+      },
+      B7: {
+        forward: ['B8'],
+        captureLeft: ['A8'],
+        captureRight: ['C8'],
+      },
+      B8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      C1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      C2: {
+        forward: ['C3', 'C4'],
+        captureLeft: ['B3'],
+        captureRight: ['D3'],
+      },
+      C3: {
+        forward: ['C4'],
+        captureLeft: ['B4'],
+        captureRight: ['D4'],
+      },
+      C4: {
+        forward: ['C5'],
+        captureLeft: ['B5'],
+        captureRight: ['D5'],
+      },
+      C5: {
+        forward: ['C6'],
+        captureLeft: ['B6'],
+        captureRight: ['D6'],
+      },
+      C6: {
+        forward: ['C7'],
+        captureLeft: ['B7'],
+        captureRight: ['D7'],
+      },
+      C7: {
+        forward: ['C8'],
+        captureLeft: ['B8'],
+        captureRight: ['D8'],
+      },
+      C8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      D1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      D2: {
+        forward: ['D3', 'D4'],
+        captureLeft: ['C3'],
+        captureRight: ['E3'],
+      },
+      D3: {
+        forward: ['D4'],
+        captureLeft: ['C4'],
+        captureRight: ['E4'],
+      },
+      D4: {
+        forward: ['D5'],
+        captureLeft: ['C5'],
+        captureRight: ['E5'],
+      },
+      D5: {
+        forward: ['D6'],
+        captureLeft: ['C6'],
+        captureRight: ['E6'],
+      },
+      D6: {
+        forward: ['D7'],
+        captureLeft: ['C7'],
+        captureRight: ['E7'],
+      },
+      D7: {
+        forward: ['D8'],
+        captureLeft: ['C8'],
+        captureRight: ['E8'],
+      },
+      D8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      E1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      E2: {
+        forward: ['E3', 'E4'],
+        captureLeft: ['D3'],
+        captureRight: ['F3'],
+      },
+      E3: {
+        forward: ['E4'],
+        captureLeft: ['D4'],
+        captureRight: ['F4'],
+      },
+      E4: {
+        forward: ['E5'],
+        captureLeft: ['D5'],
+        captureRight: ['F5'],
+      },
+      E5: {
+        forward: ['E6'],
+        captureLeft: ['D6'],
+        captureRight: ['F6'],
+      },
+      E6: {
+        forward: ['E7'],
+        captureLeft: ['D7'],
+        captureRight: ['F7'],
+      },
+      E7: {
+        forward: ['E8'],
+        captureLeft: ['D8'],
+        captureRight: ['F8'],
+      },
+      E8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      F1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      F2: {
+        forward: ['F3', 'F4'],
+        captureLeft: ['E3'],
+        captureRight: ['G3'],
+      },
+      F3: {
+        forward: ['F4'],
+        captureLeft: ['E4'],
+        captureRight: ['G4'],
+      },
+      F4: {
+        forward: ['F5'],
+        captureLeft: ['E5'],
+        captureRight: ['G5'],
+      },
+      F5: {
+        forward: ['F6'],
+        captureLeft: ['E6'],
+        captureRight: ['G6'],
+      },
+      F6: {
+        forward: ['F7'],
+        captureLeft: ['E7'],
+        captureRight: ['G7'],
+      },
+      F7: {
+        forward: ['F8'],
+        captureLeft: ['E8'],
+        captureRight: ['G8'],
+      },
+      F8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      G1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      G2: {
+        forward: ['G3', 'G4'],
+        captureLeft: ['F3'],
+        captureRight: ['H3'],
+      },
+      G3: {
+        forward: ['G4'],
+        captureLeft: ['F4'],
+        captureRight: ['H4'],
+      },
+      G4: {
+        forward: ['G5'],
+        captureLeft: ['F5'],
+        captureRight: ['H5'],
+      },
+      G5: {
+        forward: ['G6'],
+        captureLeft: ['F6'],
+        captureRight: ['H6'],
+      },
+      G6: {
+        forward: ['G7'],
+        captureLeft: ['F7'],
+        captureRight: ['H7'],
+      },
+      G7: {
+        forward: ['G8'],
+        captureLeft: ['F8'],
+        captureRight: ['H8'],
+      },
+      G8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      H1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      H2: {
+        forward: ['H3', 'H4'],
+        captureLeft: ['G3'],
+        captureRight: [],
+      },
+      H3: {
+        forward: ['H4'],
+        captureLeft: ['G4'],
+        captureRight: [],
+      },
+      H4: {
+        forward: ['H5'],
+        captureLeft: ['G5'],
+        captureRight: [],
+      },
+      H5: {
+        forward: ['H6'],
+        captureLeft: ['G6'],
+        captureRight: [],
+      },
+      H6: {
+        forward: ['H7'],
+        captureLeft: ['G7'],
+        captureRight: [],
+      },
+      H7: {
+        forward: ['H8'],
+        captureLeft: ['G8'],
+        captureRight: [],
+      },
+      H8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+    },
+    blackPawn: {
+      A1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      A2: {
+        forward: ['A1'],
+        captureLeft: [],
+        captureRight: ['B1'],
+      },
+      A3: {
+        forward: ['A2'],
+        captureLeft: [],
+        captureRight: ['B2'],
+      },
+      A4: {
+        forward: ['A3'],
+        captureLeft: [],
+        captureRight: ['B3'],
+      },
+      A5: {
+        forward: ['A4'],
+        captureLeft: [],
+        captureRight: ['B4'],
+      },
+      A6: {
+        forward: ['A5'],
+        captureLeft: [],
+        captureRight: ['B5'],
+      },
+      A7: {
+        forward: ['A6', 'A5'],
+        captureLeft: [],
+        captureRight: ['B6'],
+      },
+      A8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      B1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      B2: {
+        forward: ['B1'],
+        captureLeft: ['A1'],
+        captureRight: ['C1'],
+      },
+      B3: {
+        forward: ['B2'],
+        captureLeft: ['A2'],
+        captureRight: ['C2'],
+      },
+      B4: {
+        forward: ['B3'],
+        captureLeft: ['A3'],
+        captureRight: ['C3'],
+      },
+      B5: {
+        forward: ['B4'],
+        captureLeft: ['A4'],
+        captureRight: ['C4'],
+      },
+      B6: {
+        forward: ['B5'],
+        captureLeft: ['A5'],
+        captureRight: ['C5'],
+      },
+      B7: {
+        forward: ['B6', 'B5'],
+        captureLeft: ['A6'],
+        captureRight: ['C6'],
+      },
+      B8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      C1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      C2: {
+        forward: ['C1'],
+        captureLeft: ['B1'],
+        captureRight: ['D1'],
+      },
+      C3: {
+        forward: ['C2'],
+        captureLeft: ['B2'],
+        captureRight: ['D2'],
+      },
+      C4: {
+        forward: ['C3'],
+        captureLeft: ['B3'],
+        captureRight: ['D3'],
+      },
+      C5: {
+        forward: ['C4'],
+        captureLeft: ['B4'],
+        captureRight: ['D4'],
+      },
+      C6: {
+        forward: ['C5'],
+        captureLeft: ['B5'],
+        captureRight: ['D5'],
+      },
+      C7: {
+        forward: ['C6', 'C5'],
+        captureLeft: ['B6'],
+        captureRight: ['D6'],
+      },
+      C8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      D1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      D2: {
+        forward: ['D1'],
+        captureLeft: ['C1'],
+        captureRight: ['E1'],
+      },
+      D3: {
+        forward: ['D2'],
+        captureLeft: ['C2'],
+        captureRight: ['E2'],
+      },
+      D4: {
+        forward: ['D3'],
+        captureLeft: ['C3'],
+        captureRight: ['E3'],
+      },
+      D5: {
+        forward: ['D4'],
+        captureLeft: ['C4'],
+        captureRight: ['E4'],
+      },
+      D6: {
+        forward: ['D5'],
+        captureLeft: ['C5'],
+        captureRight: ['E5'],
+      },
+      D7: {
+        forward: ['D6', 'D5'],
+        captureLeft: ['C6'],
+        captureRight: ['E6'],
+      },
+      D8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      E1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      E2: {
+        forward: ['E1'],
+        captureLeft: ['D1'],
+        captureRight: ['F1'],
+      },
+      E3: {
+        forward: ['E2'],
+        captureLeft: ['D2'],
+        captureRight: ['F2'],
+      },
+      E4: {
+        forward: ['E3'],
+        captureLeft: ['D3'],
+        captureRight: ['F3'],
+      },
+      E5: {
+        forward: ['E4'],
+        captureLeft: ['D4'],
+        captureRight: ['F4'],
+      },
+      E6: {
+        forward: ['E5'],
+        captureLeft: ['D5'],
+        captureRight: ['F5'],
+      },
+      E7: {
+        forward: ['E6', 'E5'],
+        captureLeft: ['D6'],
+        captureRight: ['F6'],
+      },
+      E8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      F1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      F2: {
+        forward: ['F1'],
+        captureLeft: ['E1'],
+        captureRight: ['G1'],
+      },
+      F3: {
+        forward: ['F2'],
+        captureLeft: ['E2'],
+        captureRight: ['G2'],
+      },
+      F4: {
+        forward: ['F3'],
+        captureLeft: ['E3'],
+        captureRight: ['G3'],
+      },
+      F5: {
+        forward: ['F4'],
+        captureLeft: ['E4'],
+        captureRight: ['G4'],
+      },
+      F6: {
+        forward: ['F5'],
+        captureLeft: ['E5'],
+        captureRight: ['G5'],
+      },
+      F7: {
+        forward: ['F6', 'F5'],
+        captureLeft: ['E6'],
+        captureRight: ['G6'],
+      },
+      F8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      G1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      G2: {
+        forward: ['G1'],
+        captureLeft: ['F1'],
+        captureRight: ['H1'],
+      },
+      G3: {
+        forward: ['G2'],
+        captureLeft: ['F2'],
+        captureRight: ['H2'],
+      },
+      G4: {
+        forward: ['G3'],
+        captureLeft: ['F3'],
+        captureRight: ['H3'],
+      },
+      G5: {
+        forward: ['G4'],
+        captureLeft: ['F4'],
+        captureRight: ['H4'],
+      },
+      G6: {
+        forward: ['G5'],
+        captureLeft: ['F5'],
+        captureRight: ['H5'],
+      },
+      G7: {
+        forward: ['G6', 'G5'],
+        captureLeft: ['F6'],
+        captureRight: ['H6'],
+      },
+      G8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      H1: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+      H2: {
+        forward: ['H1'],
+        captureLeft: ['G1'],
+        captureRight: [],
+      },
+      H3: {
+        forward: ['H2'],
+        captureLeft: ['G2'],
+        captureRight: [],
+      },
+      H4: {
+        forward: ['H3'],
+        captureLeft: ['G3'],
+        captureRight: [],
+      },
+      H5: {
+        forward: ['H4'],
+        captureLeft: ['G4'],
+        captureRight: [],
+      },
+      H6: {
+        forward: ['H5'],
+        captureLeft: ['G5'],
+        captureRight: [],
+      },
+      H7: {
+        forward: ['H6', 'H5'],
+        captureLeft: ['G6'],
+        captureRight: [],
+      },
+      H8: {
+        forward: [],
+        captureLeft: [],
+        captureRight: [],
+      },
+    },
   };
 
   constructor() {}

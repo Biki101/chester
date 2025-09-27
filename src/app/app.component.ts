@@ -261,16 +261,35 @@ export class AppComponent {
     //   if()
     // })
 
-    tempMoves.push(
-      ...tempObject?.left,
-      ...tempObject?.right,
-      ...tempObject?.top,
-      ...tempObject?.bottom,
-      ...tempObject?.leftTop,
-      ...tempObject?.topRight,
-      ...tempObject?.rightBottom,
-      ...tempObject?.bottomLeft
-    );
+    // check if selected piece is knight
+    if (this.selectedBox.occupiedBy == 'knight') {
+      tempMoves.push(...tempObject.moves);
+    } else if (this.selectedBox.occupiedBy == 'pawn') {
+      if (this.selectedBox.occupiedByType == 'white') {
+        tempObject =
+          this.utilService.allPossiblePositions?.whitePawn?.[
+            this.selectedBox?.name
+          ];
+        tempMoves.push(...tempObject?.forward);
+      } else {
+        tempObject =
+          this.utilService.allPossiblePositions?.blackPawn?.[
+            this.selectedBox?.name
+          ];
+        tempMoves.push(...tempObject?.forward);
+      }
+    } else {
+      tempMoves.push(
+        ...tempObject?.left,
+        ...tempObject?.right,
+        ...tempObject?.top,
+        ...tempObject?.bottom,
+        ...tempObject?.leftTop,
+        ...tempObject?.topRight,
+        ...tempObject?.rightBottom,
+        ...tempObject?.bottomLeft
+      );
+    }
 
     this.possibleMoves = tempMoves;
   }
