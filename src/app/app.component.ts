@@ -271,12 +271,20 @@ export class AppComponent {
             }
           }
         } else {
-          debugger;
           // move piece if a possible box is selected after selecting apiee to move
           if (this.selectedBox?.name) {
             this.possibleMoves.map((move: any) => {
               if (move?.name == `${column + row}`) {
                 this.boardStatus.map((boardBox: any, index: number) => {
+                  // remove from source
+                  if (boardBox?.name == this.selectedBox?.name) {
+                    this.boardStatus[index] = {
+                      ...this.boardStatus[index],
+                      occupiedBy: null,
+                      occupiedByType: null,
+                    };
+                  }
+                  // add to from source
                   if (boardBox?.name == `${column + row}`) {
                     this.boardStatus[index] = {
                       ...this.boardStatus[index],
@@ -295,7 +303,20 @@ export class AppComponent {
     });
   }
 
-  getPossibleMoves() {}
+  getPossibleMoves() {
+    this.possibleMoves = [
+      { name: 'E5', occupiedBy: null, occupiedByType: null },
+      { name: 'F5', occupiedBy: null, occupiedByType: null },
+      { name: 'G5', occupiedBy: null, occupiedByType: null },
+      { name: 'H5', occupiedBy: null, occupiedByType: null },
+      { name: 'A4', occupiedBy: null, occupiedByType: null },
+      { name: 'B4', occupiedBy: null, occupiedByType: null },
+      { name: 'C4', occupiedBy: null, occupiedByType: null },
+      { name: 'D4', occupiedBy: null, occupiedByType: null },
+      { name: 'E4', occupiedBy: null, occupiedByType: null },
+      { name: 'F4', occupiedBy: null, occupiedByType: null },
+    ];
+  }
 
   isPossibleMove(column: any, row: any) {
     let possible = false;
