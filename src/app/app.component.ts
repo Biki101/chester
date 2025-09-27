@@ -32,12 +32,18 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    if (this.playingAsWhite) {
-      this.initializeBoardAsWhite();
-    }
+    this.initializeBoard();
   }
 
-  initializeBoardAsWhite() {
+  get activeRows() {
+    return this.playingAsWhite ? this.rowsWhite : this.rowsBlack;
+  }
+
+  get activeColumns() {
+    return this.playingAsWhite ? this.columnsWhite : this.columnsBlack;
+  }
+
+  initializeBoard() {
     this.boardStatus = {
       // Rank 8 (Black major pieces)
       A8: { occupiedBy: 'rook', occupiedByType: 'black' },
@@ -237,6 +243,9 @@ export class AppComponent {
             occupiedBy: this.selectedBox.occupiedBy,
             occupiedByType: this.selectedBox.occupiedByType,
           };
+
+          // change turn
+          this.playingAsWhite = !this.playingAsWhite;
 
           // Reset state
           this.selectedBox = null;
