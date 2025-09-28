@@ -135,7 +135,6 @@ export class AppComponent {
       const colIndex = this.columnsWhite.indexOf(col);
       const rowIndex = this.rowsWhite.indexOf(row);
 
-      // sum indices; if even => black square
       return (colIndex + rowIndex) % 2 === 0;
     });
 
