@@ -265,14 +265,14 @@ export class AppComponent {
             this.selectedBox?.name
           ]?.captureRight;
         if (
-          this.boardStatus[captureLeft].occupiedBy != null &&
-          this.boardStatus[captureLeft].occupiedByType == 'black'
+          this.boardStatus[captureLeft]?.occupiedBy != null &&
+          this.boardStatus[captureLeft]?.occupiedByType == 'black'
         ) {
           tempMoves.push(captureLeft[0]);
         }
         if (
-          this.boardStatus[captureRight].occupiedBy != null &&
-          this.boardStatus[captureRight].occupiedByType == 'black'
+          this.boardStatus[captureRight]?.occupiedBy != null &&
+          this.boardStatus[captureRight]?.occupiedByType == 'black'
         ) {
           tempMoves.push(captureRight[0]);
         }
@@ -306,14 +306,14 @@ export class AppComponent {
             this.selectedBox?.name
           ]?.captureRight;
         if (
-          this.boardStatus[captureLeft].occupiedBy != null &&
-          this.boardStatus[captureLeft].occupiedByType == 'white'
+          this.boardStatus[captureLeft]?.occupiedBy != null &&
+          this.boardStatus[captureLeft]?.occupiedByType == 'white'
         ) {
           tempMoves.push(captureLeft[0]);
         }
         if (
-          this.boardStatus[captureRight].occupiedBy != null &&
-          this.boardStatus[captureRight].occupiedByType == 'white'
+          this.boardStatus[captureRight]?.occupiedBy != null &&
+          this.boardStatus[captureRight]?.occupiedByType == 'white'
         ) {
           tempMoves.push(captureRight[0]);
         }
