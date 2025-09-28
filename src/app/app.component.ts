@@ -248,16 +248,168 @@ export class AppComponent {
         tempMoves.push(...tempObject?.forward);
       }
     } else {
-      tempMoves.push(
-        ...tempObject?.left,
-        ...tempObject?.right,
-        ...tempObject?.top,
-        ...tempObject?.bottom,
-        ...tempObject?.leftTop,
-        ...tempObject?.topRight,
-        ...tempObject?.rightBottom,
-        ...tempObject?.bottomLeft
-      );
+      // Adding Left Possible moves
+
+      for (let i = 0; i < tempObject?.left?.length; i++) {
+        if (this.boardStatus[tempObject?.left[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.left[i]);
+        } else if (
+          this.boardStatus[tempObject?.left[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.left[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.left[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding Right Possible moves
+
+      for (let i = 0; i < tempObject?.right?.length; i++) {
+        if (this.boardStatus[tempObject?.right[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.right[i]);
+        } else if (
+          this.boardStatus[tempObject?.right[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.right[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.right[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding Top Possible moves
+
+      for (let i = 0; i < tempObject?.top?.length; i++) {
+        if (this.boardStatus[tempObject?.top[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.top[i]);
+        } else if (
+          this.boardStatus[tempObject?.top[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.top[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.top[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding Bottom Possible moves
+
+      for (let i = 0; i < tempObject?.bottom?.length; i++) {
+        if (this.boardStatus[tempObject?.bottom[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.bottom[i]);
+        } else if (
+          this.boardStatus[tempObject?.bottom[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.bottom[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.bottom[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding leftTop Possible moves
+
+      for (let i = 0; i < tempObject?.leftTop?.length; i++) {
+        if (this.boardStatus[tempObject?.leftTop[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.leftTop[i]);
+        } else if (
+          this.boardStatus[tempObject?.leftTop[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.leftTop[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.leftTop[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding topRight Possible moves
+
+      for (let i = 0; i < tempObject?.topRight?.length; i++) {
+        if (this.boardStatus[tempObject?.topRight[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.topRight[i]);
+        } else if (
+          this.boardStatus[tempObject?.topRight[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.topRight[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.topRight[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding rightBottom Possible moves
+
+      for (let i = 0; i < tempObject?.rightBottom?.length; i++) {
+        if (this.boardStatus[tempObject?.rightBottom[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.rightBottom[i]);
+        } else if (
+          this.boardStatus[tempObject?.rightBottom[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.rightBottom[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.rightBottom[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // Adding bottomLeft Possible moves
+
+      for (let i = 0; i < tempObject?.bottomLeft?.length; i++) {
+        if (this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.bottomLeft[i]);
+        } else if (
+          this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.bottomLeft[i]);
+          break;
+        } else if (
+          this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+          break;
+        }
+      }
+
+      // tempMoves.push(
+      //   // ...tempObject?.left,
+      //   ...tempObject?.right,
+      //   ...tempObject?.top,
+      //   ...tempObject?.bottom,
+      //   ...tempObject?.leftTop,
+      //   ...tempObject?.topRight,
+      //   ...tempObject?.rightBottom,
+      //   ...tempObject?.bottomLeft
+      // );
     }
 
     this.possibleMoves = tempMoves;
