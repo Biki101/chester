@@ -13,7 +13,7 @@ interface BoardStatus {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  playingAsWhite = false;
+  playingAsWhite = true;
   columnsWhite = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   rowsWhite = ['8', '7', '6', '5', '4', '3', '2', '1'];
   columnsBlack = ['H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'];
@@ -574,6 +574,68 @@ export class AppComponent {
   }
 
   breakKingCastling(movedFrom: string, movedTo: string) {
+    // Check If Castling
+
+    if (this.boardStatus[movedTo].occupiedBy == 'king') {
+      if (this.boardStatus[movedTo].occupiedByType == 'black') {
+        if (movedFrom == 'E8' && movedTo == 'G8') {
+          this.boardStatus = {
+            ...this.boardStatus,
+            H8: {
+              occupiedBy: null,
+              occupiedByType: null,
+            },
+            F8: {
+              occupiedBy: 'rook',
+              occupiedByType: 'black',
+            },
+          };
+          this.H8RookKingCastleBlack = false;
+        } else if (movedFrom == 'E8' && movedTo == 'C8') {
+          this.boardStatus = {
+            ...this.boardStatus,
+            A8: {
+              occupiedBy: null,
+              occupiedByType: null,
+            },
+            D8: {
+              occupiedBy: 'rook',
+              occupiedByType: 'black',
+            },
+          };
+          this.A8RookKingCastleBlack = false;
+        }
+      } else if (this.boardStatus[movedTo].occupiedByType == 'white') {
+        if (movedFrom == 'E1' && movedTo == 'G1') {
+          this.boardStatus = {
+            ...this.boardStatus,
+            H1: {
+              occupiedBy: null,
+              occupiedByType: null,
+            },
+            F1: {
+              occupiedBy: 'rook',
+              occupiedByType: 'white',
+            },
+          };
+          this.H1RookKingCastleWhite = false;
+        } else if (movedFrom == 'E1' && movedTo == 'C1') {
+          this.boardStatus = {
+            ...this.boardStatus,
+            A1: {
+              occupiedBy: null,
+              occupiedByType: null,
+            },
+            D1: {
+              occupiedBy: 'rook',
+              occupiedByType: 'white',
+            },
+          };
+          this.A1RookKingCastleWhite = false;
+        }
+      }
+    }
+
     if (this.boardStatus[movedTo].occupiedByType == 'white') {
       if (this.boardStatus[movedTo].occupiedBy == 'king') {
         this.H1RookKingCastleWhite = false;
