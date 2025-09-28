@@ -217,14 +217,22 @@ export class AppComponent {
 
     console.log(tempObject);
 
-    // pushing left moves
-    // tempObject?.left.map((items:any)=> {
-    //   if()
-    // })
-
     // check if selected piece is knight
     if (this.selectedBox.occupiedBy == 'knight') {
-      tempMoves.push(...tempObject.moves);
+      for (let i = 0; i < tempObject?.moves?.length; i++) {
+        if (this.boardStatus[tempObject?.moves[i]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.moves[i]);
+        } else if (
+          this.boardStatus[tempObject?.moves[i]]?.occupiedByType !==
+          this.selectedBox?.occupiedByType
+        ) {
+          tempMoves.push(tempObject?.moves[i]);
+        } else if (
+          this.boardStatus[tempObject?.moves[i]]?.occupiedByType ===
+          this.selectedBox?.occupiedByType
+        ) {
+        }
+      }
     } else if (this.selectedBox.occupiedBy == 'pawn') {
       if (this.selectedBox.occupiedByType == 'white') {
         tempObject =
