@@ -13,7 +13,7 @@ interface BoardStatus {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  playingAsWhite = true;
+  playingAsWhite = false;
   columnsWhite = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   rowsWhite = ['8', '7', '6', '5', '4', '3', '2', '1'];
   columnsBlack = ['H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'];
@@ -55,12 +55,12 @@ export class AppComponent {
     this.boardStatus = {
       // Rank 8 (Black major pieces)
       A8: { occupiedBy: 'rook', occupiedByType: 'black' },
-      B8: { occupiedBy: 'knight', occupiedByType: 'black' },
-      C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
-      D8: { occupiedBy: 'queen', occupiedByType: 'black' },
+      B8: { occupiedBy: null, occupiedByType: null },
+      C8: { occupiedBy: null, occupiedByType: null },
+      D8: { occupiedBy: null, occupiedByType: null },
       E8: { occupiedBy: 'king', occupiedByType: 'black' },
-      F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
-      G8: { occupiedBy: 'knight', occupiedByType: 'black' },
+      F8: { occupiedBy: null, occupiedByType: null },
+      G8: { occupiedBy: null, occupiedByType: null },
       H8: { occupiedBy: 'rook', occupiedByType: 'black' },
 
       // Rank 7 (Black pawns)
@@ -122,12 +122,12 @@ export class AppComponent {
 
       // Rank 1 (White major pieces)
       A1: { occupiedBy: 'rook', occupiedByType: 'white' },
-      B1: { occupiedBy: 'knight', occupiedByType: 'white' },
-      C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
-      D1: { occupiedBy: 'queen', occupiedByType: 'white' },
+      B1: { occupiedBy: null, occupiedByType: null },
+      C1: { occupiedBy: null, occupiedByType: null },
+      D1: { occupiedBy: null, occupiedByType: null },
       E1: { occupiedBy: 'king', occupiedByType: 'white' },
-      F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
-      G1: { occupiedBy: 'knight', occupiedByType: 'white' },
+      F1: { occupiedBy: null, occupiedByType: null },
+      G1: { occupiedBy: null, occupiedByType: null },
       H1: { occupiedBy: 'rook', occupiedByType: 'white' },
     };
   }
@@ -476,6 +476,52 @@ export class AppComponent {
           this.selectedBox?.occupiedByType
         ) {
           break;
+        }
+      }
+    }
+
+    if (this.selectedBox.occupiedBy == 'king') {
+      if (this.selectedBox.occupiedByType == 'white') {
+        // For A1 Castle
+        let canBeCastled = true;
+        tempObject?.castleA1ClearPaths.map((path: string) => {
+          if (this.boardStatus[path].occupiedBy != null) {
+            canBeCastled = false;
+          }
+        });
+        if (canBeCastled) {
+          tempMoves.push(tempObject?.castleA1[0]);
+        }
+        // For H1 Castle
+        canBeCastled = true;
+        tempObject?.castleH1ClearPaths.map((path: string) => {
+          if (this.boardStatus[path].occupiedBy != null) {
+            canBeCastled = false;
+          }
+        });
+        if (canBeCastled) {
+          tempMoves.push(tempObject?.castleH1[0]);
+        }
+      } else {
+        // For A8 Castle
+        let canBeCastled = true;
+        tempObject?.castleA8ClearPaths.map((path: string) => {
+          if (this.boardStatus[path].occupiedBy != null) {
+            canBeCastled = false;
+          }
+        });
+        if (canBeCastled) {
+          tempMoves.push(tempObject?.castleA8[0]);
+        }
+        // For H8 Castle
+        canBeCastled = true;
+        tempObject?.castleH8ClearPaths.map((path: string) => {
+          if (this.boardStatus[path].occupiedBy != null) {
+            canBeCastled = false;
+          }
+        });
+        if (canBeCastled) {
+          tempMoves.push(tempObject?.castleH8[0]);
         }
       }
     }
