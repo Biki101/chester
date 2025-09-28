@@ -20,6 +20,11 @@ export class AppComponent {
   rowsBlack = ['1', '2', '3', '4', '5', '6', '7', '8'];
   boardAsWhite = [];
 
+  A1RookKingCastleWhite = true;
+  H1RookKingCastleWhite = true;
+  A8RookKingCastleBlack = true;
+  H8RookKingCastleBlack = true;
+
   boardStatus: BoardStatus = null;
 
   selectedBox = null;
@@ -198,6 +203,9 @@ export class AppComponent {
 
           // check if pawn has reached the opponent end
           this.checkIfPawnHasReachedOpponentsEnd(this.movedTo);
+
+          // Break Castle If King or Rook is Moved
+          this.breakKingCastling(this.selectedBox?.name, this.movedTo);
 
           // change turn
           this.playingAsWhite = !this.playingAsWhite;
@@ -515,6 +523,44 @@ export class AppComponent {
           // Let Player Replace Pawn with Queen
           this.boardStatus[movedTo].occupiedBy = 'queen';
         }
+      }
+    }
+  }
+
+  breakKingCastling(movedFrom: string, movedTo: string) {
+    if (this.boardStatus[movedTo].occupiedByType == 'white') {
+      if (this.boardStatus[movedTo].occupiedBy == 'king') {
+        this.H1RookKingCastleWhite = false;
+        this.A1RookKingCastleWhite = false;
+      } else if (
+        movedFrom == 'A1' &&
+        this.A1RookKingCastleWhite == true &&
+        this.boardStatus[movedTo].occupiedBy == 'rook'
+      ) {
+        this.A1RookKingCastleWhite = false;
+      } else if (
+        movedFrom == 'H1' &&
+        this.H1RookKingCastleWhite == true &&
+        this.boardStatus[movedTo].occupiedBy == 'rook'
+      ) {
+        this.H1RookKingCastleWhite = false;
+      }
+    } else if (this.boardStatus[movedTo].occupiedByType == 'black') {
+      if (this.boardStatus[movedTo].occupiedBy == 'king') {
+        this.H8RookKingCastleBlack = false;
+        this.A8RookKingCastleBlack = false;
+      } else if (
+        movedFrom == 'A8' &&
+        this.A8RookKingCastleBlack == true &&
+        this.boardStatus[movedTo].occupiedBy == 'rook'
+      ) {
+        this.A8RookKingCastleBlack = false;
+      } else if (
+        movedFrom == 'H8' &&
+        this.H8RookKingCastleBlack == true &&
+        this.boardStatus[movedTo].occupiedBy == 'rook'
+      ) {
+        this.H8RookKingCastleBlack = false;
       }
     }
   }
