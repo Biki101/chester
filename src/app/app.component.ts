@@ -24,7 +24,7 @@ export class AppComponent {
 
   selectedBox = null;
 
-  possibleMoves: string[] = ['D4', 'E4'];
+  possibleMoves: string[] = [];
 
   movedFrom: string = '';
   movedTo: string = '';
@@ -215,8 +215,6 @@ export class AppComponent {
         this.selectedBox?.name
       ];
 
-    console.log(tempObject);
-
     // check if selected piece is knight
     if (this.selectedBox.occupiedBy == 'knight') {
       for (let i = 0; i < tempObject?.moves?.length; i++) {
@@ -239,13 +237,83 @@ export class AppComponent {
           this.utilService.allPossiblePositions?.whitePawn?.[
             this.selectedBox?.name
           ];
-        tempMoves.push(...tempObject?.forward);
+
+        for (let i = 0; i < tempObject?.forward?.length; i++) {
+          if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+            tempMoves.push(tempObject?.forward[i]);
+          } else if (
+            this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+            this.selectedBox?.occupiedByType
+          ) {
+          } else if (
+            this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+            this.selectedBox?.occupiedByType
+          ) {
+          }
+        }
+
+        // Capture positions addition
+        let captureLeft =
+          this.utilService?.allPossiblePositions?.whitePawn[
+            this.selectedBox?.name
+          ]?.captureLeft;
+        let captureRight =
+          this.utilService?.allPossiblePositions?.whitePawn[
+            this.selectedBox?.name
+          ]?.captureRight;
+        if (
+          this.boardStatus[captureLeft].occupiedBy != null &&
+          this.boardStatus[captureLeft].occupiedByType == 'black'
+        ) {
+          tempMoves.push(captureLeft[0]);
+        }
+        if (
+          this.boardStatus[captureRight].occupiedBy != null &&
+          this.boardStatus[captureRight].occupiedByType == 'black'
+        ) {
+          tempMoves.push(captureRight[0]);
+        }
       } else {
         tempObject =
           this.utilService.allPossiblePositions?.blackPawn?.[
             this.selectedBox?.name
           ];
-        tempMoves.push(...tempObject?.forward);
+
+        for (let i = 0; i < tempObject?.forward?.length; i++) {
+          if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+            tempMoves.push(tempObject?.forward[i]);
+          } else if (
+            this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+            this.selectedBox?.occupiedByType
+          ) {
+          } else if (
+            this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+            this.selectedBox?.occupiedByType
+          ) {
+          }
+        }
+
+        // Capture positions addition
+        let captureLeft =
+          this.utilService?.allPossiblePositions?.blackPawn[
+            this.selectedBox?.name
+          ]?.captureLeft;
+        let captureRight =
+          this.utilService?.allPossiblePositions?.blackPawn[
+            this.selectedBox?.name
+          ]?.captureRight;
+        if (
+          this.boardStatus[captureLeft].occupiedBy != null &&
+          this.boardStatus[captureLeft].occupiedByType == 'white'
+        ) {
+          tempMoves.push(captureLeft[0]);
+        }
+        if (
+          this.boardStatus[captureRight].occupiedBy != null &&
+          this.boardStatus[captureRight].occupiedByType == 'white'
+        ) {
+          tempMoves.push(captureRight[0]);
+        }
       }
     } else {
       // Adding Left Possible moves
@@ -399,17 +467,6 @@ export class AppComponent {
           break;
         }
       }
-
-      // tempMoves.push(
-      //   // ...tempObject?.left,
-      //   ...tempObject?.right,
-      //   ...tempObject?.top,
-      //   ...tempObject?.bottom,
-      //   ...tempObject?.leftTop,
-      //   ...tempObject?.topRight,
-      //   ...tempObject?.rightBottom,
-      //   ...tempObject?.bottomLeft
-      // );
     }
 
     this.possibleMoves = tempMoves;
