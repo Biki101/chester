@@ -2689,6 +2689,10 @@ export class UtilsService {
         topRight: ['F2'],
         rightBottom: [],
         bottomLeft: [],
+        castleA1: ['C1'],
+        castleA1ClearPaths: ['B1', 'C1', 'D1'],
+        castleH1: ['G1'],
+        castleH1ClearPaths: ['F1', 'G1'],
       },
       F1: {
         left: ['E1'],
