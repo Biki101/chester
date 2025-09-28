@@ -196,6 +196,9 @@ export class AppComponent {
 
           this.movedTo = square;
 
+          // check if pawn has reached the opponent end
+          this.checkIfPawnHasReachedOpponentsEnd(this.movedTo);
+
           // change turn
           this.playingAsWhite = !this.playingAsWhite;
 
@@ -497,6 +500,22 @@ export class AppComponent {
       return true;
     } else {
       return false;
+    }
+  }
+
+  checkIfPawnHasReachedOpponentsEnd(movedTo: string) {
+    if (this.boardStatus[movedTo].occupiedBy == 'pawn') {
+      if (this.boardStatus[movedTo].occupiedByType == 'black') {
+        if (movedTo[1] == '1') {
+          // Let Player Replace Pawn with Queen
+          this.boardStatus[movedTo].occupiedBy = 'queen';
+        }
+      } else {
+        if (movedTo[1] == '8') {
+          // Let Player Replace Pawn with Queen
+          this.boardStatus[movedTo].occupiedBy = 'queen';
+        }
+      }
     }
   }
 }
