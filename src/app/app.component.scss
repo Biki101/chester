@@ -1,6 +1,9 @@
 .background {
   background-color: var(--black-color);
   padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chess-container {
@@ -9,7 +12,6 @@
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  margin: auto auto;
 }
 
 .chess-box {

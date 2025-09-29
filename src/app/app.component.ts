@@ -39,6 +39,9 @@ export class AppComponent {
     this.boardAsWhite = utilService.boardAsWhite;
   }
 
+  capturedWhiteList: any = [];
+  capturedBlackList: any = [];
+
   ngOnInit() {
     this.initializeBoard();
   }
@@ -181,41 +184,63 @@ export class AppComponent {
           this.getPossibleMoves();
         }
       }
+      // Capturing opponent
+      if (
+        (boardBox?.occupiedByType === 'black' && this.playingAsWhite == true) ||
+        (boardBox?.occupiedByType === 'white' && this.playingAsWhite == false)
+      ) {
+        if (this.possibleMoves.includes(square)) {
+          this.movePieceFromSourceToTarget(square);
+        }
+      }
     } else {
       // If empty square and a piece is selected
       if (this.selectedBox?.name) {
         if (this.possibleMoves.includes(square)) {
-          // Clear source
-          this.boardStatus[this.selectedBox.name] = {
-            occupiedBy: null,
-            occupiedByType: null,
-          };
-
-          this.movedFrom = this.selectedBox.name;
-
-          // Move piece to target
-          this.boardStatus[square] = {
-            occupiedBy: this.selectedBox.occupiedBy,
-            occupiedByType: this.selectedBox.occupiedByType,
-          };
-
-          this.movedTo = square;
-
-          // check if pawn has reached the opponent end
-          this.checkIfPawnHasReachedOpponentsEnd(this.movedTo);
-
-          // Break Castle If King or Rook is Moved
-          this.breakKingCastling(this.selectedBox?.name, this.movedTo);
-
-          // change turn
-          this.playingAsWhite = !this.playingAsWhite;
-
-          // Reset state
-          this.selectedBox = null;
-          this.possibleMoves = [];
+          this.movePieceFromSourceToTarget(square);
         }
       }
     }
+  }
+
+  movePieceFromSourceToTarget(square: string) {
+    // Clear source
+    this.boardStatus[this.selectedBox.name] = {
+      occupiedBy: null,
+      occupiedByType: null,
+    };
+
+    this.movedFrom = this.selectedBox.name;
+
+    // Check if Capturing or Just Moving
+    if (this.boardStatus[square].occupiedBy != null) {
+      if (this.boardStatus[square].occupiedByType == 'white') {
+        this.capturedWhiteList.push(this.boardStatus[square]);
+      } else {
+        this.capturedBlackList.push(this.boardStatus[square]);
+      }
+    }
+
+    // Move piece to target
+    this.boardStatus[square] = {
+      occupiedBy: this.selectedBox.occupiedBy,
+      occupiedByType: this.selectedBox.occupiedByType,
+    };
+
+    this.movedTo = square;
+
+    // check if pawn has reached the opponent end
+    this.checkIfPawnHasReachedOpponentsEnd(this.movedTo);
+
+    // Break Castle If King or Rook is Moved
+    this.breakKingCastling(this.selectedBox?.name, this.movedTo);
+
+    // change turn
+    this.playingAsWhite = !this.playingAsWhite;
+
+    // Reset state
+    this.selectedBox = null;
+    this.possibleMoves = [];
   }
 
   getPossibleMoves() {
