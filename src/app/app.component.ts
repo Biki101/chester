@@ -30,6 +30,8 @@ export class AppComponent {
   selectedBox = null;
 
   possibleMoves: string[] = [];
+  possibleBlackMoves: string[] = [];
+  possibleWhiteMoves: string[] = [];
 
   movedFrom: string = '';
   movedTo: string = '';
@@ -241,6 +243,9 @@ export class AppComponent {
     // Reset state
     this.selectedBox = null;
     this.possibleMoves = [];
+
+    // Check if king is checked
+    this.checkIfKingIsChecked();
   }
 
   getPossibleMoves() {
@@ -697,4 +702,16 @@ export class AppComponent {
       }
     }
   }
+
+  checkIfKingIsChecked() {
+    if (this.boardStatus[this.movedTo].occupiedByType == 'black') {
+      this.getAllPossibleBlackMoves();
+    } else {
+      this.getAllPossibleWhiteMoves();
+    }
+  }
+
+  getAllPossibleBlackMoves() {}
+
+  getAllPossibleWhiteMoves() {}
 }
