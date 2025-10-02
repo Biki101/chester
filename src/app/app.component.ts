@@ -515,10 +515,13 @@ export class AppComponent {
     }
 
     if (this.selectedBox.occupiedBy == 'king') {
-      if (this.selectedBox.occupiedByType == 'white') {
+      if (
+        this.selectedBox.occupiedByType == 'white' &&
+        this.selectedBox?.name == 'E1'
+      ) {
         // For A1 Castle
         let canBeCastled = true;
-        tempObject?.castleA1ClearPaths.map((path: string) => {
+        tempObject?.castleA1ClearPaths?.map((path: string) => {
           if (this.boardStatus[path].occupiedBy != null) {
             canBeCastled = false;
           }
@@ -528,7 +531,7 @@ export class AppComponent {
         }
         // For H1 Castle
         canBeCastled = true;
-        tempObject?.castleH1ClearPaths.map((path: string) => {
+        tempObject?.castleH1ClearPaths?.map((path: string) => {
           if (this.boardStatus[path].occupiedBy != null) {
             canBeCastled = false;
           }
@@ -536,10 +539,13 @@ export class AppComponent {
         if (canBeCastled) {
           tempMoves.push(tempObject?.castleH1[0]);
         }
-      } else {
+      } else if (
+        this.selectedBox.occupiedByType == 'black' &&
+        this.selectedBox?.name == 'E8'
+      ) {
         // For A8 Castle
         let canBeCastled = true;
-        tempObject?.castleA8ClearPaths.map((path: string) => {
+        tempObject?.castleA8ClearPaths?.map((path: string) => {
           if (this.boardStatus[path].occupiedBy != null) {
             canBeCastled = false;
           }
@@ -549,7 +555,7 @@ export class AppComponent {
         }
         // For H8 Castle
         canBeCastled = true;
-        tempObject?.castleH8ClearPaths.map((path: string) => {
+        tempObject?.castleH8ClearPaths?.map((path: string) => {
           if (this.boardStatus[path].occupiedBy != null) {
             canBeCastled = false;
           }
@@ -725,7 +731,7 @@ export class AppComponent {
   getAllPossibleBlackMoves() {
     let tempMoves = [];
 
-    this.utilService.boardAsWhite.map((box: any) => {
+    this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'black') {
         let tempObject =
           this.utilService.allPossiblePositions[
@@ -774,13 +780,17 @@ export class AppComponent {
             this.boardStatus[captureLeft]?.occupiedBy != null &&
             this.boardStatus[captureLeft]?.occupiedByType == 'white'
           ) {
-            tempMoves.push(captureLeft[0]);
+            if (captureLeft[0]) {
+              tempMoves.push(captureLeft[0]);
+            }
           }
           if (
             this.boardStatus[captureRight]?.occupiedBy != null &&
             this.boardStatus[captureRight]?.occupiedByType == 'white'
           ) {
-            tempMoves.push(captureRight[0]);
+            if (captureRight[0]) {
+              tempMoves.push(captureRight[0]);
+            }
           }
           // }
         } else {
@@ -941,10 +951,10 @@ export class AppComponent {
           }
         }
 
-        if (this.boardStatus[box].occupiedBy == 'king') {
+        if (this.boardStatus[box].occupiedBy == 'king' && box == 'E8') {
           // For A8 Castle
           let canBeCastled = true;
-          tempObject?.castleA8ClearPaths.map((path: string) => {
+          tempObject?.castleA8ClearPaths?.map((path: string) => {
             if (this.boardStatus[path].occupiedBy != null) {
               canBeCastled = false;
             }
@@ -954,7 +964,7 @@ export class AppComponent {
           }
           // For H8 Castle
           canBeCastled = true;
-          tempObject?.castleH8ClearPaths.map((path: string) => {
+          tempObject?.castleH8ClearPaths?.map((path: string) => {
             if (this.boardStatus[path].occupiedBy != null) {
               canBeCastled = false;
             }
@@ -973,7 +983,7 @@ export class AppComponent {
   getAllPossibleWhiteMoves() {
     let tempMoves = [];
 
-    this.utilService.boardAsWhite.map((box: any) => {
+    this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'white') {
         let tempObject =
           this.utilService.allPossiblePositions[
@@ -1023,13 +1033,17 @@ export class AppComponent {
             this.boardStatus[captureLeft]?.occupiedBy != null &&
             this.boardStatus[captureLeft]?.occupiedByType == 'black'
           ) {
-            tempMoves.push(captureLeft[0]);
+            if (captureLeft[0]) {
+              tempMoves.push(captureLeft[0]);
+            }
           }
           if (
             this.boardStatus[captureRight]?.occupiedBy != null &&
             this.boardStatus[captureRight]?.occupiedByType == 'black'
           ) {
-            tempMoves.push(captureRight[0]);
+            if (captureRight[0]) {
+              tempMoves.push(captureRight[0]);
+            }
           }
         } else {
           // Adding Left Possible moves
@@ -1188,11 +1202,10 @@ export class AppComponent {
             }
           }
         }
-
-        if (this.boardStatus[box].occupiedBy == 'king') {
+        if (this.boardStatus[box].occupiedBy == 'king' && box == 'E1') {
           // For A1 Castle
           let canBeCastled = true;
-          tempObject?.castleA1ClearPaths.map((path: string) => {
+          tempObject?.castleA1ClearPaths?.map((path: string) => {
             if (this.boardStatus[path].occupiedBy != null) {
               canBeCastled = false;
             }
@@ -1202,7 +1215,7 @@ export class AppComponent {
           }
           // For H1 Castle
           canBeCastled = true;
-          tempObject?.castleH1ClearPaths.map((path: string) => {
+          tempObject?.castleH1ClearPaths?.map((path: string) => {
             if (this.boardStatus[path].occupiedBy != null) {
               canBeCastled = false;
             }
