@@ -519,25 +519,29 @@ export class AppComponent {
         this.selectedBox.occupiedByType == 'white' &&
         this.selectedBox?.name == 'E1'
       ) {
-        // For A1 Castle
         let canBeCastled = true;
-        tempObject?.castleA1ClearPaths?.map((path: string) => {
-          if (this.boardStatus[path].occupiedBy != null) {
-            canBeCastled = false;
+        if (this.A1RookKingCastleWhite == true) {
+          // For A1 Castle
+          tempObject?.castleA1ClearPaths?.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleA1[0]);
           }
-        });
-        if (canBeCastled) {
-          tempMoves.push(tempObject?.castleA1[0]);
         }
-        // For H1 Castle
-        canBeCastled = true;
-        tempObject?.castleH1ClearPaths?.map((path: string) => {
-          if (this.boardStatus[path].occupiedBy != null) {
-            canBeCastled = false;
+        if (this.H1RookKingCastleWhite == true) {
+          // For H1 Castle
+          canBeCastled = true;
+          tempObject?.castleH1ClearPaths?.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleH1[0]);
           }
-        });
-        if (canBeCastled) {
-          tempMoves.push(tempObject?.castleH1[0]);
         }
       } else if (
         this.selectedBox.occupiedByType == 'black' &&
@@ -545,23 +549,27 @@ export class AppComponent {
       ) {
         // For A8 Castle
         let canBeCastled = true;
-        tempObject?.castleA8ClearPaths?.map((path: string) => {
-          if (this.boardStatus[path].occupiedBy != null) {
-            canBeCastled = false;
+        if (this.A8RookKingCastleBlack == true) {
+          tempObject?.castleA8ClearPaths?.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleA8[0]);
           }
-        });
-        if (canBeCastled) {
-          tempMoves.push(tempObject?.castleA8[0]);
         }
         // For H8 Castle
-        canBeCastled = true;
-        tempObject?.castleH8ClearPaths?.map((path: string) => {
-          if (this.boardStatus[path].occupiedBy != null) {
-            canBeCastled = false;
+        if (this.H8RookKingCastleBlack == true) {
+          canBeCastled = true;
+          tempObject?.castleH8ClearPaths?.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleH8[0]);
           }
-        });
-        if (canBeCastled) {
-          tempMoves.push(tempObject?.castleH8[0]);
         }
       }
     }
