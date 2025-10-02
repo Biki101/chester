@@ -33,6 +33,9 @@ export class AppComponent {
   possibleBlackMoves: string[] = [];
   possibleWhiteMoves: string[] = [];
 
+  blackKingPosition: string = 'E8';
+  whiteKingPosition: string = 'E1';
+
   movedFrom: string = '';
   movedTo: string = '';
 
@@ -43,6 +46,9 @@ export class AppComponent {
 
   capturedWhiteList: any = [];
   capturedBlackList: any = [];
+
+  blackKingChecked = false;
+  whiteKingChecked = false;
 
   ngOnInit() {
     this.initializeBoard();
@@ -228,6 +234,19 @@ export class AppComponent {
       occupiedBy: this.selectedBox.occupiedBy,
       occupiedByType: this.selectedBox.occupiedByType,
     };
+
+    // checking if king
+    if (
+      this.selectedBox.occupiedBy == 'king' &&
+      this.selectedBox.occupiedByType == 'black'
+    ) {
+      this.blackKingPosition = square;
+    } else if (
+      this.selectedBox.occupiedBy == 'king' &&
+      this.selectedBox.occupiedByType == 'white'
+    ) {
+      this.whiteKingPosition = square;
+    }
 
     this.movedTo = square;
 
@@ -734,7 +753,16 @@ export class AppComponent {
     }
   }
 
-  checkIfKingIsChecked() {}
+  checkIfKingIsChecked() {
+    if (this.possibleBlackMoves.includes(this.whiteKingPosition)) {
+      this.whiteKingChecked = true;
+    } else if (this.possibleWhiteMoves.includes(this.blackKingPosition)) {
+      this.blackKingChecked = true;
+    } else {
+      this.whiteKingChecked = false;
+      this.blackKingChecked = false;
+    }
+  }
 
   getAllPossibleBlackMoves() {
     let tempMoves = [];

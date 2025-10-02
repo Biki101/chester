@@ -31,3 +31,15 @@
     </ng-container>
   </div>
 </div>
+<div *ngIf="blackKingChecked">black Checked</div>
+<div *ngIf="whiteKingChecked">White Checked</div>
+<div>
+  kingPositionWhite:{{ whiteKingPosition }} blackmoves:{{
+    possibleBlackMoves | json
+  }}
+</div>
+<div>
+  kingPositionBlack:{{ blackKingPosition }} whitemoves:{{
+    possibleWhiteMoves | json
+  }}
+</div>
