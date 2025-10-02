@@ -9,7 +9,8 @@
             'black-box': !checkIfWhiteBox(column, row),
             'selected-box': checkIfSelected(column, row),
             'moved-from': checkIfMovedFrom(column, row),
-            'moved-to': checkIfMovedTo(column, row)
+            'moved-to': checkIfMovedTo(column, row),
+            checked: checkIfChecked(column, row)
           }"
           (click)="selectBox(column, row)"
         >
@@ -30,16 +31,4 @@
       </ng-container>
     </ng-container>
   </div>
-</div>
-<div *ngIf="blackKingChecked">black Checked</div>
-<div *ngIf="whiteKingChecked">White Checked</div>
-<div>
-  kingPositionWhite:{{ whiteKingPosition }} blackmoves:{{
-    possibleBlackMoves | json
-  }}
-</div>
-<div>
-  kingPositionBlack:{{ blackKingPosition }} whitemoves:{{
-    possibleWhiteMoves | json
-  }}
 </div>

@@ -1269,4 +1269,23 @@ export class AppComponent {
   removeDuplicates(arr: any): string[] {
     return [...new Set(arr)] as string[];
   }
+
+  checkIfChecked(column: any, row: any) {
+    let square = column + row;
+    if (
+      this.boardStatus[square].occupiedBy == 'king' &&
+      this.boardStatus[square].occupiedByType == 'black' &&
+      this.blackKingChecked == true
+    ) {
+      return true;
+    } else if (
+      this.boardStatus[square].occupiedBy == 'king' &&
+      this.boardStatus[square].occupiedByType == 'white' &&
+      this.whiteKingChecked == true
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

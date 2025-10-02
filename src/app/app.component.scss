@@ -63,3 +63,7 @@
   background-color: var(--selected-box-color);
   border-radius: 10px;
 }
+
+.checked {
+  background-color: var(--danger-color);
+}
