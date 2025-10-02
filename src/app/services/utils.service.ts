@@ -85,7 +85,7 @@ export class UtilsService {
     H1: { occupiedBy: null, occupiedByType: null },
   };
 
-  boardAsWhite = [
+  public boardAsWhite = [
     'A8',
     'B8',
     'C8',

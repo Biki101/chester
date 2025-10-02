@@ -246,6 +246,10 @@ export class AppComponent {
 
     // Check if king is checked
     this.checkIfKingIsChecked();
+
+    // Geting All Possible Black and White Moves
+    this.getAllPossibleBlackMoves();
+    this.getAllPossibleWhiteMoves();
   }
 
   getPossibleMoves() {
@@ -556,6 +560,19 @@ export class AppComponent {
       }
     }
 
+    // Making king's Safe possible moves
+    if (this.selectedBox.occupiedBy == 'king') {
+      if (this.selectedBox.occupiedByType == 'black') {
+        tempMoves = tempMoves.filter(
+          (item: any) => !this.possibleWhiteMoves.includes(item)
+        );
+      } else {
+        tempMoves = tempMoves.filter(
+          (item: any) => !this.possibleBlackMoves.includes(item)
+        );
+      }
+    }
+
     this.possibleMoves = tempMoves;
   }
 
@@ -703,15 +720,504 @@ export class AppComponent {
     }
   }
 
-  checkIfKingIsChecked() {
-    if (this.boardStatus[this.movedTo].occupiedByType == 'black') {
-      this.getAllPossibleBlackMoves();
-    } else {
-      this.getAllPossibleWhiteMoves();
-    }
+  checkIfKingIsChecked() {}
+
+  getAllPossibleBlackMoves() {
+    let tempMoves = [];
+
+    this.utilService.boardAsWhite.map((box: any) => {
+      if (this.boardStatus[box].occupiedByType == 'black') {
+        let tempObject =
+          this.utilService.allPossiblePositions[
+            this.boardStatus[box].occupiedBy
+          ]?.[box];
+        // check if selected piece is knight
+        if (this.boardStatus[box].occupiedBy == 'knight') {
+          for (let i = 0; i < tempObject?.moves?.length; i++) {
+            if (this.boardStatus[tempObject?.moves[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.moves[i]);
+            } else if (
+              this.boardStatus[tempObject?.moves[i]]?.occupiedByType !==
+              this.boardStatus[box].occupiedByType
+            ) {
+              tempMoves.push(tempObject?.moves[i]);
+            } else if (
+              this.boardStatus[tempObject?.moves[i]]?.occupiedByType ===
+              this.boardStatus[box].occupiedByType
+            ) {
+            }
+          }
+        } else if (this.boardStatus[box].occupiedBy == 'pawn') {
+          tempObject = this.utilService.allPossiblePositions?.blackPawn?.[box];
+
+          for (let i = 0; i < tempObject?.forward?.length; i++) {
+            if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.forward[i]);
+            } else if (
+              this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+            } else if (
+              this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+            }
+          }
+
+          // Capture positions addition
+          let captureLeft =
+            this.utilService?.allPossiblePositions?.blackPawn[box]?.captureLeft;
+          let captureRight =
+            this.utilService?.allPossiblePositions?.blackPawn[box]
+              ?.captureRight;
+          if (
+            this.boardStatus[captureLeft]?.occupiedBy != null &&
+            this.boardStatus[captureLeft]?.occupiedByType == 'white'
+          ) {
+            tempMoves.push(captureLeft[0]);
+          }
+          if (
+            this.boardStatus[captureRight]?.occupiedBy != null &&
+            this.boardStatus[captureRight]?.occupiedByType == 'white'
+          ) {
+            tempMoves.push(captureRight[0]);
+          }
+          // }
+        } else {
+          // Adding Left Possible moves
+
+          for (let i = 0; i < tempObject?.left?.length; i++) {
+            if (this.boardStatus[tempObject?.left[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.left[i]);
+            } else if (
+              this.boardStatus[tempObject?.left[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.left[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.left[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding Right Possible moves
+
+          for (let i = 0; i < tempObject?.right?.length; i++) {
+            if (this.boardStatus[tempObject?.right[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.right[i]);
+            } else if (
+              this.boardStatus[tempObject?.right[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.right[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.right[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding Top Possible moves
+
+          for (let i = 0; i < tempObject?.top?.length; i++) {
+            if (this.boardStatus[tempObject?.top[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.top[i]);
+            } else if (
+              this.boardStatus[tempObject?.top[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.top[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.top[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding Bottom Possible moves
+
+          for (let i = 0; i < tempObject?.bottom?.length; i++) {
+            if (this.boardStatus[tempObject?.bottom[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.bottom[i]);
+            } else if (
+              this.boardStatus[tempObject?.bottom[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.bottom[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.bottom[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding leftTop Possible moves
+
+          for (let i = 0; i < tempObject?.leftTop?.length; i++) {
+            if (this.boardStatus[tempObject?.leftTop[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.leftTop[i]);
+            } else if (
+              this.boardStatus[tempObject?.leftTop[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.leftTop[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.leftTop[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding topRight Possible moves
+
+          for (let i = 0; i < tempObject?.topRight?.length; i++) {
+            if (this.boardStatus[tempObject?.topRight[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.topRight[i]);
+            } else if (
+              this.boardStatus[tempObject?.topRight[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.topRight[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.topRight[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding rightBottom Possible moves
+
+          for (let i = 0; i < tempObject?.rightBottom?.length; i++) {
+            if (
+              this.boardStatus[tempObject?.rightBottom[i]]?.occupiedBy == null
+            ) {
+              tempMoves.push(tempObject?.rightBottom[i]);
+            } else if (
+              this.boardStatus[tempObject?.rightBottom[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.rightBottom[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.rightBottom[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding bottomLeft Possible moves
+
+          for (let i = 0; i < tempObject?.bottomLeft?.length; i++) {
+            if (
+              this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedBy == null
+            ) {
+              tempMoves.push(tempObject?.bottomLeft[i]);
+            } else if (
+              this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.bottomLeft[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+        }
+
+        if (this.boardStatus[box].occupiedBy == 'king') {
+          // For A8 Castle
+          let canBeCastled = true;
+          tempObject?.castleA8ClearPaths.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleA8[0]);
+          }
+          // For H8 Castle
+          canBeCastled = true;
+          tempObject?.castleH8ClearPaths.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleH8[0]);
+          }
+          // }
+        }
+      }
+    });
+
+    this.possibleBlackMoves = this.removeDuplicates(tempMoves);
   }
 
-  getAllPossibleBlackMoves() {}
+  getAllPossibleWhiteMoves() {
+    let tempMoves = [];
 
-  getAllPossibleWhiteMoves() {}
+    this.utilService.boardAsWhite.map((box: any) => {
+      if (this.boardStatus[box].occupiedByType == 'white') {
+        let tempObject =
+          this.utilService.allPossiblePositions[
+            this.boardStatus[box].occupiedBy
+          ]?.[box];
+        // check if selected piece is knight
+        if (this.boardStatus[box].occupiedBy == 'knight') {
+          for (let i = 0; i < tempObject?.moves?.length; i++) {
+            if (this.boardStatus[tempObject?.moves[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.moves[i]);
+            } else if (
+              this.boardStatus[tempObject?.moves[i]]?.occupiedByType !==
+              this.boardStatus[box].occupiedByType
+            ) {
+              tempMoves.push(tempObject?.moves[i]);
+            } else if (
+              this.boardStatus[tempObject?.moves[i]]?.occupiedByType ===
+              this.boardStatus[box].occupiedByType
+            ) {
+            }
+          }
+        } else if (this.boardStatus[box].occupiedBy == 'pawn') {
+          // if (this.boardStatus[box].occupiedByType == 'white') {
+          tempObject = this.utilService.allPossiblePositions?.whitePawn?.[box];
+
+          for (let i = 0; i < tempObject?.forward?.length; i++) {
+            if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.forward[i]);
+            } else if (
+              this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+            } else if (
+              this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+            }
+          }
+
+          // Capture positions addition
+          let captureLeft =
+            this.utilService?.allPossiblePositions?.whitePawn[box]?.captureLeft;
+          let captureRight =
+            this.utilService?.allPossiblePositions?.whitePawn[box]
+              ?.captureRight;
+          if (
+            this.boardStatus[captureLeft]?.occupiedBy != null &&
+            this.boardStatus[captureLeft]?.occupiedByType == 'black'
+          ) {
+            tempMoves.push(captureLeft[0]);
+          }
+          if (
+            this.boardStatus[captureRight]?.occupiedBy != null &&
+            this.boardStatus[captureRight]?.occupiedByType == 'black'
+          ) {
+            tempMoves.push(captureRight[0]);
+          }
+        } else {
+          // Adding Left Possible moves
+
+          for (let i = 0; i < tempObject?.left?.length; i++) {
+            if (this.boardStatus[tempObject?.left[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.left[i]);
+            } else if (
+              this.boardStatus[tempObject?.left[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.left[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.left[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding Right Possible moves
+
+          for (let i = 0; i < tempObject?.right?.length; i++) {
+            if (this.boardStatus[tempObject?.right[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.right[i]);
+            } else if (
+              this.boardStatus[tempObject?.right[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.right[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.right[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding Top Possible moves
+
+          for (let i = 0; i < tempObject?.top?.length; i++) {
+            if (this.boardStatus[tempObject?.top[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.top[i]);
+            } else if (
+              this.boardStatus[tempObject?.top[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.top[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.top[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding Bottom Possible moves
+
+          for (let i = 0; i < tempObject?.bottom?.length; i++) {
+            if (this.boardStatus[tempObject?.bottom[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.bottom[i]);
+            } else if (
+              this.boardStatus[tempObject?.bottom[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.bottom[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.bottom[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding leftTop Possible moves
+
+          for (let i = 0; i < tempObject?.leftTop?.length; i++) {
+            if (this.boardStatus[tempObject?.leftTop[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.leftTop[i]);
+            } else if (
+              this.boardStatus[tempObject?.leftTop[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.leftTop[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.leftTop[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding topRight Possible moves
+
+          for (let i = 0; i < tempObject?.topRight?.length; i++) {
+            if (this.boardStatus[tempObject?.topRight[i]]?.occupiedBy == null) {
+              tempMoves.push(tempObject?.topRight[i]);
+            } else if (
+              this.boardStatus[tempObject?.topRight[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.topRight[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.topRight[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding rightBottom Possible moves
+
+          for (let i = 0; i < tempObject?.rightBottom?.length; i++) {
+            if (
+              this.boardStatus[tempObject?.rightBottom[i]]?.occupiedBy == null
+            ) {
+              tempMoves.push(tempObject?.rightBottom[i]);
+            } else if (
+              this.boardStatus[tempObject?.rightBottom[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.rightBottom[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.rightBottom[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+
+          // Adding bottomLeft Possible moves
+
+          for (let i = 0; i < tempObject?.bottomLeft?.length; i++) {
+            if (
+              this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedBy == null
+            ) {
+              tempMoves.push(tempObject?.bottomLeft[i]);
+            } else if (
+              this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedByType !==
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              tempMoves.push(tempObject?.bottomLeft[i]);
+              break;
+            } else if (
+              this.boardStatus[tempObject?.bottomLeft[i]]?.occupiedByType ===
+              this.boardStatus[box]?.occupiedByType
+            ) {
+              break;
+            }
+          }
+        }
+
+        if (this.boardStatus[box].occupiedBy == 'king') {
+          // For A1 Castle
+          let canBeCastled = true;
+          tempObject?.castleA1ClearPaths.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleA1[0]);
+          }
+          // For H1 Castle
+          canBeCastled = true;
+          tempObject?.castleH1ClearPaths.map((path: string) => {
+            if (this.boardStatus[path].occupiedBy != null) {
+              canBeCastled = false;
+            }
+          });
+          if (canBeCastled) {
+            tempMoves.push(tempObject?.castleH1[0]);
+          }
+        }
+      }
+    });
+
+    this.possibleWhiteMoves = this.removeDuplicates(tempMoves);
+  }
+
+  removeDuplicates(arr: any): string[] {
+    return [...new Set(arr)] as string[];
+  }
 }
