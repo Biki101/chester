@@ -216,12 +216,10 @@ export class AppComponent {
 
   movePieceFromSourceToTarget(square: string) {
     // Allowing only valid moves if King is checked
-    if (this.whiteKingChecked == true || this.blackKingChecked == true) {
-      let validMove = this.checkIfValidMove(square);
-      if (validMove == false) {
-        debugger;
-        return;
-      }
+    let validMove = this.checkIfValidMove(square);
+    if (validMove == false) {
+      debugger;
+      return;
     }
 
     console.log('here');
@@ -1311,6 +1309,9 @@ export class AppComponent {
     let blackKingPosition = this.blackKingPosition;
     let whiteKingPosition = this.whiteKingPosition;
     let selectedBox = { ...this.selectedBox };
+    let whiteKingChecked = this.whiteKingChecked;
+    let blackKingChecked = this.blackKingChecked;
+    let playingAsWhite = this.playingAsWhite;
 
     // clearing source
     boardStatus[selectedBox.name] = {
@@ -1832,15 +1833,25 @@ export class AppComponent {
 
     possibleWhiteMoves = this.removeDuplicates(tempMoves);
 
+    // Validity Logic
+    if (possibleBlackMoves.includes(whiteKingPosition)) {
+      whiteKingChecked = true;
+    } else if (possibleWhiteMoves.includes(blackKingPosition)) {
+      blackKingChecked = true;
+    } else {
+      whiteKingChecked = false;
+      blackKingChecked = false;
+    }
+
     if (
-      this.whiteKingChecked == true &&
-      this.playingAsWhite == true &&
+      whiteKingChecked == true &&
+      playingAsWhite == true &&
       possibleBlackMoves.includes(whiteKingPosition) == true
     ) {
       validMove = false;
     } else if (
-      this.blackKingChecked == true &&
-      this.playingAsWhite == false &&
+      blackKingChecked == true &&
+      playingAsWhite == false &&
       possibleWhiteMoves.includes(blackKingPosition) == true
     ) {
       validMove = false;
