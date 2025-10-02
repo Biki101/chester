@@ -244,12 +244,12 @@ export class AppComponent {
     this.selectedBox = null;
     this.possibleMoves = [];
 
-    // Check if king is checked
-    this.checkIfKingIsChecked();
-
     // Geting All Possible Black and White Moves
     this.getAllPossibleBlackMoves();
     this.getAllPossibleWhiteMoves();
+
+    // Check if king is checked
+    this.checkIfKingIsChecked();
   }
 
   getPossibleMoves() {
