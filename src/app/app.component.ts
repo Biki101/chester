@@ -32,6 +32,10 @@ export class AppComponent {
   possibleMoves: string[] = [];
   possibleBlackMoves: string[] = [];
   possibleWhiteMoves: string[] = [];
+  pawnBlackForwardMoves = [];
+  pawnWhiteForwardMoves = [];
+  pawnBlackForwardMovesRepeated = [];
+  pawnWhiteForwardMovesRepeated = [];
 
   blackKingPosition: string = 'E8';
   whiteKingPosition: string = 'E1';
@@ -56,9 +60,6 @@ export class AppComponent {
 
   ngOnInit() {
     this.initializeBoard();
-    // this.getAllPossibleBlackMoves();
-    // this.getAllPossibleWhiteMoves();
-    // this.checkIfKingIsChecked();
   }
 
   get activeRows() {
@@ -308,14 +309,12 @@ export class AppComponent {
 
             if (pieceInfo.occupiedByType == 'white') {
               let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
-              console.log(pieceInfo);
-              console.log(possibleMoves);
+
               possibleMoves.map((move: any) => {
                 let isValid = this.checkIfValidMoveWithSelectedMove(
                   move,
                   pieceInfo
                 );
-                console.log(isValid);
                 if (isValid) {
                   tempDraw = false;
                 }
@@ -333,14 +332,11 @@ export class AppComponent {
 
             if (pieceInfo.occupiedByType == 'white') {
               let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
-              console.log(pieceInfo);
-              console.log(possibleMoves);
               possibleMoves.map((move: any) => {
                 let isValid = this.checkIfValidMoveWithSelectedMove(
                   move,
                   pieceInfo
                 );
-                console.log(isValid);
                 if (isValid) {
                   tempDraw = false;
                 }
@@ -360,14 +356,11 @@ export class AppComponent {
 
             if (pieceInfo.occupiedByType == 'black') {
               let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
-              console.log(pieceInfo);
-              console.log(possibleMoves);
               possibleMoves.map((move: any) => {
                 let isValid = this.checkIfValidMoveWithSelectedMove(
                   move,
                   pieceInfo
                 );
-                console.log(isValid);
                 if (isValid) {
                   tempDraw = false;
                 }
@@ -385,14 +378,12 @@ export class AppComponent {
 
             if (pieceInfo.occupiedByType == 'black') {
               let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
-              console.log(pieceInfo);
-              console.log(possibleMoves);
+
               possibleMoves.map((move: any) => {
                 let isValid = this.checkIfValidMoveWithSelectedMove(
                   move,
                   pieceInfo
                 );
-                console.log(isValid);
                 if (isValid) {
                   tempDraw = false;
                 }
@@ -724,13 +715,27 @@ export class AppComponent {
     // Making king's Safe possible moves
     if (this.selectedBox.occupiedBy == 'king') {
       if (this.selectedBox.occupiedByType == 'black') {
-        tempMoves = tempMoves.filter(
-          (item: any) => !this.possibleWhiteMoves.includes(item)
-        );
+        // tempMoves = tempMoves.filter(
+        //   (item: any) => !this.possibleWhiteMoves.includes(item)
+        // );
+
+        tempMoves = tempMoves.filter((move: any) => {
+          return (
+            !this.possibleWhiteMoves.includes(move) ||
+            this.pawnWhiteForwardMovesRepeated.includes(move)
+          );
+        });
       } else {
-        tempMoves = tempMoves.filter(
-          (item: any) => !this.possibleBlackMoves.includes(item)
-        );
+        // tempMoves = tempMoves.filter(
+        //   (item: any) => !this.possibleBlackMoves.includes(item)
+        // );
+
+        tempMoves = tempMoves.filter((move: any) => {
+          return (
+            !this.possibleBlackMoves.includes(move) ||
+            this.pawnBlackForwardMovesRepeated.includes(move)
+          );
+        });
       }
     }
 
@@ -1087,7 +1092,11 @@ export class AppComponent {
   }
 
   isPossibleMove(column: any, row: any) {
-    return this.possibleMoves.includes(column + row);
+    let isValid = this.checkIfValidMoveWithSelectedMove(
+      column + row,
+      this.selectedBox
+    );
+    return this.possibleMoves.includes(column + row) && isValid;
   }
 
   checkIfSelected(column: any, row: any) {
@@ -1243,7 +1252,7 @@ export class AppComponent {
 
   getAllPossibleBlackMoves() {
     let tempMoves = [];
-
+    this.pawnBlackForwardMoves = [];
     this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'black') {
         let tempObject =
@@ -1269,22 +1278,9 @@ export class AppComponent {
         } else if (this.boardStatus[box].occupiedBy == 'pawn') {
           tempObject = this.utilService.allPossiblePositions?.blackPawn?.[box];
 
-          // for (let i = 0; i < tempObject?.forward?.length; i++) {
-          //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-          //     tempMoves.push(tempObject?.forward[i]);
-          //   } else if (
-          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-          //     this.boardStatus[box]?.occupiedByType
-          //   ) {
-          //   } else if (
-          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-          //     this.boardStatus[box]?.occupiedByType
-          //   ) {
-          //   }
-          // }
-
           if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
             tempMoves.push(tempObject?.forward[0]);
+            this.pawnBlackForwardMoves.push(tempObject?.forward[0]);
           }
 
           if (
@@ -1292,6 +1288,7 @@ export class AppComponent {
             this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
           ) {
             tempMoves.push(tempObject?.forward[1]);
+            this.pawnBlackForwardMoves.push(tempObject?.forward[1]);
           }
 
           // Capture positions addition
@@ -1501,11 +1498,24 @@ export class AppComponent {
       }
     });
 
+    // checking if pawn move are duplicate
+    const moveCounts = tempMoves.reduce((acc, move) => {
+      acc[move] = (acc[move] || 0) + 1;
+      return acc;
+    }, {});
+
+    const repeatedMoves = this.pawnBlackForwardMoves.filter(
+      (move) => moveCounts[move] > 1
+    );
+
+    this.pawnBlackForwardMovesRepeated = repeatedMoves;
+
     this.possibleBlackMoves = this.removeDuplicates(tempMoves);
   }
 
   getAllPossibleWhiteMoves() {
     let tempMoves = [];
+    this.pawnWhiteForwardMoves = [];
 
     this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'white') {
@@ -1530,25 +1540,11 @@ export class AppComponent {
             }
           }
         } else if (this.boardStatus[box].occupiedBy == 'pawn') {
-          // if (this.boardStatus[box].occupiedByType == 'white') {
           tempObject = this.utilService.allPossiblePositions?.whitePawn?.[box];
-
-          // for (let i = 0; i < tempObject?.forward?.length; i++) {
-          //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-          //     tempMoves.push(tempObject?.forward[i]);
-          //   } else if (
-          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-          //     this.boardStatus[box]?.occupiedByType
-          //   ) {
-          //   } else if (
-          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-          //     this.boardStatus[box]?.occupiedByType
-          //   ) {
-          //   }
-          // }
 
           if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
             tempMoves.push(tempObject?.forward[0]);
+            this.pawnWhiteForwardMoves.push(tempObject?.forward[0]);
           }
 
           if (
@@ -1556,6 +1552,7 @@ export class AppComponent {
             this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
           ) {
             tempMoves.push(tempObject?.forward[1]);
+            this.pawnWhiteForwardMoves.push(tempObject?.forward[1]);
           }
 
           // Capture positions addition
@@ -1761,6 +1758,18 @@ export class AppComponent {
         }
       }
     });
+
+    // checking if pawn move are duplicate
+    const moveCounts = tempMoves.reduce((acc, move) => {
+      acc[move] = (acc[move] || 0) + 1;
+      return acc;
+    }, {});
+
+    const repeatedMoves = this.pawnWhiteForwardMoves.filter(
+      (move) => moveCounts[move] > 1
+    );
+
+    this.pawnWhiteForwardMovesRepeated = repeatedMoves;
 
     this.possibleWhiteMoves = this.removeDuplicates(tempMoves);
   }
