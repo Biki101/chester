@@ -218,7 +218,6 @@ export class AppComponent {
     // Allowing only valid moves if King is checked
     let validMove = this.checkIfValidMove(square);
     if (validMove == false) {
-      debugger;
       return;
     }
 
