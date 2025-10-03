@@ -31,4 +31,22 @@
       </ng-container>
     </ng-container>
   </div>
+  <div class="game-draw-container" *ngIf="gameDraw">Game Draw</div>
+  <div class="won-container" *ngIf="whiteWon">
+    <img
+      src="../assets/white-king.svg"
+      style="width: 40px; height: 40px"
+      alt=""
+    />
+    <div>White Wins</div>
+  </div>
+  <div class="won-container" *ngIf="blackWon">
+    <img
+      src="../assets/black-king.svg"
+      style="width: 40px; height: 40px"
+      alt=""
+    />
+    <div>Black Wins</div>
+  </div>
 </div>
+<div>{{ possibleBlackMoves }}</div>
