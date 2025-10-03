@@ -33,8 +33,8 @@ export class AppComponent {
   possibleBlackMoves: string[] = [];
   possibleWhiteMoves: string[] = [];
 
-  blackKingPosition: string = 'A4';
-  whiteKingPosition: string = 'H3';
+  blackKingPosition: string = 'E8';
+  whiteKingPosition: string = 'E1';
 
   movedFrom: string = '';
   movedTo: string = '';
@@ -72,29 +72,29 @@ export class AppComponent {
   initializeBoard() {
     this.boardStatus = {
       // Rank 8 (Black major pieces)
-      A8: { occupiedBy: null, occupiedByType: null },
-      B8: { occupiedBy: null, occupiedByType: null },
-      C8: { occupiedBy: null, occupiedByType: null },
-      D8: { occupiedBy: null, occupiedByType: null },
-      E8: { occupiedBy: null, occupiedByType: null },
-      F8: { occupiedBy: null, occupiedByType: null },
-      G8: { occupiedBy: null, occupiedByType: null },
-      H8: { occupiedBy: null, occupiedByType: null },
+      A8: { occupiedBy: 'rook', occupiedByType: 'black' },
+      B8: { occupiedBy: 'knight', occupiedByType: 'black' },
+      C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+      D8: { occupiedBy: 'queen', occupiedByType: 'black' },
+      E8: { occupiedBy: 'king', occupiedByType: 'black' },
+      F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+      G8: { occupiedBy: 'knight', occupiedByType: 'black' },
+      H8: { occupiedBy: 'rook', occupiedByType: 'black' },
 
       // Rank 7 (Black pawns)
-      A7: { occupiedBy: null, occupiedByType: null },
-      B7: { occupiedBy: null, occupiedByType: null },
-      C7: { occupiedBy: null, occupiedByType: null },
-      D7: { occupiedBy: null, occupiedByType: null },
-      E7: { occupiedBy: null, occupiedByType: null },
-      F7: { occupiedBy: null, occupiedByType: null },
-      G7: { occupiedBy: null, occupiedByType: null },
-      H7: { occupiedBy: null, occupiedByType: null },
+      A7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      B7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      C7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      D7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      E7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      F7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      G7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      H7: { occupiedBy: 'pawn', occupiedByType: 'black' },
 
       // Ranks 6 → 3 (empty squares)
       A6: { occupiedBy: null, occupiedByType: null },
       B6: { occupiedBy: null, occupiedByType: null },
-      C6: { occupiedBy: 'rook', occupiedByType: 'black' },
+      C6: { occupiedBy: null, occupiedByType: null },
       D6: { occupiedBy: null, occupiedByType: null },
       E6: { occupiedBy: null, occupiedByType: null },
       F6: { occupiedBy: null, occupiedByType: null },
@@ -110,122 +110,44 @@ export class AppComponent {
       G5: { occupiedBy: null, occupiedByType: null },
       H5: { occupiedBy: null, occupiedByType: null },
 
-      A4: { occupiedBy: 'king', occupiedByType: 'black' },
+      A4: { occupiedBy: null, occupiedByType: null },
       B4: { occupiedBy: null, occupiedByType: null },
       C4: { occupiedBy: null, occupiedByType: null },
       D4: { occupiedBy: null, occupiedByType: null },
-      E4: { occupiedBy: 'queen', occupiedByType: 'black' },
+      E4: { occupiedBy: null, occupiedByType: null },
       F4: { occupiedBy: null, occupiedByType: null },
       G4: { occupiedBy: null, occupiedByType: null },
       H4: { occupiedBy: null, occupiedByType: null },
 
-      A3: { occupiedBy: null, occupiedByType: null },
-      B3: { occupiedBy: 'rook', occupiedByType: 'black' },
+      A3: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      B3: { occupiedBy: null, occupiedByType: null },
       C3: { occupiedBy: null, occupiedByType: null },
       D3: { occupiedBy: null, occupiedByType: null },
       E3: { occupiedBy: null, occupiedByType: null },
       F3: { occupiedBy: null, occupiedByType: null },
       G3: { occupiedBy: null, occupiedByType: null },
-      H3: { occupiedBy: 'king', occupiedByType: 'white' },
+      H3: { occupiedBy: null, occupiedByType: null },
 
       // Rank 2 (White pawns)
-      A2: { occupiedBy: null, occupiedByType: null },
-      B2: { occupiedBy: null, occupiedByType: null },
-      C2: { occupiedBy: null, occupiedByType: null },
-      D2: { occupiedBy: null, occupiedByType: null },
-      E2: { occupiedBy: null, occupiedByType: null },
-      F2: { occupiedBy: null, occupiedByType: null },
+      A2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      B2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      C2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      D2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      E2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+      F2: { occupiedBy: 'pawn', occupiedByType: 'white' },
       G2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      H2: { occupiedBy: null, occupiedByType: null },
+      H2: { occupiedBy: 'pawn', occupiedByType: 'white' },
 
       // Rank 1 (White major pieces)
-      A1: { occupiedBy: null, occupiedByType: null },
-      B1: { occupiedBy: null, occupiedByType: null },
-      C1: { occupiedBy: null, occupiedByType: null },
-      D1: { occupiedBy: null, occupiedByType: null },
-      E1: { occupiedBy: null, occupiedByType: null },
-      F1: { occupiedBy: null, occupiedByType: null },
-      G1: { occupiedBy: null, occupiedByType: null },
-      H1: { occupiedBy: null, occupiedByType: null },
+      A1: { occupiedBy: 'rook', occupiedByType: 'white' },
+      B1: { occupiedBy: 'knight', occupiedByType: 'white' },
+      C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+      D1: { occupiedBy: 'queen', occupiedByType: 'white' },
+      E1: { occupiedBy: 'king', occupiedByType: 'white' },
+      F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+      G1: { occupiedBy: 'knight', occupiedByType: 'white' },
+      H1: { occupiedBy: 'rook', occupiedByType: 'white' },
     };
-    // {
-    //   // Rank 8 (Black major pieces)
-    //   A8: { occupiedBy: 'rook', occupiedByType: 'black' },
-    //   B8: { occupiedBy: 'knight', occupiedByType: 'black' },
-    //   C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
-    //   D8: { occupiedBy: 'queen', occupiedByType: 'black' },
-    //   E8: { occupiedBy: 'king', occupiedByType: 'black' },
-    //   F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
-    //   G8: { occupiedBy: 'knight', occupiedByType: 'black' },
-    //   H8: { occupiedBy: 'rook', occupiedByType: 'black' },
-
-    //   // Rank 7 (Black pawns)
-    //   A7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   B7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   C7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   D7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   E7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   F7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   G7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-    //   H7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-
-    //   // Ranks 6 → 3 (empty squares)
-    //   A6: { occupiedBy: null, occupiedByType: null },
-    //   B6: { occupiedBy: null, occupiedByType: null },
-    //   C6: { occupiedBy: null, occupiedByType: null },
-    //   D6: { occupiedBy: null, occupiedByType: null },
-    //   E6: { occupiedBy: null, occupiedByType: null },
-    //   F6: { occupiedBy: null, occupiedByType: null },
-    //   G6: { occupiedBy: null, occupiedByType: null },
-    //   H6: { occupiedBy: null, occupiedByType: null },
-
-    //   A5: { occupiedBy: null, occupiedByType: null },
-    //   B5: { occupiedBy: null, occupiedByType: null },
-    //   C5: { occupiedBy: null, occupiedByType: null },
-    //   D5: { occupiedBy: null, occupiedByType: null },
-    //   E5: { occupiedBy: null, occupiedByType: null },
-    //   F5: { occupiedBy: null, occupiedByType: null },
-    //   G5: { occupiedBy: null, occupiedByType: null },
-    //   H5: { occupiedBy: null, occupiedByType: null },
-
-    //   A4: { occupiedBy: null, occupiedByType: null },
-    //   B4: { occupiedBy: null, occupiedByType: null },
-    //   C4: { occupiedBy: null, occupiedByType: null },
-    //   D4: { occupiedBy: null, occupiedByType: null },
-    //   E4: { occupiedBy: null, occupiedByType: null },
-    //   F4: { occupiedBy: null, occupiedByType: null },
-    //   G4: { occupiedBy: null, occupiedByType: null },
-    //   H4: { occupiedBy: null, occupiedByType: null },
-
-    //   A3: { occupiedBy: null, occupiedByType: null },
-    //   B3: { occupiedBy: null, occupiedByType: null },
-    //   C3: { occupiedBy: null, occupiedByType: null },
-    //   D3: { occupiedBy: null, occupiedByType: null },
-    //   E3: { occupiedBy: null, occupiedByType: null },
-    //   F3: { occupiedBy: null, occupiedByType: null },
-    //   G3: { occupiedBy: null, occupiedByType: null },
-    //   H3: { occupiedBy: null, occupiedByType: null },
-
-    //   // Rank 2 (White pawns)
-    //   A2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   B2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   C2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   D2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   E2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   F2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   G2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-    //   H2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-
-    //   // Rank 1 (White major pieces)
-    //   A1: { occupiedBy: 'rook', occupiedByType: 'white' },
-    //   B1: { occupiedBy: 'knight', occupiedByType: 'white' },
-    //   C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
-    //   D1: { occupiedBy: 'queen', occupiedByType: 'white' },
-    //   E1: { occupiedBy: 'king', occupiedByType: 'white' },
-    //   F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
-    //   G1: { occupiedBy: 'knight', occupiedByType: 'white' },
-    //   H1: { occupiedBy: 'rook', occupiedByType: 'white' },
-    // };
   }
 
   checkIfWhiteBox(column, row) {
@@ -370,61 +292,115 @@ export class AppComponent {
     this.checkIfKingIsChecked();
 
     // Check If Game is Draw
-    this.checkIfGameIsDraw();
+    this.checkIfGameOver();
   }
 
-  checkIfGameIsDraw() {
+  checkIfGameOver() {
     let tempDraw = true;
 
-    if (this.playingAsWhite == true && this.whiteKingChecked == false) {
-      if (this.possibleWhiteMoves.length == 0) {
-        this.gameDraw = true;
-      } else {
-        for (const square in this.boardStatus) {
-          const pieceInfo = { name: square, ...this.boardStatus[square] };
+    if (this.playingAsWhite == true) {
+      if (this.whiteKingChecked == false) {
+        if (this.possibleWhiteMoves.length == 0) {
+          this.gameDraw = true;
+        } else {
+          for (const square in this.boardStatus) {
+            const pieceInfo = { name: square, ...this.boardStatus[square] };
 
-          if (pieceInfo.occupiedByType == 'white') {
-            let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
-            console.log(pieceInfo);
-            console.log(possibleMoves);
-            possibleMoves.map((move: any) => {
-              let isValid = this.checkIfValidMoveWithSelectedMove(
-                move,
-                pieceInfo
-              );
-              console.log(isValid);
-              if (isValid) {
-                tempDraw = false;
-              }
-            });
+            if (pieceInfo.occupiedByType == 'white') {
+              let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
+              console.log(pieceInfo);
+              console.log(possibleMoves);
+              possibleMoves.map((move: any) => {
+                let isValid = this.checkIfValidMoveWithSelectedMove(
+                  move,
+                  pieceInfo
+                );
+                console.log(isValid);
+                if (isValid) {
+                  tempDraw = false;
+                }
+              });
+            }
           }
+          this.gameDraw = tempDraw;
         }
-        this.gameDraw = tempDraw;
+      } else if (this.whiteKingChecked == true) {
+        if (this.possibleWhiteMoves.length == 0) {
+          this.blackWon = true;
+        } else {
+          for (const square in this.boardStatus) {
+            const pieceInfo = { name: square, ...this.boardStatus[square] };
+
+            if (pieceInfo.occupiedByType == 'white') {
+              let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
+              console.log(pieceInfo);
+              console.log(possibleMoves);
+              possibleMoves.map((move: any) => {
+                let isValid = this.checkIfValidMoveWithSelectedMove(
+                  move,
+                  pieceInfo
+                );
+                console.log(isValid);
+                if (isValid) {
+                  tempDraw = false;
+                }
+              });
+            }
+          }
+          this.blackWon = tempDraw;
+        }
       }
-    } else if (this.playingAsWhite == false && this.blackKingChecked == false) {
-      if (this.possibleBlackMoves.length == 0) {
-        this.gameDraw = true;
-      } else {
-        for (const square in this.boardStatus) {
-          const pieceInfo = { name: square, ...this.boardStatus[square] };
+    } else if (this.playingAsWhite == false) {
+      if (this.blackKingChecked == false) {
+        if (this.possibleBlackMoves.length == 0) {
+          this.gameDraw = true;
+        } else {
+          for (const square in this.boardStatus) {
+            const pieceInfo = { name: square, ...this.boardStatus[square] };
 
-          if (pieceInfo.occupiedByType == 'black') {
-            let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
-            console.log(pieceInfo);
-            console.log(possibleMoves);
-            possibleMoves.map((move: any) => {
-              let isValid = this.checkIfValidMoveWithSelectedMove(
-                move,
-                pieceInfo
-              );
-              console.log(isValid);
-              if (isValid) {
-                tempDraw = false;
-              }
-            });
+            if (pieceInfo.occupiedByType == 'black') {
+              let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
+              console.log(pieceInfo);
+              console.log(possibleMoves);
+              possibleMoves.map((move: any) => {
+                let isValid = this.checkIfValidMoveWithSelectedMove(
+                  move,
+                  pieceInfo
+                );
+                console.log(isValid);
+                if (isValid) {
+                  tempDraw = false;
+                }
+              });
+            }
           }
+          this.gameDraw = tempDraw;
         }
-        this.gameDraw = tempDraw;
+      } else if (this.blackKingChecked == true) {
+        if (this.possibleBlackMoves.length == 0) {
+          this.whiteWon = true;
+        } else {
+          for (const square in this.boardStatus) {
+            const pieceInfo = { name: square, ...this.boardStatus[square] };
+
+            if (pieceInfo.occupiedByType == 'black') {
+              let possibleMoves = this.getPossibleMovesForGameDraw(pieceInfo);
+              console.log(pieceInfo);
+              console.log(possibleMoves);
+              possibleMoves.map((move: any) => {
+                let isValid = this.checkIfValidMoveWithSelectedMove(
+                  move,
+                  pieceInfo
+                );
+                console.log(isValid);
+                if (isValid) {
+                  tempDraw = false;
+                }
+              });
+            }
+          }
+          this.whiteWon = tempDraw;
+        }
       }
     }
   }
@@ -460,18 +436,15 @@ export class AppComponent {
             this.selectedBox?.name
           ];
 
-        for (let i = 0; i < tempObject?.forward?.length; i++) {
-          if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-            tempMoves.push(tempObject?.forward[i]);
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-            this.selectedBox?.occupiedByType
-          ) {
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-            this.selectedBox?.occupiedByType
-          ) {
-          }
+        if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.forward[0]);
+        }
+
+        if (
+          this.boardStatus[tempObject?.forward[1]]?.occupiedBy == null &&
+          this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
+        ) {
+          tempMoves.push(tempObject?.forward[1]);
         }
 
         // Capture positions addition
@@ -501,18 +474,15 @@ export class AppComponent {
             this.selectedBox?.name
           ];
 
-        for (let i = 0; i < tempObject?.forward?.length; i++) {
-          if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-            tempMoves.push(tempObject?.forward[i]);
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-            this.selectedBox?.occupiedByType
-          ) {
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-            this.selectedBox?.occupiedByType
-          ) {
-          }
+        if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.forward[0]);
+        }
+
+        if (
+          this.boardStatus[tempObject?.forward[1]]?.occupiedBy == null &&
+          this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
+        ) {
+          tempMoves.push(tempObject?.forward[1]);
         }
 
         // Capture positions addition
@@ -796,18 +766,29 @@ export class AppComponent {
         tempObject =
           this.utilService.allPossiblePositions?.whitePawn?.[selectedBox?.name];
 
-        for (let i = 0; i < tempObject?.forward?.length; i++) {
-          if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-            tempMoves.push(tempObject?.forward[i]);
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-            selectedBox?.occupiedByType
-          ) {
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-            selectedBox?.occupiedByType
-          ) {
-          }
+        // for (let i = 0; i < tempObject?.forward?.length; i++) {
+        //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+        //     tempMoves.push(tempObject?.forward[i]);
+        //   } else if (
+        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+        //     selectedBox?.occupiedByType
+        //   ) {
+        //   } else if (
+        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+        //     selectedBox?.occupiedByType
+        //   ) {
+        //   }
+        // }
+
+        if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.forward[0]);
+        }
+
+        if (
+          this.boardStatus[tempObject?.forward[1]]?.occupiedBy == null &&
+          this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
+        ) {
+          tempMoves.push(tempObject?.forward[1]);
         }
 
         // Capture positions addition
@@ -833,18 +814,29 @@ export class AppComponent {
         tempObject =
           this.utilService.allPossiblePositions?.blackPawn?.[selectedBox?.name];
 
-        for (let i = 0; i < tempObject?.forward?.length; i++) {
-          if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-            tempMoves.push(tempObject?.forward[i]);
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-            selectedBox?.occupiedByType
-          ) {
-          } else if (
-            this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-            selectedBox?.occupiedByType
-          ) {
-          }
+        // for (let i = 0; i < tempObject?.forward?.length; i++) {
+        //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+        //     tempMoves.push(tempObject?.forward[i]);
+        //   } else if (
+        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+        //     selectedBox?.occupiedByType
+        //   ) {
+        //   } else if (
+        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+        //     selectedBox?.occupiedByType
+        //   ) {
+        //   }
+        // }
+
+        if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
+          tempMoves.push(tempObject?.forward[0]);
+        }
+
+        if (
+          this.boardStatus[tempObject?.forward[1]]?.occupiedBy == null &&
+          this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
+        ) {
+          tempMoves.push(tempObject?.forward[1]);
         }
 
         // Capture positions addition
@@ -1277,18 +1269,29 @@ export class AppComponent {
         } else if (this.boardStatus[box].occupiedBy == 'pawn') {
           tempObject = this.utilService.allPossiblePositions?.blackPawn?.[box];
 
-          for (let i = 0; i < tempObject?.forward?.length; i++) {
-            if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-              tempMoves.push(tempObject?.forward[i]);
-            } else if (
-              this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-              this.boardStatus[box]?.occupiedByType
-            ) {
-            } else if (
-              this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-              this.boardStatus[box]?.occupiedByType
-            ) {
-            }
+          // for (let i = 0; i < tempObject?.forward?.length; i++) {
+          //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+          //     tempMoves.push(tempObject?.forward[i]);
+          //   } else if (
+          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+          //     this.boardStatus[box]?.occupiedByType
+          //   ) {
+          //   } else if (
+          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+          //     this.boardStatus[box]?.occupiedByType
+          //   ) {
+          //   }
+          // }
+
+          if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
+            tempMoves.push(tempObject?.forward[0]);
+          }
+
+          if (
+            this.boardStatus[tempObject?.forward[1]]?.occupiedBy == null &&
+            this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
+          ) {
+            tempMoves.push(tempObject?.forward[1]);
           }
 
           // Capture positions addition
@@ -1530,18 +1533,29 @@ export class AppComponent {
           // if (this.boardStatus[box].occupiedByType == 'white') {
           tempObject = this.utilService.allPossiblePositions?.whitePawn?.[box];
 
-          for (let i = 0; i < tempObject?.forward?.length; i++) {
-            if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-              tempMoves.push(tempObject?.forward[i]);
-            } else if (
-              this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-              this.boardStatus[box]?.occupiedByType
-            ) {
-            } else if (
-              this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-              this.boardStatus[box]?.occupiedByType
-            ) {
-            }
+          // for (let i = 0; i < tempObject?.forward?.length; i++) {
+          //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
+          //     tempMoves.push(tempObject?.forward[i]);
+          //   } else if (
+          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
+          //     this.boardStatus[box]?.occupiedByType
+          //   ) {
+          //   } else if (
+          //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
+          //     this.boardStatus[box]?.occupiedByType
+          //   ) {
+          //   }
+          // }
+
+          if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
+            tempMoves.push(tempObject?.forward[0]);
+          }
+
+          if (
+            this.boardStatus[tempObject?.forward[1]]?.occupiedBy == null &&
+            this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null
+          ) {
+            tempMoves.push(tempObject?.forward[1]);
           }
 
           // Capture positions addition
