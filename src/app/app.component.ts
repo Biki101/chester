@@ -119,7 +119,7 @@ export class AppComponent {
       G4: { occupiedBy: null, occupiedByType: null },
       H4: { occupiedBy: null, occupiedByType: null },
 
-      A3: { occupiedBy: 'pawn', occupiedByType: 'black' },
+      A3: { occupiedBy: null, occupiedByType: null },
       B3: { occupiedBy: null, occupiedByType: null },
       C3: { occupiedBy: null, occupiedByType: null },
       D3: { occupiedBy: null, occupiedByType: null },
