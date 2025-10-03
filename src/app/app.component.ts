@@ -375,6 +375,7 @@ export class AppComponent {
 
   checkIfGameIsDraw() {
     let tempDraw = true;
+
     if (this.playingAsWhite == true && this.whiteKingChecked == false) {
       if (this.possibleWhiteMoves.length == 0) {
         this.gameDraw = true;
@@ -398,6 +399,7 @@ export class AppComponent {
             });
           }
         }
+        this.gameDraw = tempDraw;
       }
     } else if (this.playingAsWhite == false && this.blackKingChecked == false) {
       if (this.possibleBlackMoves.length == 0) {
@@ -422,9 +424,9 @@ export class AppComponent {
             });
           }
         }
+        this.gameDraw = tempDraw;
       }
     }
-    this.gameDraw = tempDraw;
   }
 
   getPossibleMoves() {
