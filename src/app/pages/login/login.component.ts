@@ -65,4 +65,10 @@ export class LoginComponent implements OnInit {
         this.toastr.error('Unable to Register!', 'Error');
       });
   }
+
+  onPlayAsGuest() {
+    this.authService.loginAnonymously().catch((error) => {
+      this.toastr.error('Unable to Play as Guest!', 'Error');
+    });
+  }
 }
