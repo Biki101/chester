@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { PassNPlayComponent } from './pages/pass-n-play/pass-n-play.component';
+import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
+import { AuthguardGuard } from './guard/authguard.guard';
 
 const routes: Routes = [
   {
@@ -11,6 +13,12 @@ const routes: Routes = [
   {
     path: 'pass-n-play',
     component: PassNPlayComponent,
+    canActivate: [AuthguardGuard],
+  },
+  {
+    path: 'welcome-page',
+    component: WelcomePageComponent,
+    canActivate: [AuthguardGuard],
   },
 ];
 

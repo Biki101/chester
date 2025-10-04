@@ -1,0 +1,23 @@
+<div class="w-[100vw] h-[100vh] welcome-container flex justify-center">
+  <div class="welcome-card w-[400px] h-[200px] shadow-sm shadow-[black]">
+    <div
+      class="w-1/2 flex justify-center items-center bg-black text-white rounded-[4px] cursor-pointer hover:text-[yellow]"
+    >
+      Pass N Play
+    </div>
+    <div class="w-1/2">Join Game</div>
+  </div>
+  <div
+    class="w-[400px] button signin-button hover:text-yellow cursor-pointer"
+    style="margin-top: 12px"
+  >
+    Create Room
+  </div>
+  <div
+    class="w-[400px] button signin-button hover:text-yellow cursor-pointer"
+    style="margin-top: 12px"
+    (click)="onSignOut()"
+  >
+    Sign Out
+  </div>
+</div>

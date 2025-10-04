@@ -14,9 +14,17 @@ import { firebaseConfig } from 'src/environments/environment';
 import { LoginComponent } from './pages/login/login.component';
 import { PassNPlayComponent } from './pages/pass-n-play/pass-n-play.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
+import { ToastrModule } from 'ngx-toastr';
+import { AuthserviceService } from './services/authservice.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
-  declarations: [AppComponent, LoginComponent, PassNPlayComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    PassNPlayComponent,
+    WelcomePageComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -29,6 +37,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     // ... other Angular modules
     FormsModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      // positionClass: 'toast-bottom-right',
+      // preventDuplicates: true,
+    }),
+
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

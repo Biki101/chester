@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UtilsService } from './services/utils.service';
 import { Router } from '@angular/router';
+import { AuthserviceService } from './services/authservice.service';
 interface BoardStatus {
   [square: string]: {
     occupiedBy: string | null;

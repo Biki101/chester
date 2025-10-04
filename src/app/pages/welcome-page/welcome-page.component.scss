@@ -1,0 +1,19 @@
+.welcome-container {
+  background-image: url("https://cdn.pixabay.com/photo/2016/05/19/18/16/chess-1403622_1280.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.welcome-card {
+  background-color: oklch(97% 0.001 106.424);
+  margin-top: 200px;
+  border-radius: 5px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+}
