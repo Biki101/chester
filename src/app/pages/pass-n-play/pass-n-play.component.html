@@ -1,0 +1,51 @@
+<div class="background">
+  <div class="chess-container">
+    <ng-container *ngFor="let row of activeRows">
+      <ng-container *ngFor="let column of activeColumns">
+        <div
+          class="chess-box"
+          [ngClass]="{
+            'white-box': checkIfWhiteBox(column, row),
+            'black-box': !checkIfWhiteBox(column, row),
+            'selected-box': checkIfSelected(column, row),
+            'moved-from': checkIfMovedFrom(column, row),
+            'moved-to': checkIfMovedTo(column, row),
+            checked: checkIfChecked(column, row)
+          }"
+          (click)="selectBox(column, row)"
+        >
+          <div
+            class="possible-move-indicator"
+            *ngIf="selectedBox != null && isPossibleMove(column, row)"
+          ></div>
+          <div>{{ column }}{{ row }}</div>
+          <div style="display: flex; justify-content: center">
+            <img
+              *ngIf="getStatus(column, row) != null"
+              [src]="'../assets/' + getStatus(column, row) + '.svg'"
+              class="pieces-on-board"
+              alt=""
+            />
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div class="game-draw-container" *ngIf="gameDraw">Game Draw</div>
+  <div class="won-container" *ngIf="whiteWon">
+    <img
+      src="../assets/white-king.svg"
+      style="width: 40px; height: 40px"
+      alt=""
+    />
+    <div>White Wins</div>
+  </div>
+  <div class="won-container" *ngIf="blackWon">
+    <img
+      src="../assets/black-king.svg"
+      style="width: 40px; height: 40px"
+      alt=""
+    />
+    <div>Black Wins</div>
+  </div>
+</div>
