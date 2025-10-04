@@ -76,4 +76,36 @@ export class AuthserviceService {
       throw err;
     }
   }
+
+  async signInWithGoogle() {
+    this.error = null;
+    try {
+      // 1. Create a new Google Auth Provider instance
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      // 2. Use signInWithPopup for the OAuth flow
+      const result = await this.auth.signInWithPopup(provider);
+
+      // Handle success
+      this.toastr.success('Signed In with Google Successfully!', 'Success', {
+        closeButton: true,
+      });
+      console.log('Google Signed In User UID:', result.user?.uid);
+      this.router.navigate(['/welcome-page']);
+      return result;
+    } catch (err: any) {
+      // Handle errors (e.g., user closes the popup or invalid configuration)
+      const errorMessage =
+        err.message || 'An unknown error occurred during Google sign-in.';
+
+      this.error = errorMessage;
+      console.error('Google Sign In error:', err);
+
+      this.toastr.error(errorMessage, 'Google Sign In Failed', {
+        closeButton: true,
+      });
+
+      throw err;
+    }
+  }
 }

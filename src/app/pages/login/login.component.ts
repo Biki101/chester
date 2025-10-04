@@ -71,4 +71,10 @@ export class LoginComponent implements OnInit {
       this.toastr.error('Unable to Play as Guest!', 'Error');
     });
   }
+
+  onGoogleSignIn() {
+    this.authService.signInWithGoogle().catch((error) => {
+      this.toastr.error('Unable to Sign in with Google!', 'Error');
+    });
+  }
 }
