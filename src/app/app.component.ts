@@ -17,6 +17,6 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.router.navigate(['pass-n-play']);
+    this.router.navigate(['login']);
   }
 }
