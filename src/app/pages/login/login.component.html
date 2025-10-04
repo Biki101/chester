@@ -1,3 +1,53 @@
-<div class="w-[100vw] h-[100vh] login-container">
-
+<div class="w-[100vw] h-[100vh] login-container flex justify-center">
+  <div class="login-card w-[400px] h-fit shadow-sm shadow-[black]">
+    <div class="form-group">
+      <div>Email</div>
+      <input
+        type="email"
+        placeholder="Enter your email."
+        class="form-control"
+      />
+    </div>
+    <div class="form-group">
+      <div>Password</div>
+      <input
+        type="password"
+        placeholder="Enter your password."
+        class="form-control"
+      />
+    </div>
+    <div class="form-group flex gap-[4px] items-center">
+      <input type="checkbox" />
+      <div class="font-[500] text-[12px]">Remember Me</div>
+    </div>
+    <div class="sigin-button button">Sign In</div>
+    <hr />
+    <div class="flex flex-col items-center" style="margin-top: 12px">
+      <div>or Sign in with</div>
+      <div class="flex justify-center gap-2" style="margin-top: 6px">
+        <div
+          class="flex items-center cursor-pointer hover:border-[1px] border-[black] gap-[4px] bg-white rounded-[4px]"
+          style="padding: 6px 12px"
+        >
+          <img
+            src="../../../assets/google-logo.svg"
+            style="width: 20px; height: 20px"
+            alt=""
+          />
+          Google
+        </div>
+        <div
+          class="flex items-center cursor-pointer hover:border-[1px] border-[black] gap-[4px] bg-white rounded-[4px]"
+          style="padding: 6px 12px"
+        >
+          <img
+            src="../../../assets/guest.svg"
+            style="width: 20px; height: 20px"
+            alt=""
+          />
+          Play as Guest
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
