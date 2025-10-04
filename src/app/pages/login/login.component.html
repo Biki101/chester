@@ -1,11 +1,15 @@
 <div class="w-[100vw] h-[100vh] login-container flex justify-center">
-  <div class="login-card w-[400px] h-fit shadow-sm shadow-[black]">
+  <div
+    class="login-card w-[400px] h-fit shadow-sm shadow-[black]"
+    [formGroup]="loginForm"
+  >
     <div class="form-group">
       <div>Email</div>
       <input
         type="email"
         placeholder="Enter your email."
         class="form-control"
+        formControlName="email"
       />
     </div>
     <div class="form-group">
@@ -13,6 +17,7 @@
       <input
         type="password"
         placeholder="Enter your password."
+        formControlName="password"
         class="form-control"
       />
     </div>
@@ -20,13 +25,26 @@
       <input type="checkbox" />
       <div class="font-[500] text-[12px]">Remember Me</div>
     </div>
-    <div class="sigin-button button">Sign In</div>
+    <div class="flex gap-2">
+      <div
+        class="flex-1 sigin-button button cursor-pointer hover:shadow-sm shadow-black"
+        (click)="onSignUp()"
+      >
+        Sign In As New User
+      </div>
+      <div
+        class="flex-1 sigin-button button cursor-pointer hover:shadow-sm shadow-black"
+        (click)="onSignIn()"
+      >
+        Sign In
+      </div>
+    </div>
     <hr />
     <div class="flex flex-col items-center" style="margin-top: 12px">
-      <div>or Sign in with</div>
+      <div class="text-[12px]">or Sign in with</div>
       <div class="flex justify-center gap-2" style="margin-top: 6px">
         <div
-          class="flex items-center cursor-pointer hover:border-[1px] border-[black] gap-[4px] bg-white rounded-[4px]"
+          class="flex items-center cursor-pointer hover:shadow-sm shadow-black hover:border-[1px] border-[black] gap-[4px] bg-white rounded-[4px]"
           style="padding: 6px 12px"
         >
           <img
@@ -37,7 +55,7 @@
           Google
         </div>
         <div
-          class="flex items-center cursor-pointer hover:border-[1px] border-[black] gap-[4px] bg-white rounded-[4px]"
+          class="flex items-center cursor-pointer hover:shadow-sm shadow-black hover:border-[1px] border-[black] gap-[4px] bg-white rounded-[4px]"
           style="padding: 6px 12px"
         >
           <img

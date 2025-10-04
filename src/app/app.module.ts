@@ -13,6 +13,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { firebaseConfig } from 'src/environments/environment';
 import { LoginComponent } from './pages/login/login.component';
 import { PassNPlayComponent } from './pages/pass-n-play/pass-n-play.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, PassNPlayComponent],
@@ -26,6 +27,8 @@ import { PassNPlayComponent } from './pages/pass-n-play/pass-n-play.component';
     AngularFirestoreModule,
     // AngularFireAnalyticsModule, // Uncomment if you are using Analytics
     // ... other Angular modules
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
