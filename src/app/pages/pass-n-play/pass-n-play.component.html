@@ -1,9 +1,9 @@
 <div class="background">
   <div>
     <div class="flex justify-center gap-[24px]" style="margin-bottom: 12px">
-      <div class="text-white">Welcome: {{ user.email }}</div>
+      <div class="text-white">Welcome: {{ user.email || "Anonymous" }}</div>
       <div
-        class="w-[25px] h-[25px] bg-white flex justify-center items-center cursor-pointer"
+        class="w-[25px] h-[25px] bg-white hover:bg-[yellow] flex justify-center items-center cursor-pointer"
         title="Quit Game"
         (click)="onQuitGame()"
       >
@@ -47,6 +47,26 @@
           </div>
         </ng-container>
       </ng-container>
+    </div>
+    <div
+      class="bg-white w-fit flex gap-[4px] rounded-[4px] hover:bg-[yellow] cursor-pointer"
+      style="
+        margin-top: 12px;
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      "
+      onclick="window.open('https://github.com/Biki101/chester/issues', '_blank')"
+    >
+      <img
+        src="../../../assets/info.svg"
+        width="18px"
+        height="18px"
+        alt=""
+        srcset=""
+      />
+      <div class="text-black text-[12px]">Report a problem</div>
     </div>
   </div>
   <div class="game-draw-container" *ngIf="gameDraw">Game Draw</div>
