@@ -1,35 +1,53 @@
 <div class="background">
-  <div class="chess-container">
-    <ng-container *ngFor="let row of activeRows">
-      <ng-container *ngFor="let column of activeColumns">
-        <div
-          class="chess-box"
-          [ngClass]="{
-            'white-box': checkIfWhiteBox(column, row),
-            'black-box': !checkIfWhiteBox(column, row),
-            'selected-box': checkIfSelected(column, row),
-            'moved-from': checkIfMovedFrom(column, row),
-            'moved-to': checkIfMovedTo(column, row),
-            checked: checkIfChecked(column, row)
-          }"
-          (click)="selectBox(column, row)"
-        >
+  <div>
+    <div class="flex justify-center gap-[24px]" style="margin-bottom: 12px">
+      <div class="text-white">Welcome: {{ user.email }}</div>
+      <div
+        class="w-[25px] h-[25px] bg-white flex justify-center items-center cursor-pointer"
+        title="Quit Game"
+        (click)="onQuitGame()"
+      >
+        <img
+          src="../../../assets/flag.svg"
+          width="20px"
+          height="20px"
+          alt=""
+          srcset=""
+        />
+      </div>
+    </div>
+    <div class="chess-container">
+      <ng-container *ngFor="let row of activeRows">
+        <ng-container *ngFor="let column of activeColumns">
           <div
-            class="possible-move-indicator"
-            *ngIf="selectedBox != null && isPossibleMove(column, row)"
-          ></div>
-          <div>{{ column }}{{ row }}</div>
-          <div style="display: flex; justify-content: center">
-            <img
-              *ngIf="getStatus(column, row) != null"
-              [src]="'../assets/' + getStatus(column, row) + '.svg'"
-              class="pieces-on-board"
-              alt=""
-            />
+            class="chess-box"
+            [ngClass]="{
+              'white-box': checkIfWhiteBox(column, row),
+              'black-box': !checkIfWhiteBox(column, row),
+              'selected-box': checkIfSelected(column, row),
+              'moved-from': checkIfMovedFrom(column, row),
+              'moved-to': checkIfMovedTo(column, row),
+              checked: checkIfChecked(column, row)
+            }"
+            (click)="selectBox(column, row)"
+          >
+            <div
+              class="possible-move-indicator"
+              *ngIf="selectedBox != null && isPossibleMove(column, row)"
+            ></div>
+            <div>{{ column }}{{ row }}</div>
+            <div style="display: flex; justify-content: center">
+              <img
+                *ngIf="getStatus(column, row) != null"
+                [src]="'../assets/' + getStatus(column, row) + '.svg'"
+                class="pieces-on-board"
+                alt=""
+              />
+            </div>
           </div>
-        </div>
+        </ng-container>
       </ng-container>
-    </ng-container>
+    </div>
   </div>
   <div class="game-draw-container" *ngIf="gameDraw">Game Draw</div>
   <div class="won-container" *ngIf="whiteWon">
@@ -47,5 +65,12 @@
       alt=""
     />
     <div>Black Wins</div>
+  </div>
+  <div
+    class="button lobby-container cursor-pointer"
+    *ngIf="gameDraw || whiteWon || blackWon"
+    (click)="goBackToLobby()"
+  >
+    Go Back to Lobby
   </div>
 </div>

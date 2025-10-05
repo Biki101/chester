@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { UtilsService } from '../../services/utils.service';
 import { Router } from '@angular/router';
+import firebase from 'firebase/app';
+import { AuthserviceService } from 'src/app/services/authservice.service';
+import { Subscription } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 interface BoardStatus {
   [square: string]: {
@@ -15,6 +19,7 @@ interface BoardStatus {
   styleUrls: ['./pass-n-play.component.scss'],
 })
 export class PassNPlayComponent implements OnInit {
+  user: firebase.User | null;
   playingAsWhite = true;
   columnsWhite = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   rowsWhite = ['8', '7', '6', '5', '4', '3', '2', '1'];
@@ -134,9 +139,21 @@ export class PassNPlayComponent implements OnInit {
 
   gameToResume = false;
 
-  constructor(private utilService: UtilsService) {
+  private authSubscription: Subscription;
+
+  constructor(
+    private utilService: UtilsService,
+    private auth: AngularFireAuth,
+    private authService: AuthserviceService,
+    private router: Router
+  ) {
     this.boardStatus = utilService.boardStatus;
     this.boardAsWhite = utilService.boardAsWhite;
+
+    // Getting User
+    this.authSubscription = this.auth.authState.subscribe((user) => {
+      this.user = user; // The 'user' here is the actual user object (or null)
+    });
   }
 
   ngOnInit() {
@@ -180,139 +197,108 @@ export class PassNPlayComponent implements OnInit {
             boardStatusString
           ) as BoardStatus;
           this.boardStatus = parsedBoardStatus;
-          console.log(this.boardStatus, 'boardStatus');
         } catch (e) {
           console.error('Failed to parse boardStatus from localStorage', e);
         }
       }
 
       if (JSON.parse(playingAsWhite) != null) {
-        console.log(JSON.parse(playingAsWhite), 'playingAsWhite');
         this.playingAsWhite = JSON.parse(playingAsWhite);
       }
 
       if (JSON.parse(A1RookKingCastleWhite) != null) {
-        console.log(JSON.parse(A1RookKingCastleWhite), 'A1RookKingCastleWhite');
         this.A1RookKingCastleWhite = JSON.parse(A1RookKingCastleWhite);
       }
 
       if (JSON.parse(H1RookKingCastleWhite) != null) {
-        console.log(JSON.parse(H1RookKingCastleWhite), 'H1RookKingCastleWhite');
         this.H1RookKingCastleWhite = JSON.parse(H1RookKingCastleWhite);
       }
 
       if (JSON.parse(A8RookKingCastleBlack) != null) {
-        console.log(JSON.parse(A8RookKingCastleBlack), 'A8RookKingCastleBlack');
         this.A8RookKingCastleBlack = JSON.parse(A8RookKingCastleBlack);
       }
 
       if (JSON.parse(H8RookKingCastleBlack) != null) {
-        console.log(JSON.parse(H8RookKingCastleBlack), 'H8RookKingCastleBlack');
         this.H8RookKingCastleBlack = JSON.parse(H8RookKingCastleBlack);
       }
 
       if (selectedBox != null) {
-        console.log(selectedBox, 'selectedBox');
         this.selectedBox = selectedBox;
       }
 
       if (JSON.parse(possibleMoves) != null) {
-        console.log(JSON.parse(possibleMoves), 'possibleMoves');
         this.possibleMoves = JSON.parse(possibleMoves);
       }
 
       if (JSON.parse(possibleBlackMoves) != null) {
-        console.log(JSON.parse(possibleBlackMoves), 'possibleBlackMoves');
         this.possibleBlackMoves = JSON.parse(possibleBlackMoves);
       }
 
       if (JSON.parse(possibleWhiteMoves) != null) {
-        console.log(JSON.parse(possibleWhiteMoves), 'possibleWhiteMoves');
         this.possibleWhiteMoves = JSON.parse(possibleWhiteMoves);
       }
 
       if (JSON.parse(pawnBlackForwardMoves) != null) {
-        console.log(JSON.parse(pawnBlackForwardMoves), 'pawnBlackForwardMoves');
         this.pawnBlackForwardMoves = JSON.parse(pawnBlackForwardMoves);
       }
 
       if (JSON.parse(pawnWhiteForwardMoves) != null) {
-        console.log(JSON.parse(pawnWhiteForwardMoves), 'pawnWhiteForwardMoves');
         this.pawnWhiteForwardMoves = JSON.parse(pawnWhiteForwardMoves);
       }
 
       if (JSON.parse(pawnBlackForwardMovesRepeated) != null) {
-        console.log(
-          JSON.parse(pawnBlackForwardMovesRepeated),
-          'pawnBlackForwardMovesRepeated'
-        );
         this.pawnBlackForwardMovesRepeated = JSON.parse(
           pawnBlackForwardMovesRepeated
         );
       }
 
       if (JSON.parse(pawnWhiteForwardMovesRepeated) != null) {
-        console.log(
-          JSON.parse(pawnWhiteForwardMovesRepeated),
-          'pawnWhiteForwardMovesRepeated'
-        );
         this.pawnWhiteForwardMovesRepeated = JSON.parse(
           pawnWhiteForwardMovesRepeated
         );
       }
 
       if (JSON.parse(blackKingPosition) != null) {
-        console.log(JSON.parse(blackKingPosition), 'blackKingPosition');
         this.blackKingPosition = JSON.parse(blackKingPosition);
       }
 
       if (JSON.parse(whiteKingPosition) != null) {
-        console.log(JSON.parse(whiteKingPosition), 'whiteKingPosition');
         this.whiteKingPosition = JSON.parse(whiteKingPosition);
       }
 
       if (JSON.parse(movedFrom) != null) {
-        console.log(JSON.parse(movedFrom), 'movedFrom');
         this.movedFrom = JSON.parse(movedFrom);
       }
 
       if (JSON.parse(movedTo) != null) {
-        console.log(JSON.parse(movedTo), 'movedTo');
         this.movedTo = JSON.parse(movedTo);
       }
 
       if (JSON.parse(gameDraw) != null) {
-        console.log(JSON.parse(gameDraw), 'gameDraw');
         this.gameDraw = JSON.parse(gameDraw);
       }
 
       if (JSON.parse(whiteWon) != null) {
-        console.log(JSON.parse(whiteWon), 'whiteWon');
         this.whiteWon = JSON.parse(whiteWon);
       }
 
       if (JSON.parse(blackWon) != null) {
-        console.log(JSON.parse(blackWon), 'blackWon');
         this.blackWon = JSON.parse(blackWon);
       }
 
       if (JSON.parse(capturedWhiteList) != null) {
-        console.log(JSON.parse(capturedWhiteList), 'capturedWhiteList');
         this.capturedWhiteList = JSON.parse(capturedWhiteList);
       }
 
       if (JSON.parse(capturedBlackList) != null) {
-        console.log(JSON.parse(capturedBlackList), 'capturedBlackList');
         this.capturedBlackList = JSON.parse(capturedBlackList);
       }
 
       if (JSON.parse(blackKingChecked) != null) {
-        console.log(JSON.parse(blackKingChecked), 'blackKingChecked');
         this.blackKingChecked = JSON.parse(blackKingChecked);
       }
 
       if (JSON.parse(whiteKingChecked) != null) {
-        console.log(JSON.parse(whiteKingChecked), 'whiteKingChecked');
         this.whiteKingChecked = JSON.parse(whiteKingChecked);
       }
     } else {
@@ -3270,5 +3256,21 @@ export class PassNPlayComponent implements OnInit {
     }
 
     return validMove;
+  }
+
+  onQuitGame() {
+    if (this.playingAsWhite) {
+      this.blackWon = true;
+      localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+    } else {
+      this.whiteWon = true;
+      localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+    }
+  }
+
+  goBackToLobby() {
+    this.gameToResume = false;
+    localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+    this.router.navigate(['welcome-page']);
   }
 }
