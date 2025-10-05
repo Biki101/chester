@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UtilsService } from './services/utils.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from './services/authservice.service';
 interface BoardStatus {
   [square: string]: {
@@ -17,7 +17,5 @@ interface BoardStatus {
 export class AppComponent {
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.router.navigate(['login']);
-  }
+  ngOnInit() {}
 }

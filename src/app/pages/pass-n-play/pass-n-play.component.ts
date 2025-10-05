@@ -27,9 +27,86 @@ export class PassNPlayComponent implements OnInit {
   A8RookKingCastleBlack = true;
   H8RookKingCastleBlack = true;
 
-  boardStatus: BoardStatus = null;
+  boardStatus: BoardStatus = {
+    // Rank 8 (Black major pieces)
+    A8: { occupiedBy: 'rook', occupiedByType: 'black' },
+    B8: { occupiedBy: 'knight', occupiedByType: 'black' },
+    C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+    D8: { occupiedBy: 'queen', occupiedByType: 'black' },
+    E8: { occupiedBy: 'king', occupiedByType: 'black' },
+    F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+    G8: { occupiedBy: 'knight', occupiedByType: 'black' },
+    H8: { occupiedBy: 'rook', occupiedByType: 'black' },
 
-  selectedBox = null;
+    // Rank 7 (Black pawns)
+    A7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    B7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    C7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    D7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    E7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    F7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    G7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    H7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+
+    // Ranks 6 → 3 (empty squares)
+    A6: { occupiedBy: null, occupiedByType: null },
+    B6: { occupiedBy: null, occupiedByType: null },
+    C6: { occupiedBy: null, occupiedByType: null },
+    D6: { occupiedBy: null, occupiedByType: null },
+    E6: { occupiedBy: null, occupiedByType: null },
+    F6: { occupiedBy: null, occupiedByType: null },
+    G6: { occupiedBy: null, occupiedByType: null },
+    H6: { occupiedBy: null, occupiedByType: null },
+
+    A5: { occupiedBy: null, occupiedByType: null },
+    B5: { occupiedBy: null, occupiedByType: null },
+    C5: { occupiedBy: null, occupiedByType: null },
+    D5: { occupiedBy: null, occupiedByType: null },
+    E5: { occupiedBy: null, occupiedByType: null },
+    F5: { occupiedBy: null, occupiedByType: null },
+    G5: { occupiedBy: null, occupiedByType: null },
+    H5: { occupiedBy: null, occupiedByType: null },
+
+    A4: { occupiedBy: null, occupiedByType: null },
+    B4: { occupiedBy: null, occupiedByType: null },
+    C4: { occupiedBy: null, occupiedByType: null },
+    D4: { occupiedBy: null, occupiedByType: null },
+    E4: { occupiedBy: null, occupiedByType: null },
+    F4: { occupiedBy: null, occupiedByType: null },
+    G4: { occupiedBy: null, occupiedByType: null },
+    H4: { occupiedBy: null, occupiedByType: null },
+
+    A3: { occupiedBy: null, occupiedByType: null },
+    B3: { occupiedBy: null, occupiedByType: null },
+    C3: { occupiedBy: null, occupiedByType: null },
+    D3: { occupiedBy: null, occupiedByType: null },
+    E3: { occupiedBy: null, occupiedByType: null },
+    F3: { occupiedBy: null, occupiedByType: null },
+    G3: { occupiedBy: null, occupiedByType: null },
+    H3: { occupiedBy: null, occupiedByType: null },
+
+    // Rank 2 (White pawns)
+    A2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    B2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    C2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    D2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    E2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    F2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    G2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    H2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+
+    // Rank 1 (White major pieces)
+    A1: { occupiedBy: 'rook', occupiedByType: 'white' },
+    B1: { occupiedBy: 'knight', occupiedByType: 'white' },
+    C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+    D1: { occupiedBy: 'queen', occupiedByType: 'white' },
+    E1: { occupiedBy: 'king', occupiedByType: 'white' },
+    F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+    G1: { occupiedBy: 'knight', occupiedByType: 'white' },
+    H1: { occupiedBy: 'rook', occupiedByType: 'white' },
+  };
+
+  selectedBox: any = null;
 
   possibleMoves: string[] = [];
   possibleBlackMoves: string[] = [];
@@ -49,19 +126,199 @@ export class PassNPlayComponent implements OnInit {
   whiteWon = false;
   blackWon = false;
 
-  constructor(private utilService: UtilsService) {
-    this.boardStatus = utilService.boardStatus;
-    this.boardAsWhite = utilService.boardAsWhite;
-  }
-
   capturedWhiteList: any = [];
   capturedBlackList: any = [];
 
   blackKingChecked = false;
   whiteKingChecked = false;
 
+  gameToResume = false;
+
+  constructor(private utilService: UtilsService) {
+    this.boardStatus = utilService.boardStatus;
+    this.boardAsWhite = utilService.boardAsWhite;
+  }
+
   ngOnInit() {
-    this.initializeBoard();
+    // Resume Game with local storage
+    let gameToResume = localStorage.getItem('gameToResume');
+    if (JSON.parse(gameToResume)) {
+      // Resume game
+      let boardStatusString = localStorage.getItem('boardStatus');
+      let playingAsWhite = localStorage.getItem('playingAsWhite');
+      let A1RookKingCastleWhite = localStorage.getItem('A1RookKingCastleWhite');
+      let H1RookKingCastleWhite = localStorage.getItem('H1RookKingCastleWhite');
+      let A8RookKingCastleBlack = localStorage.getItem('A8RookKingCastleBlack');
+      let H8RookKingCastleBlack = localStorage.getItem('H8RookKingCastleBlack');
+      let selectedBox = localStorage.getItem('selectedBox');
+      let possibleMoves = localStorage.getItem('possibleMoves');
+      let possibleBlackMoves = localStorage.getItem('possibleBlackMoves');
+      let possibleWhiteMoves = localStorage.getItem('possibleWhiteMoves');
+      let pawnBlackForwardMoves = localStorage.getItem('pawnBlackForwardMoves');
+      let pawnWhiteForwardMoves = localStorage.getItem('pawnWhiteForwardMoves');
+      let pawnBlackForwardMovesRepeated = localStorage.getItem(
+        'pawnBlackForwardMovesRepeated'
+      );
+      let pawnWhiteForwardMovesRepeated = localStorage.getItem(
+        'pawnWhiteForwardMovesRepeated'
+      );
+      let blackKingPosition = localStorage.getItem('blackKingPosition');
+      let whiteKingPosition = localStorage.getItem('whiteKingPosition');
+      let movedFrom = localStorage.getItem('movedFrom');
+      let movedTo = localStorage.getItem('movedTo');
+      let gameDraw = localStorage.getItem('gameDraw');
+      let whiteWon = localStorage.getItem('whiteWon');
+      let blackWon = localStorage.getItem('blackWon');
+      let capturedWhiteList = localStorage.getItem('capturedWhiteList');
+      let capturedBlackList = localStorage.getItem('capturedBlackList');
+      let blackKingChecked = localStorage.getItem('blackKingChecked');
+      let whiteKingChecked = localStorage.getItem('whiteKingChecked');
+
+      if (boardStatusString !== null) {
+        try {
+          const parsedBoardStatus = JSON.parse(
+            boardStatusString
+          ) as BoardStatus;
+          this.boardStatus = parsedBoardStatus;
+          console.log(this.boardStatus, 'boardStatus');
+        } catch (e) {
+          console.error('Failed to parse boardStatus from localStorage', e);
+        }
+      }
+
+      if (JSON.parse(playingAsWhite) != null) {
+        console.log(JSON.parse(playingAsWhite), 'playingAsWhite');
+        this.playingAsWhite = JSON.parse(playingAsWhite);
+      }
+
+      if (JSON.parse(A1RookKingCastleWhite) != null) {
+        console.log(JSON.parse(A1RookKingCastleWhite), 'A1RookKingCastleWhite');
+        this.A1RookKingCastleWhite = JSON.parse(A1RookKingCastleWhite);
+      }
+
+      if (JSON.parse(H1RookKingCastleWhite) != null) {
+        console.log(JSON.parse(H1RookKingCastleWhite), 'H1RookKingCastleWhite');
+        this.H1RookKingCastleWhite = JSON.parse(H1RookKingCastleWhite);
+      }
+
+      if (JSON.parse(A8RookKingCastleBlack) != null) {
+        console.log(JSON.parse(A8RookKingCastleBlack), 'A8RookKingCastleBlack');
+        this.A8RookKingCastleBlack = JSON.parse(A8RookKingCastleBlack);
+      }
+
+      if (JSON.parse(H8RookKingCastleBlack) != null) {
+        console.log(JSON.parse(H8RookKingCastleBlack), 'H8RookKingCastleBlack');
+        this.H8RookKingCastleBlack = JSON.parse(H8RookKingCastleBlack);
+      }
+
+      if (selectedBox != null) {
+        console.log(selectedBox, 'selectedBox');
+        this.selectedBox = selectedBox;
+      }
+
+      if (JSON.parse(possibleMoves) != null) {
+        console.log(JSON.parse(possibleMoves), 'possibleMoves');
+        this.possibleMoves = JSON.parse(possibleMoves);
+      }
+
+      if (JSON.parse(possibleBlackMoves) != null) {
+        console.log(JSON.parse(possibleBlackMoves), 'possibleBlackMoves');
+        this.possibleBlackMoves = JSON.parse(possibleBlackMoves);
+      }
+
+      if (JSON.parse(possibleWhiteMoves) != null) {
+        console.log(JSON.parse(possibleWhiteMoves), 'possibleWhiteMoves');
+        this.possibleWhiteMoves = JSON.parse(possibleWhiteMoves);
+      }
+
+      if (JSON.parse(pawnBlackForwardMoves) != null) {
+        console.log(JSON.parse(pawnBlackForwardMoves), 'pawnBlackForwardMoves');
+        this.pawnBlackForwardMoves = JSON.parse(pawnBlackForwardMoves);
+      }
+
+      if (JSON.parse(pawnWhiteForwardMoves) != null) {
+        console.log(JSON.parse(pawnWhiteForwardMoves), 'pawnWhiteForwardMoves');
+        this.pawnWhiteForwardMoves = JSON.parse(pawnWhiteForwardMoves);
+      }
+
+      if (JSON.parse(pawnBlackForwardMovesRepeated) != null) {
+        console.log(
+          JSON.parse(pawnBlackForwardMovesRepeated),
+          'pawnBlackForwardMovesRepeated'
+        );
+        this.pawnBlackForwardMovesRepeated = JSON.parse(
+          pawnBlackForwardMovesRepeated
+        );
+      }
+
+      if (JSON.parse(pawnWhiteForwardMovesRepeated) != null) {
+        console.log(
+          JSON.parse(pawnWhiteForwardMovesRepeated),
+          'pawnWhiteForwardMovesRepeated'
+        );
+        this.pawnWhiteForwardMovesRepeated = JSON.parse(
+          pawnWhiteForwardMovesRepeated
+        );
+      }
+
+      if (JSON.parse(blackKingPosition) != null) {
+        console.log(JSON.parse(blackKingPosition), 'blackKingPosition');
+        this.blackKingPosition = JSON.parse(blackKingPosition);
+      }
+
+      if (JSON.parse(whiteKingPosition) != null) {
+        console.log(JSON.parse(whiteKingPosition), 'whiteKingPosition');
+        this.whiteKingPosition = JSON.parse(whiteKingPosition);
+      }
+
+      if (JSON.parse(movedFrom) != null) {
+        console.log(JSON.parse(movedFrom), 'movedFrom');
+        this.movedFrom = JSON.parse(movedFrom);
+      }
+
+      if (JSON.parse(movedTo) != null) {
+        console.log(JSON.parse(movedTo), 'movedTo');
+        this.movedTo = JSON.parse(movedTo);
+      }
+
+      if (JSON.parse(gameDraw) != null) {
+        console.log(JSON.parse(gameDraw), 'gameDraw');
+        this.gameDraw = JSON.parse(gameDraw);
+      }
+
+      if (JSON.parse(whiteWon) != null) {
+        console.log(JSON.parse(whiteWon), 'whiteWon');
+        this.whiteWon = JSON.parse(whiteWon);
+      }
+
+      if (JSON.parse(blackWon) != null) {
+        console.log(JSON.parse(blackWon), 'blackWon');
+        this.blackWon = JSON.parse(blackWon);
+      }
+
+      if (JSON.parse(capturedWhiteList) != null) {
+        console.log(JSON.parse(capturedWhiteList), 'capturedWhiteList');
+        this.capturedWhiteList = JSON.parse(capturedWhiteList);
+      }
+
+      if (JSON.parse(capturedBlackList) != null) {
+        console.log(JSON.parse(capturedBlackList), 'capturedBlackList');
+        this.capturedBlackList = JSON.parse(capturedBlackList);
+      }
+
+      if (JSON.parse(blackKingChecked) != null) {
+        console.log(JSON.parse(blackKingChecked), 'blackKingChecked');
+        this.blackKingChecked = JSON.parse(blackKingChecked);
+      }
+
+      if (JSON.parse(whiteKingChecked) != null) {
+        console.log(JSON.parse(whiteKingChecked), 'whiteKingChecked');
+        this.whiteKingChecked = JSON.parse(whiteKingChecked);
+      }
+    } else {
+      // Initialize Board
+      this.initializeBoard();
+    }
   }
 
   get activeRows() {
@@ -172,11 +429,11 @@ export class PassNPlayComponent implements OnInit {
   }
 
   getStatus(column: any, row: any) {
-    return this.boardStatus[`${column}${row}`].occupiedByType != null &&
-      this.boardStatus[`${column}${row}`].occupiedBy != null
-      ? this.boardStatus[`${column}${row}`].occupiedByType +
+    return this.boardStatus[`${column}${row}`]?.occupiedByType != null &&
+      this.boardStatus[`${column}${row}`]?.occupiedBy != null
+      ? this.boardStatus[`${column}${row}`]?.occupiedByType +
           '-' +
-          this.boardStatus[`${column}${row}`].occupiedBy
+          this.boardStatus[`${column}${row}`]?.occupiedBy
       : null;
   }
 
@@ -196,6 +453,7 @@ export class PassNPlayComponent implements OnInit {
       // If clicking the same selected piece → deselect
       if (this.selectedBox?.name === square) {
         this.selectedBox = null;
+        localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
       } else {
         // Select only if it’s the player’s turn and piece matches color
         if (
@@ -207,6 +465,7 @@ export class PassNPlayComponent implements OnInit {
             occupiedBy: boardBox.occupiedBy,
             occupiedByType: boardBox.occupiedByType,
           };
+          localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
           this.getPossibleMoves();
         }
       }
@@ -230,6 +489,12 @@ export class PassNPlayComponent implements OnInit {
   }
 
   movePieceFromSourceToTarget(square: string) {
+    // Game is Started
+    if (this.gameToResume == false) {
+      this.gameToResume = true;
+      localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+    }
+
     // Allowing only valid moves if King is checked
     let validMove = this.checkIfValidMove(square);
     if (validMove == false) {
@@ -241,15 +506,25 @@ export class PassNPlayComponent implements OnInit {
       occupiedBy: null,
       occupiedByType: null,
     };
+    localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
 
     this.movedFrom = this.selectedBox.name;
+    localStorage.setItem('movedFrom', JSON.stringify(this.movedFrom));
 
     // Check if Capturing or Just Moving
     if (this.boardStatus[square].occupiedBy != null) {
       if (this.boardStatus[square].occupiedByType == 'white') {
         this.capturedWhiteList.push(this.boardStatus[square]);
+        localStorage.setItem(
+          'capturedWhiteList',
+          JSON.stringify(this.capturedWhiteList)
+        );
       } else {
         this.capturedBlackList.push(this.boardStatus[square]);
+        localStorage.setItem(
+          'capturedBlackList',
+          JSON.stringify(this.capturedBlackList)
+        );
       }
     }
 
@@ -258,6 +533,7 @@ export class PassNPlayComponent implements OnInit {
       occupiedBy: this.selectedBox.occupiedBy,
       occupiedByType: this.selectedBox.occupiedByType,
     };
+    localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
 
     // checking if king
     if (
@@ -265,14 +541,23 @@ export class PassNPlayComponent implements OnInit {
       this.selectedBox.occupiedByType == 'black'
     ) {
       this.blackKingPosition = square;
+      localStorage.setItem(
+        'blackKingPosition',
+        JSON.stringify(this.blackKingPosition)
+      );
     } else if (
       this.selectedBox.occupiedBy == 'king' &&
       this.selectedBox.occupiedByType == 'white'
     ) {
       this.whiteKingPosition = square;
+      localStorage.setItem(
+        'whiteKingPosition',
+        JSON.stringify(this.whiteKingPosition)
+      );
     }
 
     this.movedTo = square;
+    localStorage.setItem('movedTo', JSON.stringify(this.movedTo));
 
     // check if pawn has reached the opponent end
     this.checkIfPawnHasReachedOpponentsEnd(this.movedTo);
@@ -282,10 +567,13 @@ export class PassNPlayComponent implements OnInit {
 
     // change turn
     this.playingAsWhite = !this.playingAsWhite;
+    localStorage.setItem('playingAsWhite', JSON.stringify(this.playingAsWhite));
 
     // Reset state
     this.selectedBox = null;
     this.possibleMoves = [];
+    localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
+    localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
 
     // Geting All Possible Black and White Moves
     this.getAllPossibleBlackMoves();
@@ -305,6 +593,7 @@ export class PassNPlayComponent implements OnInit {
       if (this.whiteKingChecked == false) {
         if (this.possibleWhiteMoves.length == 0) {
           this.gameDraw = true;
+          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -324,10 +613,12 @@ export class PassNPlayComponent implements OnInit {
             }
           }
           this.gameDraw = tempDraw;
+          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
         }
       } else if (this.whiteKingChecked == true) {
         if (this.possibleWhiteMoves.length == 0) {
           this.blackWon = true;
+          localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -346,12 +637,14 @@ export class PassNPlayComponent implements OnInit {
             }
           }
           this.blackWon = tempDraw;
+          localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
         }
       }
     } else if (this.playingAsWhite == false) {
       if (this.blackKingChecked == false) {
         if (this.possibleBlackMoves.length == 0) {
           this.gameDraw = true;
+          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -370,10 +663,12 @@ export class PassNPlayComponent implements OnInit {
             }
           }
           this.gameDraw = tempDraw;
+          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
         }
       } else if (this.blackKingChecked == true) {
         if (this.possibleBlackMoves.length == 0) {
           this.whiteWon = true;
+          localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -393,6 +688,7 @@ export class PassNPlayComponent implements OnInit {
             }
           }
           this.whiteWon = tempDraw;
+          localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
         }
       }
     }
@@ -717,10 +1013,6 @@ export class PassNPlayComponent implements OnInit {
     // Making king's Safe possible moves
     if (this.selectedBox.occupiedBy == 'king') {
       if (this.selectedBox.occupiedByType == 'black') {
-        // tempMoves = tempMoves.filter(
-        //   (item: any) => !this.possibleWhiteMoves.includes(item)
-        // );
-
         tempMoves = tempMoves.filter((move: any) => {
           return (
             !this.possibleWhiteMoves.includes(move) ||
@@ -728,10 +1020,6 @@ export class PassNPlayComponent implements OnInit {
           );
         });
       } else {
-        // tempMoves = tempMoves.filter(
-        //   (item: any) => !this.possibleBlackMoves.includes(item)
-        // );
-
         tempMoves = tempMoves.filter((move: any) => {
           return (
             !this.possibleBlackMoves.includes(move) ||
@@ -742,6 +1030,7 @@ export class PassNPlayComponent implements OnInit {
     }
 
     this.possibleMoves = tempMoves;
+    localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
   }
 
   getPossibleMovesForGameDraw(selectedBox: any) {
@@ -772,20 +1061,6 @@ export class PassNPlayComponent implements OnInit {
       if (selectedBox.occupiedByType == 'white') {
         tempObject =
           this.utilService.allPossiblePositions?.whitePawn?.[selectedBox?.name];
-
-        // for (let i = 0; i < tempObject?.forward?.length; i++) {
-        //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-        //     tempMoves.push(tempObject?.forward[i]);
-        //   } else if (
-        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-        //     selectedBox?.occupiedByType
-        //   ) {
-        //   } else if (
-        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-        //     selectedBox?.occupiedByType
-        //   ) {
-        //   }
-        // }
 
         if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
           tempMoves.push(tempObject?.forward[0]);
@@ -820,20 +1095,6 @@ export class PassNPlayComponent implements OnInit {
       } else {
         tempObject =
           this.utilService.allPossiblePositions?.blackPawn?.[selectedBox?.name];
-
-        // for (let i = 0; i < tempObject?.forward?.length; i++) {
-        //   if (this.boardStatus[tempObject?.forward[i]]?.occupiedBy == null) {
-        //     tempMoves.push(tempObject?.forward[i]);
-        //   } else if (
-        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType !==
-        //     selectedBox?.occupiedByType
-        //   ) {
-        //   } else if (
-        //     this.boardStatus[tempObject?.forward[i]]?.occupiedByType ===
-        //     selectedBox?.occupiedByType
-        //   ) {
-        //   }
-        // }
 
         if (this.boardStatus[tempObject?.forward[0]]?.occupiedBy == null) {
           tempMoves.push(tempObject?.forward[0]);
@@ -1131,11 +1392,13 @@ export class PassNPlayComponent implements OnInit {
         if (movedTo[1] == '1') {
           // Let Player Replace Pawn with Queen
           this.boardStatus[movedTo].occupiedBy = 'queen';
+          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
         }
       } else {
         if (movedTo[1] == '8') {
           // Let Player Replace Pawn with Queen
           this.boardStatus[movedTo].occupiedBy = 'queen';
+          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
         }
       }
     }
@@ -1159,6 +1422,11 @@ export class PassNPlayComponent implements OnInit {
             },
           };
           this.H8RookKingCastleBlack = false;
+          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          localStorage.setItem(
+            'H8RookKingCastleBlack',
+            JSON.stringify(this.H8RookKingCastleBlack)
+          );
         } else if (movedFrom == 'E8' && movedTo == 'C8') {
           this.boardStatus = {
             ...this.boardStatus,
@@ -1172,6 +1440,11 @@ export class PassNPlayComponent implements OnInit {
             },
           };
           this.A8RookKingCastleBlack = false;
+          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          localStorage.setItem(
+            'A8RookKingCastleBlack',
+            JSON.stringify(this.A8RookKingCastleBlack)
+          );
         }
       } else if (this.boardStatus[movedTo].occupiedByType == 'white') {
         if (movedFrom == 'E1' && movedTo == 'G1') {
@@ -1187,6 +1460,11 @@ export class PassNPlayComponent implements OnInit {
             },
           };
           this.H1RookKingCastleWhite = false;
+          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          localStorage.setItem(
+            'H1RookKingCastleWhite',
+            JSON.stringify(this.H1RookKingCastleWhite)
+          );
         } else if (movedFrom == 'E1' && movedTo == 'C1') {
           this.boardStatus = {
             ...this.boardStatus,
@@ -1200,6 +1478,11 @@ export class PassNPlayComponent implements OnInit {
             },
           };
           this.A1RookKingCastleWhite = false;
+          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          localStorage.setItem(
+            'A1RookKingCastleWhite',
+            JSON.stringify(this.A1RookKingCastleWhite)
+          );
         }
       }
     }
@@ -1208,35 +1491,67 @@ export class PassNPlayComponent implements OnInit {
       if (this.boardStatus[movedTo].occupiedBy == 'king') {
         this.H1RookKingCastleWhite = false;
         this.A1RookKingCastleWhite = false;
+        localStorage.setItem(
+          'H1RookKingCastleWhite',
+          JSON.stringify(this.H1RookKingCastleWhite)
+        );
+        localStorage.setItem(
+          'A1RookKingCastleWhite',
+          JSON.stringify(this.A1RookKingCastleWhite)
+        );
       } else if (
         movedFrom == 'A1' &&
         this.A1RookKingCastleWhite == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.A1RookKingCastleWhite = false;
+        localStorage.setItem(
+          'A1RookKingCastleWhite',
+          JSON.stringify(this.A1RookKingCastleWhite)
+        );
       } else if (
         movedFrom == 'H1' &&
         this.H1RookKingCastleWhite == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.H1RookKingCastleWhite = false;
+        localStorage.setItem(
+          'H1RookKingCastleWhite',
+          JSON.stringify(this.H1RookKingCastleWhite)
+        );
       }
     } else if (this.boardStatus[movedTo].occupiedByType == 'black') {
       if (this.boardStatus[movedTo].occupiedBy == 'king') {
         this.H8RookKingCastleBlack = false;
         this.A8RookKingCastleBlack = false;
+        localStorage.setItem(
+          'H8RookKingCastleBlack',
+          JSON.stringify(this.H8RookKingCastleBlack)
+        );
+        localStorage.setItem(
+          'A8RookKingCastleBlack',
+          JSON.stringify(this.A8RookKingCastleBlack)
+        );
       } else if (
         movedFrom == 'A8' &&
         this.A8RookKingCastleBlack == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.A8RookKingCastleBlack = false;
+        localStorage.setItem(
+          'A8RookKingCastleBlack',
+          JSON.stringify(this.A8RookKingCastleBlack)
+        );
       } else if (
         movedFrom == 'H8' &&
         this.H8RookKingCastleBlack == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.H8RookKingCastleBlack = false;
+        localStorage.setItem(
+          'H8RookKingCastleBlack',
+          JSON.stringify(this.H8RookKingCastleBlack)
+        );
       }
     }
   }
@@ -1244,17 +1559,38 @@ export class PassNPlayComponent implements OnInit {
   checkIfKingIsChecked() {
     if (this.possibleBlackMoves.includes(this.whiteKingPosition)) {
       this.whiteKingChecked = true;
+      localStorage.setItem(
+        'whiteKingChecked',
+        JSON.stringify(this.whiteKingChecked)
+      );
     } else if (this.possibleWhiteMoves.includes(this.blackKingPosition)) {
       this.blackKingChecked = true;
+      localStorage.setItem(
+        'blackKingChecked',
+        JSON.stringify(this.blackKingChecked)
+      );
     } else {
       this.whiteKingChecked = false;
       this.blackKingChecked = false;
+      localStorage.setItem(
+        'whiteKingChecked',
+        JSON.stringify(this.whiteKingChecked)
+      );
+      localStorage.setItem(
+        'blackKingChecked',
+        JSON.stringify(this.blackKingChecked)
+      );
     }
   }
 
   getAllPossibleBlackMoves() {
     let tempMoves = [];
     this.pawnBlackForwardMoves = [];
+    localStorage.setItem(
+      'pawnBlackForwardMoves',
+      JSON.stringify(this.pawnBlackForwardMoves)
+    );
+
     this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'black') {
         let tempObject =
@@ -1511,13 +1847,25 @@ export class PassNPlayComponent implements OnInit {
     );
 
     this.pawnBlackForwardMovesRepeated = repeatedMoves;
+    localStorage.setItem(
+      'pawnBlackForwardMovesRepeated',
+      JSON.stringify(this.pawnBlackForwardMovesRepeated)
+    );
 
     this.possibleBlackMoves = this.removeDuplicates(tempMoves);
+    localStorage.setItem(
+      'possibleBlackMoves',
+      JSON.stringify(this.possibleBlackMoves)
+    );
   }
 
   getAllPossibleWhiteMoves() {
     let tempMoves = [];
     this.pawnWhiteForwardMoves = [];
+    localStorage.setItem(
+      'pawnWhiteForwardMoves',
+      JSON.stringify(this.pawnWhiteForwardMoves)
+    );
 
     this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'white') {
@@ -1772,8 +2120,16 @@ export class PassNPlayComponent implements OnInit {
     );
 
     this.pawnWhiteForwardMovesRepeated = repeatedMoves;
+    localStorage.setItem(
+      'pawnWhiteForwardMovesRepeated',
+      JSON.stringify(this.pawnWhiteForwardMovesRepeated)
+    );
 
     this.possibleWhiteMoves = this.removeDuplicates(tempMoves);
+    localStorage.setItem(
+      'possibleWhiteMoves',
+      JSON.stringify(this.possibleWhiteMoves)
+    );
   }
 
   removeDuplicates(arr: any): string[] {
@@ -1783,14 +2139,14 @@ export class PassNPlayComponent implements OnInit {
   checkIfChecked(column: any, row: any) {
     let square = column + row;
     if (
-      this.boardStatus[square].occupiedBy == 'king' &&
-      this.boardStatus[square].occupiedByType == 'black' &&
+      this.boardStatus[square]?.occupiedBy == 'king' &&
+      this.boardStatus[square]?.occupiedByType == 'black' &&
       this.blackKingChecked == true
     ) {
       return true;
     } else if (
-      this.boardStatus[square].occupiedBy == 'king' &&
-      this.boardStatus[square].occupiedByType == 'white' &&
+      this.boardStatus[square]?.occupiedBy == 'king' &&
+      this.boardStatus[square]?.occupiedByType == 'white' &&
       this.whiteKingChecked == true
     ) {
       return true;
@@ -2401,13 +2757,13 @@ export class PassNPlayComponent implements OnInit {
     let tempMoves = [];
 
     this.utilService.boardAsWhite?.map((box: any) => {
-      if (boardStatus[box].occupiedByType == 'black') {
+      if (boardStatus[box]?.occupiedByType == 'black') {
         let tempObject =
           this.utilService.allPossiblePositions[boardStatus[box].occupiedBy]?.[
             box
           ];
         // check if selected piece is knight
-        if (boardStatus[box].occupiedBy == 'knight') {
+        if (boardStatus[box]?.occupiedBy == 'knight') {
           for (let i = 0; i < tempObject?.moves?.length; i++) {
             if (boardStatus[tempObject?.moves[i]]?.occupiedBy == null) {
               tempMoves.push(tempObject?.moves[i]);
@@ -2648,13 +3004,13 @@ export class PassNPlayComponent implements OnInit {
     tempMoves = [];
 
     this.utilService.boardAsWhite?.map((box: any) => {
-      if (boardStatus[box].occupiedByType == 'white') {
+      if (boardStatus[box]?.occupiedByType == 'white') {
         let tempObject =
           this.utilService.allPossiblePositions[boardStatus[box].occupiedBy]?.[
             box
           ];
         // check if selected piece is knight
-        if (boardStatus[box].occupiedBy == 'knight') {
+        if (boardStatus[box]?.occupiedBy == 'knight') {
           for (let i = 0; i < tempObject?.moves?.length; i++) {
             if (boardStatus[tempObject?.moves[i]]?.occupiedBy == null) {
               tempMoves.push(tempObject?.moves[i]);

@@ -41,7 +41,7 @@ export class AuthguardGuard implements CanActivate {
           console.log('Access denied. Redirecting to login.');
 
           // Return a UrlTree to tell the router where to go instead
-          return this.router.createUrlTree(['/login']);
+          return this.router.createUrlTree(['']);
         }
       })
     );

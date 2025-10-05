@@ -35,4 +35,8 @@ export class WelcomePageComponent implements OnInit {
   onSignOut() {
     this.authService.signOut();
   }
+
+  onPassAndPlayMode() {
+    this.router.navigate(['pass-n-play']);
+  }
 }

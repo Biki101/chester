@@ -71,7 +71,7 @@ export class AuthserviceService {
     try {
       await this.auth.signOut();
       console.log('User signed out.');
-      this.router.navigate(['login']);
+      this.router.navigate(['']);
     } catch (err: any) {
       throw err;
     }
