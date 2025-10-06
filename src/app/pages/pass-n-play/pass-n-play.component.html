@@ -39,7 +39,9 @@
             <div style="display: flex; justify-content: center">
               <img
                 *ngIf="getStatus(column, row) != null"
-                [src]="'../assets/' + getStatus(column, row) + '.svg'"
+                [src]="
+                  '../assets/' + 'classic/' + getStatus(column, row) + '.svg'
+                "
                 class="pieces-on-board"
                 alt=""
               />
