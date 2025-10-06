@@ -18,12 +18,14 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
 import { ToastrModule } from 'ngx-toastr';
 import { AuthserviceService } from './services/authservice.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MultiplayerComponent } from './pages/multiplayer/multiplayer.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PassNPlayComponent,
     WelcomePageComponent,
+    MultiplayerComponent,
   ],
   imports: [
     BrowserModule,

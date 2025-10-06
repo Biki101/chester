@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { PassNPlayComponent } from './pages/pass-n-play/pass-n-play.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { AuthguardGuard } from './guard/authguard.guard';
+import { MultiplayerComponent } from './pages/multiplayer/multiplayer.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path: 'welcome-page',
     component: WelcomePageComponent,
+    canActivate: [AuthguardGuard],
+  },
+  {
+    path: 'multiplayer',
+    component: MultiplayerComponent,
     canActivate: [AuthguardGuard],
   },
 ];

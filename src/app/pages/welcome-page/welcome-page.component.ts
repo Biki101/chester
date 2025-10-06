@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AuthserviceService } from 'src/app/services/authservice.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/app'; // For type definitions if needed, or error handling
 // 🚨 Use the 'compat' path for the old Firebase structure
 import {
@@ -26,6 +26,7 @@ interface GameData {
 export class WelcomePageComponent implements OnInit {
   showPlayAsOption: boolean = false;
   user: firebase.User | null;
+  waitingGamesList$: any = null;
   private authSubscription: Subscription;
   private gamesCollection: AngularFirestoreCollection<GameData>;
   constructor(
@@ -42,17 +43,27 @@ export class WelcomePageComponent implements OnInit {
       this.user = user; // The 'user' here is the actual user object (or null)
       if (user) {
         console.log('User UID is:', user.uid);
-        // You can perform synchronous actions here
+        // perform synchronous actions here
         this.router.navigate(['welcome-page']);
       } else {
         console.log('User is logged out.');
       }
     });
+
+    this.getWaitingGames();
   }
 
   ngOnDestroy() {
     // IMPORTANT: Always unsubscribe to prevent memory leaks
     this.authSubscription.unsubscribe();
+  }
+
+  getWaitingGames() {
+    this.waitingGamesList$ = this.firestore
+      .collection<GameData>('games', (ref) =>
+        ref.where('status', '==', 'waiting')
+      )
+      .valueChanges({ idField: 'id' });
   }
 
   onSignOut() {
@@ -77,7 +88,13 @@ export class WelcomePageComponent implements OnInit {
     };
 
     const docRef = await this.gamesCollection.add(newGameData);
-    return docRef.id;
+    //  docRef.id;
+
+    this.router.navigate(['multiplayer'], {
+      queryParams: {
+        gameId: docRef.id,
+      },
+    });
   }
 
   private initialBoardState(): any {

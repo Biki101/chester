@@ -32,7 +32,19 @@
     >
       Pass N Play
     </div>
-    <div class="w-1/2">Join Game</div>
+    <div class="w-1/2">
+      <div *ngIf="waitingGamesList$ | async as waitingGames">
+        <h2>Join Game ({{ waitingGames.length }})</h2>
+        <div class="h-[150px] overflow-auto">
+          <div
+            *ngFor="let game of waitingGames; let i = index"
+            class="text-[13px]"
+          >
+            {{ i + 1 }}. ID: {{ game.id }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div
     class="w-[400px] button signin-button hover:text-yellow cursor-pointer"
