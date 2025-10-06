@@ -1,4 +1,30 @@
-<div class="w-[100vw] h-[100vh] welcome-container flex justify-center">
+<div class="w-[100vw] h-[100vh] welcome-container flex justify-center relative">
+  <div
+    class="absolute top-[55%] left-[45%] flex flex-col items-center w-fit"
+    *ngIf="showPlayAsOption"
+  >
+    <div class="text-[yellow]">Play As</div>
+    <div class="flex gap-[12px] h-[100px] w-[200px]" style="margin-top: 12px">
+      <img
+        src="../../../assets/classic/black-king.svg"
+        class="border-black rounded-[4px] border-[2px] hover:bg-[yellow] cursor-pointer bg-[white]"
+        alt=""
+        width="100px"
+        height="100px"
+        srcset=""
+        (click)="onCreateRoomClick(true)"
+      />
+      <img
+        src="../../../assets/classic/white-king.svg"
+        class="border-black rounded-[4px] border-[2px] hover:bg-[yellow] cursor-pointer bg-[black]"
+        alt=""
+        width="100px"
+        height="100px"
+        srcset=""
+        (click)="onCreateRoomClick(false)"
+      />
+    </div>
+  </div>
   <div class="welcome-card w-[400px] h-[200px] shadow-sm shadow-[black]">
     <div
       (click)="onPassAndPlayMode()"
@@ -11,7 +37,7 @@
   <div
     class="w-[400px] button signin-button hover:text-yellow cursor-pointer"
     style="margin-top: 12px"
-    (click)="onCreateRoomClick()"
+    (click)="showPlayAsOption = true"
   >
     Create Room
   </div>

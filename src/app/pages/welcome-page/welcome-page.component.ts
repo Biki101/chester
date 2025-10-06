@@ -24,6 +24,7 @@ interface GameData {
   styleUrls: ['./welcome-page.component.scss'],
 })
 export class WelcomePageComponent implements OnInit {
+  showPlayAsOption: boolean = false;
   user: firebase.User | null;
   private authSubscription: Subscription;
   private gamesCollection: AngularFirestoreCollection<GameData>;
@@ -62,10 +63,13 @@ export class WelcomePageComponent implements OnInit {
     this.router.navigate(['pass-n-play']);
   }
 
-  async onCreateRoomClick() {
+  async onCreateRoomClick(playAsblack: boolean) {
     // Use the pre-initialized collection reference (this.gamesCollection)
     const newGameData: GameData = {
-      players: { white: this.user.uid, black: null },
+      players: {
+        white: playAsblack ? null : this.user.uid,
+        black: playAsblack ? this.user.uid : null,
+      },
       boardState: this.initialBoardState(),
       turn: 'white',
       status: 'waiting',
