@@ -278,6 +278,11 @@ export class MultiplayerComponent implements OnInit {
     this.capturedBlackList = state.boardState?.capturedBlackList;
     this.blackKingChecked = state.boardState?.blackKingChecked;
     this.whiteKingChecked = state.boardState?.whiteKingChecked;
+    this.gameToResume = state.boardState?.gameToResume;
+
+    if (this.gameToResume == false) {
+      this.playingAsWhite = true;
+    }
   }
 
   checkIfWhiteBox(column, row) {
@@ -380,6 +385,12 @@ export class MultiplayerComponent implements OnInit {
   }
 
   movePieceFromSourceToTarget(square: string) {
+    // Game is Started
+    if (this.gameToResume == false) {
+      this.gameToResume = true;
+      localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+    }
+
     // Allowing only valid moves if King is checked
     let validMove = this.checkIfValidMove(square);
     if (validMove == false) {

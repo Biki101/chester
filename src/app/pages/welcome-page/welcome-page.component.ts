@@ -150,15 +150,24 @@ export class WelcomePageComponent implements OnInit {
       capturedBlackList: [],
       blackKingChecked: false,
       whiteKingChecked: false,
+      gameToResume: false,
     };
   }
 
   joinGame(game: GameData) {
     console.log(game);
-    const updatePayload = {
-      'players.black': this.user.uid,
-      status: 'in-progress',
-    };
+    let updatePayload: any = null;
+    if (game?.players.white == null) {
+      updatePayload = {
+        'players.white': this.user.uid,
+        status: 'in-progress',
+      };
+    } else {
+      updatePayload = {
+        'players.black': this.user.uid,
+        status: 'in-progress',
+      };
+    }
 
     // 3. Execute the update
     this.firestore
