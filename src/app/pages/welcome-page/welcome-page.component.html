@@ -1,18 +1,19 @@
 <div class="w-[100vw] h-[100vh] welcome-container flex justify-center">
-  <div class="welcome-card w-[400px] h-[200px] shadow-sm shadow-[black]">
+  <div class="welcome-card w-[500px] h-[200px] shadow-sm shadow-[black]">
     <div
       (click)="onPassAndPlayMode()"
-      class="w-1/2 flex justify-center items-center bg-black text-white rounded-[4px] cursor-pointer hover:text-[yellow]"
+      class="w-[200px] flex justify-center items-center bg-black text-white rounded-[4px] cursor-pointer hover:text-[yellow]"
     >
       Pass N Play
     </div>
-    <div class="w-1/2">
+    <div class="flex-1">
       <div *ngIf="waitingGamesList$ | async as waitingGames">
         <h2>Join Game ({{ waitingGames.length }})</h2>
         <div class="h-[150px] overflow-auto">
           <div
             *ngFor="let game of waitingGames; let i = index"
-            class="text-[13px]"
+            class="text-[13px] cursor-pointer hover:bg-[black] hover:text-[yellow] game-list"
+            (click)="joinGame(game)"
           >
             {{ i + 1 }}. ID: {{ game.id }}
           </div>

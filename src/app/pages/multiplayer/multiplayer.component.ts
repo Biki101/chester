@@ -6,6 +6,7 @@ import firebase from 'firebase/app';
 import { AuthserviceService } from 'src/app/services/authservice.service';
 import { Subscription } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 interface BoardStatus {
   [square: string]: {
@@ -13,6 +14,16 @@ interface BoardStatus {
     occupiedByType: string | null;
   };
 }
+
+// Define the type of data for clarity
+interface GameData {
+  players: { white: string; black: string | null };
+  boardState: any;
+  turn: 'white' | 'black';
+  status: 'waiting' | 'playing' | 'finished';
+  moves: string[];
+}
+
 @Component({
   selector: 'app-multiplayer',
   templateUrl: './multiplayer.component.html',
@@ -20,6 +31,7 @@ interface BoardStatus {
 })
 export class MultiplayerComponent implements OnInit {
   user: firebase.User | null;
+  game$: any = null;
   playingAsWhite = true;
   columnsWhite = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   rowsWhite = ['8', '7', '6', '5', '4', '3', '2', '1'];
@@ -139,261 +151,124 @@ export class MultiplayerComponent implements OnInit {
 
   gameToResume = false;
 
-  private authSubscription: Subscription;
+  gamesSubscriptionWhite: Subscription;
+  gamesSubscriptionBlack: Subscription;
+
+  gameState: any = null;
 
   constructor(
     private utilService: UtilsService,
     private auth: AngularFireAuth,
     private authService: AuthserviceService,
-    private router: Router
+    private router: Router,
+    private firestore: AngularFirestore
   ) {
     this.boardStatus = utilService.boardStatus;
     this.boardAsWhite = utilService.boardAsWhite;
 
-    // Getting User
-    this.authSubscription = this.auth.authState.subscribe((user) => {
+    this.auth.authState.subscribe((user) => {
       this.user = user; // The 'user' here is the actual user object (or null)
+      this.getCurrentGame();
     });
   }
 
-  ngOnInit() {
-    // Resume Game with local storage
-    let gameToResume = localStorage.getItem('gameToResume');
-    if (JSON.parse(gameToResume)) {
-      // Resume game
-      let boardStatusString = localStorage.getItem('boardStatus');
-      let playingAsWhite = localStorage.getItem('playingAsWhite');
-      let A1RookKingCastleWhite = localStorage.getItem('A1RookKingCastleWhite');
-      let H1RookKingCastleWhite = localStorage.getItem('H1RookKingCastleWhite');
-      let A8RookKingCastleBlack = localStorage.getItem('A8RookKingCastleBlack');
-      let H8RookKingCastleBlack = localStorage.getItem('H8RookKingCastleBlack');
-      let selectedBox = localStorage.getItem('selectedBox');
-      let possibleMoves = localStorage.getItem('possibleMoves');
-      let possibleBlackMoves = localStorage.getItem('possibleBlackMoves');
-      let possibleWhiteMoves = localStorage.getItem('possibleWhiteMoves');
-      let pawnBlackForwardMoves = localStorage.getItem('pawnBlackForwardMoves');
-      let pawnWhiteForwardMoves = localStorage.getItem('pawnWhiteForwardMoves');
-      let pawnBlackForwardMovesRepeated = localStorage.getItem(
-        'pawnBlackForwardMovesRepeated'
-      );
-      let pawnWhiteForwardMovesRepeated = localStorage.getItem(
-        'pawnWhiteForwardMovesRepeated'
-      );
-      let blackKingPosition = localStorage.getItem('blackKingPosition');
-      let whiteKingPosition = localStorage.getItem('whiteKingPosition');
-      let movedFrom = localStorage.getItem('movedFrom');
-      let movedTo = localStorage.getItem('movedTo');
-      let gameDraw = localStorage.getItem('gameDraw');
-      let whiteWon = localStorage.getItem('whiteWon');
-      let blackWon = localStorage.getItem('blackWon');
-      let capturedWhiteList = localStorage.getItem('capturedWhiteList');
-      let capturedBlackList = localStorage.getItem('capturedBlackList');
-      let blackKingChecked = localStorage.getItem('blackKingChecked');
-      let whiteKingChecked = localStorage.getItem('whiteKingChecked');
+  ngOnInit() {}
 
-      if (boardStatusString !== null) {
-        try {
-          const parsedBoardStatus = JSON.parse(
-            boardStatusString
-          ) as BoardStatus;
-          this.boardStatus = parsedBoardStatus;
-        } catch (e) {
-          console.error('Failed to parse boardStatus from localStorage', e);
+  getCurrentGame() {
+    const gamesAsWhite$ = this.firestore
+      .collection<GameData>('games', (ref) =>
+        ref.where('players.white', '==', this.user.uid)
+      )
+      .valueChanges({ idField: 'id' });
+
+    const gamesAsBlack$ = this.firestore
+      .collection<GameData>('games', (ref) =>
+        ref.where('players.black', '==', this.user.uid)
+      )
+      .valueChanges({ idField: 'id' });
+
+    this.gamesSubscriptionWhite = gamesAsWhite$.subscribe((data) => {
+      console.log(data);
+
+      // 3. Check the condition and call unsubscribe() on the stored Subscription object
+      if (data.length === 0) {
+        // Check if the subscription is not already closed before attempting to unsubscribe
+        if (
+          this.gamesSubscriptionWhite &&
+          !this.gamesSubscriptionWhite.closed
+        ) {
+          this.gamesSubscriptionWhite.unsubscribe();
+          console.log(
+            'Unsubscribed from gamesAsWhite$ because no games were found.'
+          );
         }
+      } else {
+        this.populateBoard(data[0]);
       }
+    });
 
-      if (JSON.parse(playingAsWhite) != null) {
-        this.playingAsWhite = JSON.parse(playingAsWhite);
-      }
+    this.gamesSubscriptionBlack = gamesAsBlack$.subscribe((data) => {
+      console.log(data);
 
-      if (JSON.parse(A1RookKingCastleWhite) != null) {
-        this.A1RookKingCastleWhite = JSON.parse(A1RookKingCastleWhite);
+      // 3. Check the condition and call unsubscribe() on the stored Subscription object
+      if (data.length === 0) {
+        // Check if the subscription is not already closed before attempting to unsubscribe
+        if (
+          this.gamesSubscriptionBlack &&
+          !this.gamesSubscriptionBlack.closed
+        ) {
+          this.gamesSubscriptionBlack.unsubscribe();
+          console.log(
+            'Unsubscribed from gamesAsBlack$ because no games were found.'
+          );
+        }
+      } else {
+        this.populateBoard(data[0]);
       }
-
-      if (JSON.parse(H1RookKingCastleWhite) != null) {
-        this.H1RookKingCastleWhite = JSON.parse(H1RookKingCastleWhite);
-      }
-
-      if (JSON.parse(A8RookKingCastleBlack) != null) {
-        this.A8RookKingCastleBlack = JSON.parse(A8RookKingCastleBlack);
-      }
-
-      if (JSON.parse(H8RookKingCastleBlack) != null) {
-        this.H8RookKingCastleBlack = JSON.parse(H8RookKingCastleBlack);
-      }
-
-      if (selectedBox != null) {
-        this.selectedBox = selectedBox;
-      }
-
-      if (JSON.parse(possibleMoves) != null) {
-        this.possibleMoves = JSON.parse(possibleMoves);
-      }
-
-      if (JSON.parse(possibleBlackMoves) != null) {
-        this.possibleBlackMoves = JSON.parse(possibleBlackMoves);
-      }
-
-      if (JSON.parse(possibleWhiteMoves) != null) {
-        this.possibleWhiteMoves = JSON.parse(possibleWhiteMoves);
-      }
-
-      if (JSON.parse(pawnBlackForwardMoves) != null) {
-        this.pawnBlackForwardMoves = JSON.parse(pawnBlackForwardMoves);
-      }
-
-      if (JSON.parse(pawnWhiteForwardMoves) != null) {
-        this.pawnWhiteForwardMoves = JSON.parse(pawnWhiteForwardMoves);
-      }
-
-      if (JSON.parse(pawnBlackForwardMovesRepeated) != null) {
-        this.pawnBlackForwardMovesRepeated = JSON.parse(
-          pawnBlackForwardMovesRepeated
-        );
-      }
-
-      if (JSON.parse(pawnWhiteForwardMovesRepeated) != null) {
-        this.pawnWhiteForwardMovesRepeated = JSON.parse(
-          pawnWhiteForwardMovesRepeated
-        );
-      }
-
-      if (JSON.parse(blackKingPosition) != null) {
-        this.blackKingPosition = JSON.parse(blackKingPosition);
-      }
-
-      if (JSON.parse(whiteKingPosition) != null) {
-        this.whiteKingPosition = JSON.parse(whiteKingPosition);
-      }
-
-      if (JSON.parse(movedFrom) != null) {
-        this.movedFrom = JSON.parse(movedFrom);
-      }
-
-      if (JSON.parse(movedTo) != null) {
-        this.movedTo = JSON.parse(movedTo);
-      }
-
-      if (JSON.parse(gameDraw) != null) {
-        this.gameDraw = JSON.parse(gameDraw);
-      }
-
-      if (JSON.parse(whiteWon) != null) {
-        this.whiteWon = JSON.parse(whiteWon);
-      }
-
-      if (JSON.parse(blackWon) != null) {
-        this.blackWon = JSON.parse(blackWon);
-      }
-
-      if (JSON.parse(capturedWhiteList) != null) {
-        this.capturedWhiteList = JSON.parse(capturedWhiteList);
-      }
-
-      if (JSON.parse(capturedBlackList) != null) {
-        this.capturedBlackList = JSON.parse(capturedBlackList);
-      }
-
-      if (JSON.parse(blackKingChecked) != null) {
-        this.blackKingChecked = JSON.parse(blackKingChecked);
-      }
-
-      if (JSON.parse(whiteKingChecked) != null) {
-        this.whiteKingChecked = JSON.parse(whiteKingChecked);
-      }
-    } else {
-      // Initialize Board
-      this.initializeBoard();
-    }
+    });
   }
 
   get activeRows() {
-    return this.playingAsWhite ? this.rowsWhite : this.rowsBlack;
+    return this.gameState?.players?.white == this.user?.uid
+      ? this.rowsWhite
+      : this.rowsBlack;
   }
 
   get activeColumns() {
-    return this.playingAsWhite ? this.columnsWhite : this.columnsBlack;
+    return this.gameState?.players?.white == this.user?.uid
+      ? this.columnsWhite
+      : this.columnsBlack;
   }
 
-  initializeBoard() {
-    this.boardStatus = {
-      // Rank 8 (Black major pieces)
-      A8: { occupiedBy: 'rook', occupiedByType: 'black' },
-      B8: { occupiedBy: 'knight', occupiedByType: 'black' },
-      C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
-      D8: { occupiedBy: 'queen', occupiedByType: 'black' },
-      E8: { occupiedBy: 'king', occupiedByType: 'black' },
-      F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
-      G8: { occupiedBy: 'knight', occupiedByType: 'black' },
-      H8: { occupiedBy: 'rook', occupiedByType: 'black' },
-
-      // Rank 7 (Black pawns)
-      A7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      B7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      C7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      D7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      E7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      F7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      G7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-      H7: { occupiedBy: 'pawn', occupiedByType: 'black' },
-
-      // Ranks 6 → 3 (empty squares)
-      A6: { occupiedBy: null, occupiedByType: null },
-      B6: { occupiedBy: null, occupiedByType: null },
-      C6: { occupiedBy: null, occupiedByType: null },
-      D6: { occupiedBy: null, occupiedByType: null },
-      E6: { occupiedBy: null, occupiedByType: null },
-      F6: { occupiedBy: null, occupiedByType: null },
-      G6: { occupiedBy: null, occupiedByType: null },
-      H6: { occupiedBy: null, occupiedByType: null },
-
-      A5: { occupiedBy: null, occupiedByType: null },
-      B5: { occupiedBy: null, occupiedByType: null },
-      C5: { occupiedBy: null, occupiedByType: null },
-      D5: { occupiedBy: null, occupiedByType: null },
-      E5: { occupiedBy: null, occupiedByType: null },
-      F5: { occupiedBy: null, occupiedByType: null },
-      G5: { occupiedBy: null, occupiedByType: null },
-      H5: { occupiedBy: null, occupiedByType: null },
-
-      A4: { occupiedBy: null, occupiedByType: null },
-      B4: { occupiedBy: null, occupiedByType: null },
-      C4: { occupiedBy: null, occupiedByType: null },
-      D4: { occupiedBy: null, occupiedByType: null },
-      E4: { occupiedBy: null, occupiedByType: null },
-      F4: { occupiedBy: null, occupiedByType: null },
-      G4: { occupiedBy: null, occupiedByType: null },
-      H4: { occupiedBy: null, occupiedByType: null },
-
-      A3: { occupiedBy: null, occupiedByType: null },
-      B3: { occupiedBy: null, occupiedByType: null },
-      C3: { occupiedBy: null, occupiedByType: null },
-      D3: { occupiedBy: null, occupiedByType: null },
-      E3: { occupiedBy: null, occupiedByType: null },
-      F3: { occupiedBy: null, occupiedByType: null },
-      G3: { occupiedBy: null, occupiedByType: null },
-      H3: { occupiedBy: null, occupiedByType: null },
-
-      // Rank 2 (White pawns)
-      A2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      B2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      C2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      D2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      E2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      F2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      G2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-      H2: { occupiedBy: 'pawn', occupiedByType: 'white' },
-
-      // Rank 1 (White major pieces)
-      A1: { occupiedBy: 'rook', occupiedByType: 'white' },
-      B1: { occupiedBy: 'knight', occupiedByType: 'white' },
-      C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
-      D1: { occupiedBy: 'queen', occupiedByType: 'white' },
-      E1: { occupiedBy: 'king', occupiedByType: 'white' },
-      F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
-      G1: { occupiedBy: 'knight', occupiedByType: 'white' },
-      H1: { occupiedBy: 'rook', occupiedByType: 'white' },
-    };
+  populateBoard(state: any) {
+    this.gameState = state;
+    this.boardStatus = state.boardState?.boardStatus;
+    this.playingAsWhite = state.boardState?.playingAsWhite;
+    this.A1RookKingCastleWhite = state.boardState?.A1RookKingCastleWhite;
+    this.H1RookKingCastleWhite = state.boardState?.H1RookKingCastleWhite;
+    this.A8RookKingCastleBlack = state.boardState?.A8RookKingCastleBlack;
+    this.H8RookKingCastleBlack = state.boardState?.H8RookKingCastleBlack;
+    this.selectedBox = state.boardState?.selectedBox;
+    this.possibleMoves = state.boardState?.possibleMoves;
+    this.possibleBlackMoves = state.boardState?.possibleBlackMoves;
+    this.possibleWhiteMoves = state.boardState?.possibleWhiteMoves;
+    this.pawnBlackForwardMoves = state.boardState?.pawnBlackForwardMoves;
+    this.pawnWhiteForwardMoves = state.boardState?.pawnWhiteForwardMoves;
+    this.pawnBlackForwardMovesRepeated =
+      state.boardState?.pawnBlackForwardMovesRepeated;
+    this.pawnWhiteForwardMovesRepeated =
+      state.boardState?.pawnWhiteForwardMovesRepeated;
+    this.blackKingPosition = state.boardState?.blackKingPosition;
+    this.whiteKingPosition = state.boardState?.whiteKingPosition;
+    this.movedFrom = state.boardState?.movedFrom;
+    this.movedTo = state.boardState?.movedTo;
+    this.gameDraw = state.boardState?.gameDraw;
+    this.whiteWon = state.boardState?.whiteWon;
+    this.blackWon = state.boardState?.blackWon;
+    this.capturedWhiteList = state.boardState?.capturedWhiteList;
+    this.capturedBlackList = state.boardState?.capturedBlackList;
+    this.blackKingChecked = state.boardState?.blackKingChecked;
+    this.whiteKingChecked = state.boardState?.whiteKingChecked;
   }
 
   checkIfWhiteBox(column, row) {
@@ -424,6 +299,27 @@ export class MultiplayerComponent implements OnInit {
   }
 
   selectBox(column: string, row: string | number) {
+    // check if players have joined
+    if (
+      this.gameState?.players?.white == null ||
+      this.gameState?.players?.black == null
+    ) {
+      return;
+    }
+
+    // blocking oponents move
+    if (
+      this.playingAsWhite == false &&
+      this.gameState?.players?.white == this.user?.uid
+    ) {
+      return;
+    } else if (
+      this.playingAsWhite == true &&
+      this.gameState?.players?.white != this.user?.uid
+    ) {
+      return;
+    }
+
     if (
       this.gameDraw == true ||
       this.whiteWon == true ||
@@ -552,8 +448,8 @@ export class MultiplayerComponent implements OnInit {
     this.breakKingCastling(this.selectedBox?.name, this.movedTo);
 
     // change turn
-    this.playingAsWhite = !this.playingAsWhite;
-    localStorage.setItem('playingAsWhite', JSON.stringify(this.playingAsWhite));
+    // this.playingAsWhite = !this.playingAsWhite;
+    // localStorage.setItem('playingAsWhite', JSON.stringify(this.playingAsWhite));
 
     // Reset state
     this.selectedBox = null;

@@ -10,6 +10,7 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/firestore';
 import { UtilsService } from 'src/app/services/utils.service';
+import { ToastrService } from 'ngx-toastr';
 
 // Define the type of data for clarity
 interface GameData {
@@ -18,6 +19,7 @@ interface GameData {
   turn: 'white' | 'black';
   status: 'waiting' | 'playing' | 'finished';
   moves: string[];
+  id?: any;
 }
 @Component({
   selector: 'app-welcome-page',
@@ -35,7 +37,8 @@ export class WelcomePageComponent implements OnInit {
     private auth: AngularFireAuth,
     private router: Router,
     private firestore: AngularFirestore,
-    private utilService: UtilsService
+    private utilService: UtilsService,
+    private toastr: ToastrService
   ) {
     this.gamesCollection = this.firestore.collection<GameData>('games');
   }
@@ -148,5 +151,36 @@ export class WelcomePageComponent implements OnInit {
       blackKingChecked: false,
       whiteKingChecked: false,
     };
+  }
+
+  joinGame(game: GameData) {
+    console.log(game);
+    const updatePayload = {
+      'players.black': this.user.uid,
+      status: 'in-progress',
+    };
+
+    // 3. Execute the update
+    this.firestore
+      .collection('games') // Access the 'games' collection
+      .doc(game?.id) // Get a reference to the specific game document
+      .update(updatePayload) // Apply the changes
+      .then(() => {
+        console.log(`Game ${game?.id} successfully joined by Black player.`);
+        this.toastr.success('Joined Game Sucessfully!', 'Success', {
+          closeButton: true,
+        });
+        this.router.navigate(['multiplayer'], {
+          queryParams: {
+            gameId: game?.id,
+          },
+        });
+      })
+      .catch((error) => {
+        this.toastr.error('Unable to join Game!', 'Error', {
+          closeButton: true,
+        });
+        console.error('Error joining game:', error);
+      });
   }
 }

@@ -1,7 +1,16 @@
 <div class="background">
   <div>
     <div class="flex justify-center gap-[24px]" style="margin-bottom: 12px">
-      <div class="text-white">Welcome: {{ user.email || "Anonymous" }}</div>
+      <div class="text-white">Welcome: {{ user?.email || "Anonymous" }}</div>
+      <div
+        class="text-[yellow]"
+        *ngIf="
+          this.gameState?.players?.white == null ||
+          this.gameState?.players?.black == null
+        "
+      >
+        Waiting for a player to join.
+      </div>
       <div
         class="w-[25px] h-[25px] bg-white hover:bg-[yellow] flex justify-center items-center cursor-pointer"
         title="Quit Game"
