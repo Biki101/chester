@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UtilsService } from '../../services/utils.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import firebase from 'firebase/app';
 import { AuthserviceService } from 'src/app/services/authservice.service';
 import { Subscription } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ToastrService } from 'ngx-toastr';
 
 interface BoardStatus {
   [square: string]: {
@@ -156,12 +157,16 @@ export class MultiplayerComponent implements OnInit {
 
   gameState: any = null;
 
+  gameId: any = null;
+
   constructor(
     private utilService: UtilsService,
     private auth: AngularFireAuth,
     private authService: AuthserviceService,
     private router: Router,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService
   ) {
     this.boardStatus = utilService.boardStatus;
     this.boardAsWhite = utilService.boardAsWhite;
@@ -172,7 +177,11 @@ export class MultiplayerComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.gameId = params['gameId'];
+    });
+  }
 
   getCurrentGame() {
     const gamesAsWhite$ = this.firestore
@@ -371,12 +380,6 @@ export class MultiplayerComponent implements OnInit {
   }
 
   movePieceFromSourceToTarget(square: string) {
-    // Game is Started
-    if (this.gameToResume == false) {
-      this.gameToResume = true;
-      localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
-    }
-
     // Allowing only valid moves if King is checked
     let validMove = this.checkIfValidMove(square);
     if (validMove == false) {
@@ -3168,5 +3171,20 @@ export class MultiplayerComponent implements OnInit {
     this.gameToResume = false;
     localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
     this.router.navigate(['welcome-page']);
+  }
+
+  copyId(text: string) {
+    // Copy to clipboard
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        this.toastr.success('Copied!', '', {
+          closeButton: true,
+        });
+      })
+      .catch((err) => {
+        document.getElementById('copyStatus').innerText = 'Failed to copy!';
+        console.error('Error copying text: ', err);
+      });
   }
 }

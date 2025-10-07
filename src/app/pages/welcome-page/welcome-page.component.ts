@@ -86,7 +86,7 @@ export class WelcomePageComponent implements OnInit {
   getWaitingGames() {
     this.waitingGamesList$ = this.firestore
       .collection<GameData>('games', (ref) =>
-        ref.where('status', '==', 'waiting')
+        ref.where('status', '!=', 'finished')
       )
       .valueChanges({ idField: 'id' });
   }
