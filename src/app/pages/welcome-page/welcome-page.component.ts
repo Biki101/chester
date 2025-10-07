@@ -9,6 +9,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/firestore';
+import { UtilsService } from 'src/app/services/utils.service';
 
 // Define the type of data for clarity
 interface GameData {
@@ -33,7 +34,8 @@ export class WelcomePageComponent implements OnInit {
     private authService: AuthserviceService,
     private auth: AngularFireAuth,
     private router: Router,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private utilService: UtilsService
   ) {
     this.gamesCollection = this.firestore.collection<GameData>('games');
   }
@@ -101,7 +103,7 @@ export class WelcomePageComponent implements OnInit {
         white: playAsblack ? null : this.user.uid,
         black: playAsblack ? this.user.uid : null,
       },
-      boardState: this.initialBoardState(),
+      boardState: this.initialBoardState(playAsblack),
       turn: 'white',
       status: 'waiting',
       moves: [], // Include the new moves array
@@ -117,34 +119,34 @@ export class WelcomePageComponent implements OnInit {
     });
   }
 
-  private initialBoardState(): any {
+  private initialBoardState(playAsblack: boolean): any {
     // ... initial board setup logic ...
     return {
-      boardStatus: null,
-      playingAsWhite: null,
-      A1RookKingCastleWhite: null,
-      H1RookKingCastleWhite: null,
-      A8RookKingCastleBlack: null,
-      H8RookKingCastleBlack: null,
+      boardStatus: this.utilService.initialBoardState,
+      playingAsWhite: playAsblack ? false : true,
+      A1RookKingCastleWhite: true,
+      H1RookKingCastleWhite: true,
+      A8RookKingCastleBlack: true,
+      H8RookKingCastleBlack: true,
       selectedBox: null,
-      possibleMoves: null,
-      possibleBlackMoves: null,
-      possibleWhiteMoves: null,
-      pawnBlackForwardMoves: null,
-      pawnWhiteForwardMoves: null,
-      pawnBlackForwardMovesRepeated: null,
-      pawnWhiteForwardMovesRepeated: null,
-      blackKingPosition: null,
-      whiteKingPosition: null,
-      movedFrom: null,
-      movedTo: null,
-      gameDraw: null,
-      whiteWon: null,
-      blackWon: null,
-      capturedWhiteList: null,
-      capturedBlackList: null,
-      blackKingChecked: null,
-      whiteKingChecked: null,
+      possibleMoves: [],
+      possibleBlackMoves: [],
+      possibleWhiteMoves: [],
+      pawnBlackForwardMoves: [],
+      pawnWhiteForwardMoves: [],
+      pawnBlackForwardMovesRepeated: [],
+      pawnWhiteForwardMovesRepeated: [],
+      blackKingPosition: 'E8',
+      whiteKingPosition: 'E1',
+      movedFrom: '',
+      movedTo: '',
+      gameDraw: false,
+      whiteWon: false,
+      blackWon: false,
+      capturedWhiteList: [],
+      capturedBlackList: [],
+      blackKingChecked: false,
+      whiteKingChecked: false,
     };
   }
 }

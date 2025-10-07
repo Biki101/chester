@@ -11,6 +11,84 @@ interface BoardStatus {
   providedIn: 'root',
 })
 export class UtilsService {
+  public initialBoardState = {
+    // Rank 8 (Black major pieces)
+    A8: { occupiedBy: 'rook', occupiedByType: 'black' },
+    B8: { occupiedBy: 'knight', occupiedByType: 'black' },
+    C8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+    D8: { occupiedBy: 'queen', occupiedByType: 'black' },
+    E8: { occupiedBy: 'king', occupiedByType: 'black' },
+    F8: { occupiedBy: 'bishop', occupiedByType: 'black' },
+    G8: { occupiedBy: 'knight', occupiedByType: 'black' },
+    H8: { occupiedBy: 'rook', occupiedByType: 'black' },
+
+    // Rank 7 (Black pawns)
+    A7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    B7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    C7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    D7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    E7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    F7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    G7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+    H7: { occupiedBy: 'pawn', occupiedByType: 'black' },
+
+    // Ranks 6 → 3 (empty squares)
+    A6: { occupiedBy: null, occupiedByType: null },
+    B6: { occupiedBy: null, occupiedByType: null },
+    C6: { occupiedBy: null, occupiedByType: null },
+    D6: { occupiedBy: null, occupiedByType: null },
+    E6: { occupiedBy: null, occupiedByType: null },
+    F6: { occupiedBy: null, occupiedByType: null },
+    G6: { occupiedBy: null, occupiedByType: null },
+    H6: { occupiedBy: null, occupiedByType: null },
+
+    A5: { occupiedBy: null, occupiedByType: null },
+    B5: { occupiedBy: null, occupiedByType: null },
+    C5: { occupiedBy: null, occupiedByType: null },
+    D5: { occupiedBy: null, occupiedByType: null },
+    E5: { occupiedBy: null, occupiedByType: null },
+    F5: { occupiedBy: null, occupiedByType: null },
+    G5: { occupiedBy: null, occupiedByType: null },
+    H5: { occupiedBy: null, occupiedByType: null },
+
+    A4: { occupiedBy: null, occupiedByType: null },
+    B4: { occupiedBy: null, occupiedByType: null },
+    C4: { occupiedBy: null, occupiedByType: null },
+    D4: { occupiedBy: null, occupiedByType: null },
+    E4: { occupiedBy: null, occupiedByType: null },
+    F4: { occupiedBy: null, occupiedByType: null },
+    G4: { occupiedBy: null, occupiedByType: null },
+    H4: { occupiedBy: null, occupiedByType: null },
+
+    A3: { occupiedBy: null, occupiedByType: null },
+    B3: { occupiedBy: null, occupiedByType: null },
+    C3: { occupiedBy: null, occupiedByType: null },
+    D3: { occupiedBy: null, occupiedByType: null },
+    E3: { occupiedBy: null, occupiedByType: null },
+    F3: { occupiedBy: null, occupiedByType: null },
+    G3: { occupiedBy: null, occupiedByType: null },
+    H3: { occupiedBy: null, occupiedByType: null },
+
+    // Rank 2 (White pawns)
+    A2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    B2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    C2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    D2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    E2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    F2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    G2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+    H2: { occupiedBy: 'pawn', occupiedByType: 'white' },
+
+    // Rank 1 (White major pieces)
+    A1: { occupiedBy: 'rook', occupiedByType: 'white' },
+    B1: { occupiedBy: 'knight', occupiedByType: 'white' },
+    C1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+    D1: { occupiedBy: 'queen', occupiedByType: 'white' },
+    E1: { occupiedBy: 'king', occupiedByType: 'white' },
+    F1: { occupiedBy: 'bishop', occupiedByType: 'white' },
+    G1: { occupiedBy: 'knight', occupiedByType: 'white' },
+    H1: { occupiedBy: 'rook', occupiedByType: 'white' },
+  };
   public boardStatus: BoardStatus = {
     A8: { occupiedBy: null, occupiedByType: null },
     B8: { occupiedBy: null, occupiedByType: null },
