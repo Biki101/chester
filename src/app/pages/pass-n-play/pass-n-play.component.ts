@@ -3264,7 +3264,7 @@ export class PassNPlayComponent implements OnInit {
       localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
     } else {
       this.whiteWon = true;
-      localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+      localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
     }
   }
 

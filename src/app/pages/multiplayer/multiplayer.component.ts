@@ -349,7 +349,10 @@ export class MultiplayerComponent implements OnInit {
       // If clicking the same selected piece → deselect
       if (this.selectedBox?.name === square) {
         this.selectedBox = null;
-        localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
+        // localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
+        this.updateCloudState({
+          'boardState.selectedBox': this.selectBox,
+        });
       } else {
         // Select only if it’s the player’s turn and piece matches color
         if (
@@ -361,7 +364,10 @@ export class MultiplayerComponent implements OnInit {
             occupiedBy: boardBox.occupiedBy,
             occupiedByType: boardBox.occupiedByType,
           };
-          localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
+          // localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
+          this.updateCloudState({
+            'boardState.selectedBox': this.selectBox,
+          });
           this.getPossibleMoves();
         }
       }
@@ -388,7 +394,10 @@ export class MultiplayerComponent implements OnInit {
     // Game is Started
     if (this.gameToResume == false) {
       this.gameToResume = true;
-      localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+      // localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+      this.updateCloudState({
+        'boardState.gameToResume': this.gameToResume,
+      });
     }
 
     // Allowing only valid moves if King is checked
@@ -402,25 +411,37 @@ export class MultiplayerComponent implements OnInit {
       occupiedBy: null,
       occupiedByType: null,
     };
-    localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+    this.updateCloudState({
+      'boardState.boardStatus': this.boardStatus,
+    });
+    // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
 
     this.movedFrom = this.selectedBox.name;
-    localStorage.setItem('movedFrom', JSON.stringify(this.movedFrom));
+    // localStorage.setItem('movedFrom', JSON.stringify(this.movedFrom));
+    this.updateCloudState({
+      'boardState.movedFrom': this.movedFrom,
+    });
 
     // Check if Capturing or Just Moving
     if (this.boardStatus[square].occupiedBy != null) {
       if (this.boardStatus[square].occupiedByType == 'white') {
         this.capturedWhiteList.push(this.boardStatus[square]);
-        localStorage.setItem(
-          'capturedWhiteList',
-          JSON.stringify(this.capturedWhiteList)
-        );
+        // localStorage.setItem(
+        //   'capturedWhiteList',
+        //   JSON.stringify(this.capturedWhiteList)
+        // );
+        this.updateCloudState({
+          'boardState.capturedWhiteList': this.capturedWhiteList,
+        });
       } else {
         this.capturedBlackList.push(this.boardStatus[square]);
-        localStorage.setItem(
-          'capturedBlackList',
-          JSON.stringify(this.capturedBlackList)
-        );
+        // localStorage.setItem(
+        //   'capturedBlackList',
+        //   JSON.stringify(this.capturedBlackList)
+        // );
+        this.updateCloudState({
+          'boardState.capturedBlackList': this.capturedBlackList,
+        });
       }
     }
 
@@ -429,7 +450,10 @@ export class MultiplayerComponent implements OnInit {
       occupiedBy: this.selectedBox.occupiedBy,
       occupiedByType: this.selectedBox.occupiedByType,
     };
-    localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+    // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+    this.updateCloudState({
+      'boardState.boardStatus': this.boardStatus,
+    });
 
     // checking if king
     if (
@@ -437,23 +461,32 @@ export class MultiplayerComponent implements OnInit {
       this.selectedBox.occupiedByType == 'black'
     ) {
       this.blackKingPosition = square;
-      localStorage.setItem(
-        'blackKingPosition',
-        JSON.stringify(this.blackKingPosition)
-      );
+      // localStorage.setItem(
+      //   'blackKingPosition',
+      //   JSON.stringify(this.blackKingPosition)
+      // );
+      this.updateCloudState({
+        'boardState.blackKingPosition': this.blackKingPosition,
+      });
     } else if (
       this.selectedBox.occupiedBy == 'king' &&
       this.selectedBox.occupiedByType == 'white'
     ) {
       this.whiteKingPosition = square;
-      localStorage.setItem(
-        'whiteKingPosition',
-        JSON.stringify(this.whiteKingPosition)
-      );
+      // localStorage.setItem(
+      //   'whiteKingPosition',
+      //   JSON.stringify(this.whiteKingPosition)
+      // );
+      this.updateCloudState({
+        'boardState.whiteKingPosition': this.whiteKingPosition,
+      });
     }
 
     this.movedTo = square;
-    localStorage.setItem('movedTo', JSON.stringify(this.movedTo));
+    // localStorage.setItem('movedTo', JSON.stringify(this.movedTo));
+    this.updateCloudState({
+      'boardState.movedTo': this.movedTo,
+    });
 
     // check if pawn has reached the opponent end
     this.checkIfPawnHasReachedOpponentsEnd(this.movedTo);
@@ -468,8 +501,14 @@ export class MultiplayerComponent implements OnInit {
     // Reset state
     this.selectedBox = null;
     this.possibleMoves = [];
-    localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
-    localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
+    // localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
+    // localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
+    this.updateCloudState({
+      'boardState.selectedBox': this.selectedBox,
+    });
+    this.updateCloudState({
+      'boardState.possibleMoves': this.possibleMoves,
+    });
 
     // Geting All Possible Black and White Moves
     this.getAllPossibleBlackMoves();
@@ -489,7 +528,10 @@ export class MultiplayerComponent implements OnInit {
       if (this.whiteKingChecked == false) {
         if (this.possibleWhiteMoves.length == 0) {
           this.gameDraw = true;
-          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          // localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          this.updateCloudState({
+            'boardState.gameDraw': this.gameDraw,
+          });
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -509,12 +551,18 @@ export class MultiplayerComponent implements OnInit {
             }
           }
           this.gameDraw = tempDraw;
-          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          // localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          this.updateCloudState({
+            'boardState.gameDraw': this.gameDraw,
+          });
         }
       } else if (this.whiteKingChecked == true) {
         if (this.possibleWhiteMoves.length == 0) {
           this.blackWon = true;
-          localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+          // localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+          this.updateCloudState({
+            'boardState.blackWon': this.blackWon,
+          });
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -533,14 +581,20 @@ export class MultiplayerComponent implements OnInit {
             }
           }
           this.blackWon = tempDraw;
-          localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+          // localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+          this.updateCloudState({
+            'boardState.blackWon': this.blackWon,
+          });
         }
       }
     } else if (this.playingAsWhite == false) {
       if (this.blackKingChecked == false) {
         if (this.possibleBlackMoves.length == 0) {
           this.gameDraw = true;
-          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          // localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          this.updateCloudState({
+            'boardState.gameDraw': this.gameDraw,
+          });
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -559,12 +613,18 @@ export class MultiplayerComponent implements OnInit {
             }
           }
           this.gameDraw = tempDraw;
-          localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          // localStorage.setItem('gameDraw', JSON.stringify(this.gameDraw));
+          this.updateCloudState({
+            'boardState.gameDraw': this.gameDraw,
+          });
         }
       } else if (this.blackKingChecked == true) {
         if (this.possibleBlackMoves.length == 0) {
           this.whiteWon = true;
-          localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
+          // localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
+          this.updateCloudState({
+            'boardState.whiteWon': this.whiteWon,
+          });
         } else {
           for (const square in this.boardStatus) {
             const pieceInfo = { name: square, ...this.boardStatus[square] };
@@ -584,7 +644,10 @@ export class MultiplayerComponent implements OnInit {
             }
           }
           this.whiteWon = tempDraw;
-          localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
+          // localStorage.setItem('whiteWon', JSON.stringify(this.whiteWon));
+          this.updateCloudState({
+            'boardState.whiteWon': this.whiteWon,
+          });
         }
       }
     }
@@ -926,7 +989,10 @@ export class MultiplayerComponent implements OnInit {
     }
 
     this.possibleMoves = tempMoves;
-    localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
+    // localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
+    this.updateCloudState({
+      'boardState.possibleMoves': this.possibleMoves,
+    });
   }
 
   getPossibleMovesForGameDraw(selectedBox: any) {
@@ -1288,13 +1354,19 @@ export class MultiplayerComponent implements OnInit {
         if (movedTo[1] == '1') {
           // Let Player Replace Pawn with Queen
           this.boardStatus[movedTo].occupiedBy = 'queen';
-          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          this.updateCloudState({
+            'boardState.boardStatus': this.boardStatus,
+          });
         }
       } else {
         if (movedTo[1] == '8') {
           // Let Player Replace Pawn with Queen
           this.boardStatus[movedTo].occupiedBy = 'queen';
-          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          this.updateCloudState({
+            'boardState.boardStatus': this.boardStatus,
+          });
         }
       }
     }
@@ -1318,11 +1390,17 @@ export class MultiplayerComponent implements OnInit {
             },
           };
           this.H8RookKingCastleBlack = false;
-          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
-          localStorage.setItem(
-            'H8RookKingCastleBlack',
-            JSON.stringify(this.H8RookKingCastleBlack)
-          );
+          // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          // localStorage.setItem(
+          //   'H8RookKingCastleBlack',
+          //   JSON.stringify(this.H8RookKingCastleBlack)
+          // );
+          this.updateCloudState({
+            'boardState.boardStatus': this.boardStatus,
+          });
+          this.updateCloudState({
+            'boardState.H8RookKingCastleBlack': this.H8RookKingCastleBlack,
+          });
         } else if (movedFrom == 'E8' && movedTo == 'C8') {
           this.boardStatus = {
             ...this.boardStatus,
@@ -1336,11 +1414,17 @@ export class MultiplayerComponent implements OnInit {
             },
           };
           this.A8RookKingCastleBlack = false;
-          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
-          localStorage.setItem(
-            'A8RookKingCastleBlack',
-            JSON.stringify(this.A8RookKingCastleBlack)
-          );
+          // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          // localStorage.setItem(
+          //   'A8RookKingCastleBlack',
+          //   JSON.stringify(this.A8RookKingCastleBlack)
+          // );
+          this.updateCloudState({
+            'boardState.boardStatus': this.boardStatus,
+          });
+          this.updateCloudState({
+            'boardState.A8RookKingCastleBlack': this.A8RookKingCastleBlack,
+          });
         }
       } else if (this.boardStatus[movedTo].occupiedByType == 'white') {
         if (movedFrom == 'E1' && movedTo == 'G1') {
@@ -1356,11 +1440,17 @@ export class MultiplayerComponent implements OnInit {
             },
           };
           this.H1RookKingCastleWhite = false;
-          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
-          localStorage.setItem(
-            'H1RookKingCastleWhite',
-            JSON.stringify(this.H1RookKingCastleWhite)
-          );
+          // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          // localStorage.setItem(
+          //   'H1RookKingCastleWhite',
+          //   JSON.stringify(this.H1RookKingCastleWhite)
+          // );
+          this.updateCloudState({
+            'boardState.boardStatus': this.boardStatus,
+          });
+          this.updateCloudState({
+            'boardState.H1RookKingCastleWhite': this.H1RookKingCastleWhite,
+          });
         } else if (movedFrom == 'E1' && movedTo == 'C1') {
           this.boardStatus = {
             ...this.boardStatus,
@@ -1374,11 +1464,17 @@ export class MultiplayerComponent implements OnInit {
             },
           };
           this.A1RookKingCastleWhite = false;
-          localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
-          localStorage.setItem(
-            'A1RookKingCastleWhite',
-            JSON.stringify(this.A1RookKingCastleWhite)
-          );
+          // localStorage.setItem('boardStatus', JSON.stringify(this.boardStatus));
+          // localStorage.setItem(
+          //   'A1RookKingCastleWhite',
+          //   JSON.stringify(this.A1RookKingCastleWhite)
+          // );
+          this.updateCloudState({
+            'boardState.boardStatus': this.boardStatus,
+          });
+          this.updateCloudState({
+            'boardState.A1RookKingCastleWhite': this.A1RookKingCastleWhite,
+          });
         }
       }
     }
@@ -1387,67 +1483,91 @@ export class MultiplayerComponent implements OnInit {
       if (this.boardStatus[movedTo].occupiedBy == 'king') {
         this.H1RookKingCastleWhite = false;
         this.A1RookKingCastleWhite = false;
-        localStorage.setItem(
-          'H1RookKingCastleWhite',
-          JSON.stringify(this.H1RookKingCastleWhite)
-        );
-        localStorage.setItem(
-          'A1RookKingCastleWhite',
-          JSON.stringify(this.A1RookKingCastleWhite)
-        );
+        // localStorage.setItem(
+        //   'H1RookKingCastleWhite',
+        //   JSON.stringify(this.H1RookKingCastleWhite)
+        // );
+        // localStorage.setItem(
+        //   'A1RookKingCastleWhite',
+        //   JSON.stringify(this.A1RookKingCastleWhite)
+        // );
+        this.updateCloudState({
+          'boardState.H1RookKingCastleWhite': this.H1RookKingCastleWhite,
+        });
+        this.updateCloudState({
+          'boardState.A1RookKingCastleWhite': this.A1RookKingCastleWhite,
+        });
       } else if (
         movedFrom == 'A1' &&
         this.A1RookKingCastleWhite == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.A1RookKingCastleWhite = false;
-        localStorage.setItem(
-          'A1RookKingCastleWhite',
-          JSON.stringify(this.A1RookKingCastleWhite)
-        );
+        // localStorage.setItem(
+        //   'A1RookKingCastleWhite',
+        //   JSON.stringify(this.A1RookKingCastleWhite)
+        // );
+        this.updateCloudState({
+          'boardState.A1RookKingCastleWhite': this.A1RookKingCastleWhite,
+        });
       } else if (
         movedFrom == 'H1' &&
         this.H1RookKingCastleWhite == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.H1RookKingCastleWhite = false;
-        localStorage.setItem(
-          'H1RookKingCastleWhite',
-          JSON.stringify(this.H1RookKingCastleWhite)
-        );
+        // localStorage.setItem(
+        //   'H1RookKingCastleWhite',
+        //   JSON.stringify(this.H1RookKingCastleWhite)
+        // );
+        this.updateCloudState({
+          'boardState.H1RookKingCastleWhite': this.H1RookKingCastleWhite,
+        });
       }
     } else if (this.boardStatus[movedTo].occupiedByType == 'black') {
       if (this.boardStatus[movedTo].occupiedBy == 'king') {
         this.H8RookKingCastleBlack = false;
         this.A8RookKingCastleBlack = false;
-        localStorage.setItem(
-          'H8RookKingCastleBlack',
-          JSON.stringify(this.H8RookKingCastleBlack)
-        );
-        localStorage.setItem(
-          'A8RookKingCastleBlack',
-          JSON.stringify(this.A8RookKingCastleBlack)
-        );
+        // localStorage.setItem(
+        //   'H8RookKingCastleBlack',
+        //   JSON.stringify(this.H8RookKingCastleBlack)
+        // );
+        // localStorage.setItem(
+        //   'A8RookKingCastleBlack',
+        //   JSON.stringify(this.A8RookKingCastleBlack)
+        // );
+        this.updateCloudState({
+          'boardState.H8RookKingCastleBlack': this.H8RookKingCastleBlack,
+        });
+        this.updateCloudState({
+          'boardState.A8RookKingCastleBlack': this.A8RookKingCastleBlack,
+        });
       } else if (
         movedFrom == 'A8' &&
         this.A8RookKingCastleBlack == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.A8RookKingCastleBlack = false;
-        localStorage.setItem(
-          'A8RookKingCastleBlack',
-          JSON.stringify(this.A8RookKingCastleBlack)
-        );
+        // localStorage.setItem(
+        //   'A8RookKingCastleBlack',
+        //   JSON.stringify(this.A8RookKingCastleBlack)
+        // );
+        this.updateCloudState({
+          'boardState.A8RookKingCastleBlack': this.A8RookKingCastleBlack,
+        });
       } else if (
         movedFrom == 'H8' &&
         this.H8RookKingCastleBlack == true &&
         this.boardStatus[movedTo].occupiedBy == 'rook'
       ) {
         this.H8RookKingCastleBlack = false;
-        localStorage.setItem(
-          'H8RookKingCastleBlack',
-          JSON.stringify(this.H8RookKingCastleBlack)
-        );
+        // localStorage.setItem(
+        //   'H8RookKingCastleBlack',
+        //   JSON.stringify(this.H8RookKingCastleBlack)
+        // );
+        this.updateCloudState({
+          'boardState.H8RookKingCastleBlack': this.A8RookKingCastleBlack,
+        });
       }
     }
   }
@@ -1455,37 +1575,52 @@ export class MultiplayerComponent implements OnInit {
   checkIfKingIsChecked() {
     if (this.possibleBlackMoves.includes(this.whiteKingPosition)) {
       this.whiteKingChecked = true;
-      localStorage.setItem(
-        'whiteKingChecked',
-        JSON.stringify(this.whiteKingChecked)
-      );
+      // localStorage.setItem(
+      //   'whiteKingChecked',
+      //   JSON.stringify(this.whiteKingChecked)
+      // );
+      this.updateCloudState({
+        'boardState.whiteKingChecked': this.whiteKingChecked,
+      });
     } else if (this.possibleWhiteMoves.includes(this.blackKingPosition)) {
       this.blackKingChecked = true;
-      localStorage.setItem(
-        'blackKingChecked',
-        JSON.stringify(this.blackKingChecked)
-      );
+      // localStorage.setItem(
+      //   'blackKingChecked',
+      //   JSON.stringify(this.blackKingChecked)
+      // );
+      this.updateCloudState({
+        'boardState.blackKingChecked': this.blackKingChecked,
+      });
     } else {
       this.whiteKingChecked = false;
       this.blackKingChecked = false;
-      localStorage.setItem(
-        'whiteKingChecked',
-        JSON.stringify(this.whiteKingChecked)
-      );
-      localStorage.setItem(
-        'blackKingChecked',
-        JSON.stringify(this.blackKingChecked)
-      );
+      // localStorage.setItem(
+      //   'whiteKingChecked',
+      //   JSON.stringify(this.whiteKingChecked)
+      // );
+      // localStorage.setItem(
+      //   'blackKingChecked',
+      //   JSON.stringify(this.blackKingChecked)
+      // );
+      this.updateCloudState({
+        'boardState.whiteKingChecked': this.whiteKingChecked,
+      });
+      this.updateCloudState({
+        'boardState.blackKingChecked': this.blackKingChecked,
+      });
     }
   }
 
   getAllPossibleBlackMoves() {
     let tempMoves = [];
     this.pawnBlackForwardMoves = [];
-    localStorage.setItem(
-      'pawnBlackForwardMoves',
-      JSON.stringify(this.pawnBlackForwardMoves)
-    );
+    // localStorage.setItem(
+    //   'pawnBlackForwardMoves',
+    //   JSON.stringify(this.pawnBlackForwardMoves)
+    // );
+    this.updateCloudState({
+      'boardState.pawnBlackForwardMoves': this.pawnBlackForwardMoves,
+    });
 
     this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'black') {
@@ -1743,25 +1878,35 @@ export class MultiplayerComponent implements OnInit {
     );
 
     this.pawnBlackForwardMovesRepeated = repeatedMoves;
-    localStorage.setItem(
-      'pawnBlackForwardMovesRepeated',
-      JSON.stringify(this.pawnBlackForwardMovesRepeated)
-    );
+    // localStorage.setItem(
+    //   'pawnBlackForwardMovesRepeated',
+    //   JSON.stringify(this.pawnBlackForwardMovesRepeated)
+    // );
+    this.updateCloudState({
+      'boardState.pawnBlackForwardMovesRepeated':
+        this.pawnBlackForwardMovesRepeated,
+    });
 
     this.possibleBlackMoves = this.removeDuplicates(tempMoves);
-    localStorage.setItem(
-      'possibleBlackMoves',
-      JSON.stringify(this.possibleBlackMoves)
-    );
+    // localStorage.setItem(
+    //   'possibleBlackMoves',
+    //   JSON.stringify(this.possibleBlackMoves)
+    // );
+    this.updateCloudState({
+      'boardState.possibleBlackMoves': this.possibleBlackMoves,
+    });
   }
 
   getAllPossibleWhiteMoves() {
     let tempMoves = [];
     this.pawnWhiteForwardMoves = [];
-    localStorage.setItem(
-      'pawnWhiteForwardMoves',
-      JSON.stringify(this.pawnWhiteForwardMoves)
-    );
+    // localStorage.setItem(
+    //   'pawnWhiteForwardMoves',
+    //   JSON.stringify(this.pawnWhiteForwardMoves)
+    // );
+    this.updateCloudState({
+      'boardState.pawnWhiteForwardMoves': this.pawnWhiteForwardMoves,
+    });
 
     this.utilService.boardAsWhite?.map((box: any) => {
       if (this.boardStatus[box].occupiedByType == 'white') {
@@ -2016,16 +2161,23 @@ export class MultiplayerComponent implements OnInit {
     );
 
     this.pawnWhiteForwardMovesRepeated = repeatedMoves;
-    localStorage.setItem(
-      'pawnWhiteForwardMovesRepeated',
-      JSON.stringify(this.pawnWhiteForwardMovesRepeated)
-    );
+    // localStorage.setItem(
+    //   'pawnWhiteForwardMovesRepeated',
+    //   JSON.stringify(this.pawnWhiteForwardMovesRepeated)
+    // );
+    this.updateCloudState({
+      'boardState.pawnWhiteForwardMovesRepeated':
+        this.pawnWhiteForwardMovesRepeated,
+    });
 
     this.possibleWhiteMoves = this.removeDuplicates(tempMoves);
-    localStorage.setItem(
-      'possibleWhiteMoves',
-      JSON.stringify(this.possibleWhiteMoves)
-    );
+    // localStorage.setItem(
+    //   'possibleWhiteMoves',
+    //   JSON.stringify(this.possibleWhiteMoves)
+    // );
+    this.updateCloudState({
+      'boardState.possibleWhiteMoves': this.possibleWhiteMoves,
+    });
   }
 
   removeDuplicates(arr: any): string[] {
@@ -3171,16 +3323,25 @@ export class MultiplayerComponent implements OnInit {
   onQuitGame() {
     if (this.playingAsWhite) {
       this.blackWon = true;
-      localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+      // localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+      this.updateCloudState({
+        'boardState.blackWon': this.blackWon,
+      });
     } else {
       this.whiteWon = true;
-      localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+      // localStorage.setItem('blackWon', JSON.stringify(this.blackWon));
+      this.updateCloudState({
+        'boardState.whiteWon': this.whiteWon,
+      });
     }
   }
 
   goBackToLobby() {
     this.gameToResume = false;
-    localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+    // localStorage.setItem('gameToResume', JSON.stringify(this.gameToResume));
+    this.updateCloudState({
+      'boardState.gameToResume': this.gameToResume,
+    });
     this.router.navigate(['welcome-page']);
   }
 
@@ -3196,6 +3357,22 @@ export class MultiplayerComponent implements OnInit {
       .catch((err) => {
         document.getElementById('copyStatus').innerText = 'Failed to copy!';
         console.error('Error copying text: ', err);
+      });
+  }
+
+  updateCloudState(updatePayload: any) {
+    this.firestore
+      .collection('games') // Access the 'games' collection
+      .doc(this.gameId) // Get a reference to the specific game document
+      .update(updatePayload) // Apply the changes
+      .then(() => {
+        console.log(`Game ${this.gameId} successfully Updated.`);
+      })
+      .catch((error) => {
+        this.toastr.error('Internal server error!', 'Error', {
+          closeButton: true,
+        });
+        console.error('Error making move game:', error);
       });
   }
 }

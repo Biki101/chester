@@ -169,7 +169,6 @@ export class WelcomePageComponent implements OnInit {
       };
     }
 
-    // 3. Execute the update
     this.firestore
       .collection('games') // Access the 'games' collection
       .doc(game?.id) // Get a reference to the specific game document
