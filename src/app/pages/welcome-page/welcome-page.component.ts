@@ -51,11 +51,31 @@ export class WelcomePageComponent implements OnInit {
     });
 
     this.getWaitingGames();
+
+    this.resumeGame();
   }
 
   ngOnDestroy() {
     // IMPORTANT: Always unsubscribe to prevent memory leaks
     this.authSubscription.unsubscribe();
+  }
+
+  resumeGame() {
+    this.waitingGamesList$.subscribe((data) => {
+      console.log(data);
+      data?.map((game: any) => {
+        if (
+          game?.players?.black == this.user.uid ||
+          game?.players?.white == this.user.uid
+        ) {
+          this.router.navigate(['multiplayer'], {
+            queryParams: {
+              gameId: game?.id,
+            },
+          });
+        }
+      });
+    });
   }
 
   getWaitingGames() {

@@ -1,1 +1,98 @@
-<p>multiplayer works!</p>
+<div class="background">
+  <div>
+    <div class="flex justify-center gap-[24px]" style="margin-bottom: 12px">
+      <div class="text-white">Welcome: {{ user.email || "Anonymous" }}</div>
+      <div
+        class="w-[25px] h-[25px] bg-white hover:bg-[yellow] flex justify-center items-center cursor-pointer"
+        title="Quit Game"
+        (click)="onQuitGame()"
+      >
+        <img
+          src="../../../assets/flag.svg"
+          width="20px"
+          height="20px"
+          alt=""
+          srcset=""
+        />
+      </div>
+    </div>
+    <div class="chess-container">
+      <ng-container *ngFor="let row of activeRows">
+        <ng-container *ngFor="let column of activeColumns">
+          <div
+            class="chess-box"
+            [ngClass]="{
+              'white-box': checkIfWhiteBox(column, row),
+              'black-box': !checkIfWhiteBox(column, row),
+              'selected-box': checkIfSelected(column, row),
+              'moved-from': checkIfMovedFrom(column, row),
+              'moved-to': checkIfMovedTo(column, row),
+              checked: checkIfChecked(column, row)
+            }"
+            (click)="selectBox(column, row)"
+          >
+            <div
+              class="possible-move-indicator"
+              *ngIf="selectedBox != null && isPossibleMove(column, row)"
+            ></div>
+            <div>{{ column }}{{ row }}</div>
+            <div style="display: flex; justify-content: center">
+              <img
+                *ngIf="getStatus(column, row) != null"
+                [src]="
+                  '../assets/' + 'classic/' + getStatus(column, row) + '.svg'
+                "
+                class="pieces-on-board"
+                alt=""
+              />
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div
+      class="bg-white w-fit flex gap-[4px] rounded-[4px] hover:bg-[yellow] cursor-pointer"
+      style="
+        margin-top: 12px;
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      "
+      onclick="window.open('https://github.com/Biki101/chester/issues', '_blank')"
+    >
+      <img
+        src="../../../assets/info.svg"
+        width="18px"
+        height="18px"
+        alt=""
+        srcset=""
+      />
+      <div class="text-black text-[12px]">Report a problem</div>
+    </div>
+  </div>
+  <div class="game-draw-container" *ngIf="gameDraw">Game Draw</div>
+  <div class="won-container" *ngIf="whiteWon">
+    <img
+      src="../assets/white-king.svg"
+      style="width: 40px; height: 40px"
+      alt=""
+    />
+    <div>White Wins</div>
+  </div>
+  <div class="won-container" *ngIf="blackWon">
+    <img
+      src="../assets/black-king.svg"
+      style="width: 40px; height: 40px"
+      alt=""
+    />
+    <div>Black Wins</div>
+  </div>
+  <div
+    class="button lobby-container cursor-pointer"
+    *ngIf="gameDraw || whiteWon || blackWon"
+    (click)="goBackToLobby()"
+  >
+    Go Back to Lobby
+  </div>
+</div>
