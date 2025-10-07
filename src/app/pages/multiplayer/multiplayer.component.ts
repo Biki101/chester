@@ -351,7 +351,7 @@ export class MultiplayerComponent implements OnInit {
         this.selectedBox = null;
         // localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
         this.updateCloudState({
-          'boardState.selectedBox': this.selectBox,
+          'boardState.selectedBox': this.selectedBox,
         });
       } else {
         // Select only if it’s the player’s turn and piece matches color
@@ -366,7 +366,7 @@ export class MultiplayerComponent implements OnInit {
           };
           // localStorage.setItem('selectedBox', JSON.stringify(this.selectedBox));
           this.updateCloudState({
-            'boardState.selectedBox': this.selectBox,
+            'boardState.selectedBox': this.selectedBox,
           });
           this.getPossibleMoves();
         }
