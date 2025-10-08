@@ -3350,7 +3350,7 @@ export class MultiplayerComponent implements OnInit {
       'boardState.gameToResume': this.gameToResume,
     });
     this.updateCloudState({
-      'boardState.status': 'finished',
+      'boardState.status': 'playing',
     });
     this.router.navigate(['welcome-page']);
   }
