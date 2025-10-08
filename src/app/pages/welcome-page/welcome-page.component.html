@@ -8,12 +8,15 @@
     </div>
     <div class="flex-1">
       <div *ngIf="waitingGamesList$ | async as waitingGames">
-        <h2>Join Game ({{ waitingGames.length }})</h2>
+        <h2>Join Game ({{ getlength(waitingGames) }})</h2>
         <div class="h-[150px] overflow-auto">
           <div
             *ngFor="let game of waitingGames; let i = index"
             class="text-[13px] cursor-pointer hover:bg-[black] hover:text-[yellow] game-list"
             (click)="joinGame(game)"
+            [ngClass]="{
+              hidden: game?.players.white != null && game?.players.black != null
+            }"
           >
             {{ i + 1 }}. ID: {{ game.id }}
           </div>

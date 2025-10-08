@@ -162,7 +162,7 @@ export class WelcomePageComponent implements OnInit {
         'players.white': this.user.uid,
         status: 'in-progress',
       };
-    } else {
+    } else if (game?.players.black == null) {
       updatePayload = {
         'players.black': this.user.uid,
         status: 'in-progress',
@@ -190,5 +190,11 @@ export class WelcomePageComponent implements OnInit {
         });
         console.error('Error joining game:', error);
       });
+  }
+
+  getlength(list: any[]) {
+    return list.filter(
+      (game) => game?.players.white == null || game?.players.black == null
+    )?.length;
   }
 }

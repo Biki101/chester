@@ -3349,6 +3349,9 @@ export class MultiplayerComponent implements OnInit {
     this.updateCloudState({
       'boardState.gameToResume': this.gameToResume,
     });
+    this.updateCloudState({
+      'boardState.status': 'finished',
+    });
     this.router.navigate(['welcome-page']);
   }
 
