@@ -495,9 +495,11 @@ export class MultiplayerComponent implements OnInit {
     this.breakKingCastling(this.selectedBox?.name, this.movedTo);
 
     // change turn
-    // this.playingAsWhite = !this.playingAsWhite;
+    this.playingAsWhite = !this.playingAsWhite;
     // localStorage.setItem('playingAsWhite', JSON.stringify(this.playingAsWhite));
-
+    this.updateCloudState({
+      'boardState.playingAsWhite': this.playingAsWhite,
+    });
     // Reset state
     this.selectedBox = null;
     this.possibleMoves = [];
@@ -988,8 +990,9 @@ export class MultiplayerComponent implements OnInit {
       }
     }
 
-    this.possibleMoves = tempMoves;
+    this.possibleMoves = tempMoves.filter((move: any) => move != undefined);
     // localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
+    console.log(this.possibleMoves, 'possible moves');
     this.updateCloudState({
       'boardState.possibleMoves': this.possibleMoves,
     });
@@ -1313,7 +1316,7 @@ export class MultiplayerComponent implements OnInit {
       }
     }
 
-    return tempMoves;
+    return tempMoves.filter((move: any) => move != undefined);
   }
 
   isPossibleMove(column: any, row: any) {
@@ -1867,6 +1870,8 @@ export class MultiplayerComponent implements OnInit {
       }
     });
 
+    tempMoves = tempMoves.filter((move: any) => move != undefined);
+
     // checking if pawn move are duplicate
     const moveCounts = tempMoves.reduce((acc, move) => {
       acc[move] = (acc[move] || 0) + 1;
@@ -2149,6 +2154,8 @@ export class MultiplayerComponent implements OnInit {
         }
       }
     });
+
+    tempMoves = tempMoves.filter((move: any) => move != undefined);
 
     // checking if pawn move are duplicate
     const moveCounts = tempMoves.reduce((acc, move) => {
