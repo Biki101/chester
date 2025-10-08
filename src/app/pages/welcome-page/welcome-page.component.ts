@@ -73,11 +73,12 @@ export class WelcomePageComponent implements OnInit {
           game?.players?.black == this.user.uid ||
           game?.players?.white == this.user.uid
         ) {
-          this.router.navigate(['multiplayer'], {
-            queryParams: {
-              gameId: game?.id,
-            },
-          });
+          if (game?.status != 'finished')
+            this.router.navigate(['multiplayer'], {
+              queryParams: {
+                gameId: game?.id,
+              },
+            });
         }
       });
     });

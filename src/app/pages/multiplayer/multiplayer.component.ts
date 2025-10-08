@@ -197,6 +197,7 @@ export class MultiplayerComponent implements OnInit {
       .valueChanges({ idField: 'id' });
 
     this.gamesSubscriptionWhite = gamesAsWhite$.subscribe((data) => {
+      data = data.filter((game: any) => game?.status != 'finished');
       console.log(data);
 
       // 3. Check the condition and call unsubscribe() on the stored Subscription object
@@ -218,7 +219,7 @@ export class MultiplayerComponent implements OnInit {
 
     this.gamesSubscriptionBlack = gamesAsBlack$.subscribe((data) => {
       console.log(data);
-
+      data = data.filter((game: any) => game?.status != 'finished');
       // 3. Check the condition and call unsubscribe() on the stored Subscription object
       if (data.length === 0) {
         // Check if the subscription is not already closed before attempting to unsubscribe
@@ -3350,9 +3351,11 @@ export class MultiplayerComponent implements OnInit {
       'boardState.gameToResume': this.gameToResume,
     });
     this.updateCloudState({
-      'boardState.status': 'playing',
+      status: 'finished',
     });
-    this.router.navigate(['welcome-page']);
+    setTimeout(() => {
+      this.router.navigate(['welcome-page']);
+    }, 1000);
   }
 
   copyId(text: string) {
