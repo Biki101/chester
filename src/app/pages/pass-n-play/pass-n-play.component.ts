@@ -1005,6 +1005,18 @@ export class PassNPlayComponent implements OnInit {
             this.pawnWhiteForwardMovesRepeated.includes(move)
           );
         });
+        // Adding pawn forward move near king
+        if (
+          this.pawnWhiteForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .bottom[0]
+          )
+        ) {
+          tempMoves.push(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .bottom[0]
+          );
+        }
       } else {
         tempMoves = tempMoves.filter((move: any) => {
           return (
@@ -1012,9 +1024,29 @@ export class PassNPlayComponent implements OnInit {
             this.pawnBlackForwardMovesRepeated.includes(move)
           );
         });
+
+        // Adding pawn forward move near king
+        if (
+          this.pawnBlackForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .top[0]
+          )
+        ) {
+          tempMoves.push(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .top[0]
+          );
+        }
       }
     }
 
+    console.log(this.possibleBlackMoves, 'Possible Black Moves');
+    console.log(this.pawnBlackForwardMoves, 'Pawn Black Forward Moves');
+    console.log(
+      this.pawnBlackForwardMovesRepeated,
+      'Pawn Black Forward Moves Repeated'
+    );
+    console.log(this.possibleMoves, 'Possible Moves');
     this.possibleMoves = tempMoves;
     localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
   }
