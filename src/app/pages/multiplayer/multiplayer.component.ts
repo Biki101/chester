@@ -198,7 +198,6 @@ export class MultiplayerComponent implements OnInit {
 
     this.gamesSubscriptionWhite = gamesAsWhite$.subscribe((data) => {
       data = data.filter((game: any) => game?.status != 'finished');
-      console.log(data);
 
       // 3. Check the condition and call unsubscribe() on the stored Subscription object
       if (data.length === 0) {
@@ -218,7 +217,6 @@ export class MultiplayerComponent implements OnInit {
     });
 
     this.gamesSubscriptionBlack = gamesAsBlack$.subscribe((data) => {
-      console.log(data);
       data = data.filter((game: any) => game?.status != 'finished');
       // 3. Check the condition and call unsubscribe() on the stored Subscription object
       if (data.length === 0) {
@@ -981,6 +979,18 @@ export class MultiplayerComponent implements OnInit {
             this.pawnWhiteForwardMovesRepeated.includes(move)
           );
         });
+        // Adding pawn forward move near king
+        if (
+          this.pawnWhiteForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .bottom[0]
+          )
+        ) {
+          tempMoves.push(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .bottom[0]
+          );
+        }
       } else {
         tempMoves = tempMoves.filter((move: any) => {
           return (
@@ -988,12 +998,23 @@ export class MultiplayerComponent implements OnInit {
             this.pawnBlackForwardMovesRepeated.includes(move)
           );
         });
+        // Adding pawn forward move near king
+        if (
+          this.pawnBlackForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .top[0]
+          )
+        ) {
+          tempMoves.push(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .top[0]
+          );
+        }
       }
     }
 
     this.possibleMoves = tempMoves.filter((move: any) => move != undefined);
     // localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
-    console.log(this.possibleMoves, 'possible moves');
     this.updateCloudState({
       'boardState.possibleMoves': this.possibleMoves,
     });

@@ -1040,13 +1040,6 @@ export class PassNPlayComponent implements OnInit {
       }
     }
 
-    console.log(this.possibleBlackMoves, 'Possible Black Moves');
-    console.log(this.pawnBlackForwardMoves, 'Pawn Black Forward Moves');
-    console.log(
-      this.pawnBlackForwardMovesRepeated,
-      'Pawn Black Forward Moves Repeated'
-    );
-    console.log(this.possibleMoves, 'Possible Moves');
     this.possibleMoves = tempMoves;
     localStorage.setItem('possibleMoves', JSON.stringify(this.possibleMoves));
   }
