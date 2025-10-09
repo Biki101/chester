@@ -1331,10 +1331,121 @@ export class MultiplayerComponent implements OnInit {
         tempMoves = tempMoves.filter(
           (item: any) => !this.possibleWhiteMoves.includes(item)
         );
+        // Adding pawn forward move near king
+        if (
+          this.pawnWhiteForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .bottom[0]
+          )
+        ) {
+          if (
+            !this.pawnWhiteForwardMovesRepeated.includes(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .bottom[0]
+            )
+          ) {
+            tempMoves.push(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .bottom[0]
+            );
+          }
+        }
+        if (
+          this.pawnWhiteForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .rightBottom[0]
+          )
+        ) {
+          if (
+            !this.pawnWhiteForwardMovesRepeated.includes(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .rightBottom[0]
+            )
+          ) {
+            tempMoves.push(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .rightBottom[0]
+            );
+          }
+        }
+        if (
+          this.pawnWhiteForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .bottomLeft[0]
+          )
+        ) {
+          if (
+            !this.pawnWhiteForwardMovesRepeated.includes(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .bottomLeft[0]
+            )
+          ) {
+            tempMoves.push(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .bottomLeft[0]
+            );
+          }
+        }
       } else {
         tempMoves = tempMoves.filter(
           (item: any) => !this.possibleBlackMoves.includes(item)
         );
+
+        // Adding pawn forward move near king
+        if (
+          this.pawnBlackForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .top[0]
+          )
+        ) {
+          if (
+            !this.pawnBlackForwardMovesRepeated.includes(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .top[0]
+            )
+          ) {
+            tempMoves.push(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .top[0]
+            );
+          }
+        }
+        if (
+          this.pawnBlackForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .topRight[0]
+          )
+        ) {
+          if (
+            !this.pawnBlackForwardMovesRepeated.includes(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .topRight[0]
+            )
+          ) {
+            tempMoves.push(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .topRight[0]
+            );
+          }
+        }
+        if (
+          this.pawnBlackForwardMoves.includes(
+            this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+              .leftTop[0]
+          )
+        ) {
+          if (
+            !this.pawnBlackForwardMovesRepeated.includes(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .leftTop[0]
+            )
+          ) {
+            tempMoves.push(
+              this.utilService.allPossiblePositions.king[this.selectedBox?.name]
+                .leftTop[0]
+            );
+          }
+        }
       }
     }
 
