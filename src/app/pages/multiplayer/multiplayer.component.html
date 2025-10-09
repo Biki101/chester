@@ -20,7 +20,18 @@
       class="flex justify-center gap-[24px]"
       style="margin-bottom: 12px; margin-top: 12px"
     >
-      <div class="text-white">Welcome: {{ user?.email || "Anonymous" }}</div>
+      <div class="text-white">
+        <span
+          *ngIf="
+            gameState?.players?.white != null &&
+            gameState?.players?.white != null &&
+            !isSelfTurn()
+          "
+          class="text-[yellow]"
+          >( waiting... )</span
+        >
+        Welcome: {{ user?.email || "Anonymous" }}
+      </div>
       <div
         class="w-[25px] h-[25px] bg-white hover:bg-[yellow] flex justify-center items-center cursor-pointer"
         title="Quit Game"
@@ -52,7 +63,11 @@
           >
             <div
               class="possible-move-indicator"
-              *ngIf="selectedBox != null && isPossibleMove(column, row)"
+              *ngIf="
+                selectedBox != null &&
+                isPossibleMove(column, row) &&
+                isSelfTurn()
+              "
             ></div>
             <div>{{ column }}{{ row }}</div>
             <div style="display: flex; justify-content: center">

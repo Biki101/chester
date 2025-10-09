@@ -1349,8 +1349,25 @@ export class MultiplayerComponent implements OnInit {
     return this.possibleMoves.includes(column + row) && isValid;
   }
 
+  isSelfTurn() {
+    if (
+      this.gameState?.players?.white == this.user?.uid &&
+      this.playingAsWhite == true
+    ) {
+      return true;
+    } else if (
+      this.gameState?.players?.black == this.user?.uid &&
+      this.playingAsWhite == false
+    ) {
+      return true;
+    }
+  }
+
   checkIfSelected(column: any, row: any) {
-    if (this.selectedBox?.name == `${column + row}`) {
+    if (
+      this.selectedBox?.name == `${column + row}` &&
+      this.isSelfTurn() == true
+    ) {
       return true;
     } else {
       return false;
