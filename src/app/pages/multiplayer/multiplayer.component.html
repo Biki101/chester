@@ -84,25 +84,34 @@
         </ng-container>
       </ng-container>
     </div>
-    <div
-      class="bg-white w-fit flex gap-[4px] rounded-[4px] hover:bg-[yellow] cursor-pointer"
-      style="
-        margin-top: 12px;
-        padding-left: 6px;
-        padding-right: 6px;
-        padding-top: 2px;
-        padding-bottom: 2px;
-      "
-      onclick="window.open('https://github.com/Biki101/chester/issues', '_blank')"
-    >
-      <img
-        src="../../../assets/info.svg"
-        width="18px"
-        height="18px"
-        alt=""
-        srcset=""
-      />
-      <div class="text-black text-[12px]">Report a problem</div>
+    <div class="flex justify-between items-center">
+      <div
+        class="bg-white w-fit flex gap-[4px] rounded-[4px] hover:bg-[yellow] cursor-pointer"
+        style="
+          margin-top: 12px;
+          padding-left: 6px;
+          padding-right: 6px;
+          padding-top: 2px;
+          padding-bottom: 2px;
+        "
+        onclick="window.open('https://github.com/Biki101/chester/issues', '_blank')"
+      >
+        <img
+          src="../../../assets/info.svg"
+          width="18px"
+          height="18px"
+          alt=""
+          srcset=""
+        />
+        <div class="text-black text-[12px]">Report a problem</div>
+      </div>
+      <div
+        class="text-black bg-white flex items-center h-[20px] justify-center rounded-[30px] text-[12px] itallic"
+        style="padding-left: 4px; padding-right: 12px; margin-top: 12px"
+      >
+        <span class="text-[23px]" style="margin-right: 4px">&copy;</span>
+        <span style="margin-bottom: 2px"> Biki Kumar Thakur </span>
+      </div>
     </div>
   </div>
   <div class="game-draw-container" *ngIf="gameDraw">Game Draw</div>
